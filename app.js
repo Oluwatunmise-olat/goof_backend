@@ -3,7 +3,7 @@ const express = require("express");
 const config = require("config");
 const app = express();
 
-const db = require("./src/db/config");
+let { models, connected: db } = require("./src/db/config");
 
 const port = config.get("port");
 
@@ -13,3 +13,6 @@ db(() => {
     console.log("Connected");
   });
 });
+
+const alter = process.env.NODE_ENV === "production" ? false : true;
+models.sequelize.sync({ alter });

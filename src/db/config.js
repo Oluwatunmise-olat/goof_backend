@@ -14,10 +14,10 @@ const db = new Sequelize({
   host,
   port,
   dialect: "postgres",
-  logger: false
+  logging: false
 });
 
-module.exports = async function connected(cb) {
+exports.connected = async function (cb) {
   try {
     await db.authenticate();
     // log message
@@ -28,7 +28,8 @@ module.exports = async function connected(cb) {
 };
 
 let models = {
-  user: require("../models/user")(db)
+  user: require("../models/user")(db),
+  sequelize:db
 };
 
-exports.models;
+exports.models = models;
