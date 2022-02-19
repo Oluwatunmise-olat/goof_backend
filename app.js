@@ -10,6 +10,6 @@ const port = config.get("port");
 db(() => {
   app.listen(port || 3000, () => {
     // log connected
+    console.log("Connected");
   });
 });
-
