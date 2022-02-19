@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    environment:
+      - PORT:80
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    command: [ "node", "app.js" ]
+    volumes:
+      - .:/goof/src
+
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - goof_vol:/var/lib/postgressql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD:olatunbosun
+      - POSTGRES_DB:goof_db
+
+volumes:
+  goof_vol:

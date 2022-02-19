@@ -1,3 +1,7 @@
 node_modules
 package-lock.json
 nodemon.json
+startup.sh
+Dockerfile
+docker-compose.yml
+.dockerignore
