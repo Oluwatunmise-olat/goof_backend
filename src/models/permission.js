@@ -1,6 +1,4 @@
-const { DataTypes } = require("sequelize");
-
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Permission = sequelize.define(
     "Permission",
     {
@@ -12,6 +10,6 @@ module.exports = (sequelize) => {
     },
     { indexes: [{ fields: ["can"] }] }
   );
-  Permission.associate = () => {};
+  Permission.associate = (models) => {};
   return Permission;
 };

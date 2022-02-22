@@ -1,16 +1,15 @@
-const { DataTypes, Model } = require("sequelize");
 const bcrypt = require("bcrypt");
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
         required: true,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
       },
       firstname: {
         type: DataTypes.STRING,
@@ -61,7 +60,13 @@ module.exports = (sequelize) => {
     }
   );
 
-  User.associate = function (models) {};
+  User.associate = function (models) {
+    User.belongsTo(models.Role, {
+      foreignKey: "role_id",
+      targetKey: "id",
+      as: "role"
+    });
+  };
 
   User.makePassword = async function (password) {
     const salt = await bcrypt.genSalt(10);

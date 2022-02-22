@@ -3,16 +3,19 @@ const express = require("express");
 const config = require("config");
 const app = express();
 
-let { models, connected: db } = require("./src/db/config");
+let { sequelize } = require("./src/models/index");
 
 const port = config.get("port");
 
-db(() => {
-  app.listen(port || 3000, () => {
-    // log connected
-    console.log("Connected");
+sequelize
+  .authenticate()
+  .then(() => {
+    app.listen(port || 3000, () => {
+      // log connected
+      console.log("Connected");
+    });
+  })
+  .catch((err) => {
+    console.error(err);
   });
-});
 
-const alter = process.env.NODE_ENV === "production" ? false : true;
-models.sequelize.sync({ alter });
