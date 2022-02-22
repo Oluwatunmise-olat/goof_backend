@@ -66,6 +66,12 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: "id",
       as: "role"
     });
+
+    User.belongsTo(models.Location, {
+      foreignKey: "location_id",
+      targetKey: "id",
+      as: "location"
+    });
   };
 
   User.makePassword = async function (password) {
