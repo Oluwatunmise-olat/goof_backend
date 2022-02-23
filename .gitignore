@@ -5,3 +5,5 @@ startup.sh
 Dockerfile
 docker-compose.yml
 .dockerignore
+sequelize-error.txt
+todo.txt

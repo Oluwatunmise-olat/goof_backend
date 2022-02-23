@@ -3,19 +3,19 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addConstraint("users", {
-      fields: ["role_id"],
+      fields: ["location_id"],
       type: "foreign key",
-      name: "role_id_fk",
+      name: "location_id_fk",
       references: {
-        table: "roles",
+        table: "locations",
         field: "id"
       },
-      onDelete: "cascade",
+      onDelete: "set null",
       onUpdate: "cascade"
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraints("users", "role_id_fk");
+    await queryInterface.removeConstraints("users", "location_id_fk");
   }
 };
