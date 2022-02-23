@@ -1,6 +1,4 @@
-add unique constraint to loaction_id column in user table [done not yet migrated]
-add timestamps (created_at, updated_at) in user table [done]
-change sequelize timestamp keyward from createdAt to created_at [done]
-fix association issue
-
 define realtionship between permissions and role
+
+
+USER ROLE SHOULD NOT BE NULL

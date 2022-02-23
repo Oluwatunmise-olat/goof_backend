@@ -17,12 +17,18 @@ module.exports = (sequelize, DataTypes) => {
         unique: true
       }
     },
-    { indexes: [{ fields: ["name"] }] }
+    { underscored: true, indexes: [{ fields: ["name"] }] }
   );
   Role.associate = (models) => {
     Role.hasMany(models.User, {
       as: "users",
       foreignKey: "role_id"
+    });
+
+    Role.belongsToMany(models.Permission, {
+      through: "role_permissions",
+      foreignKey: "role_id",
+      otherKey: "permission_id"
     });
   };
   return Role;
