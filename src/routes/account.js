@@ -1,7 +1,7 @@
-const router = require("exprss").Router();
+const router = require("express").Router();
 
 const controller = require("../controllers/account");
 
-router.post("/signup", controller.signupHandler);
+router.get("/signup", controller.signupHandler);
 
 module.exports = router;

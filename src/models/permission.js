@@ -1,15 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-  const Permission = sequelize.define(
-    "Permission",
-    {
-      can: {
-        type: DataTypes.STRING,
-        required: true,
-        allowNull: false
-      }
+  const Permission = sequelize.define("Permission", {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      required: true,
+      unique: true
     },
-    { indexes: [{ fields: ["can"] }] }
-  );
+    can: {
+      type: DataTypes.STRING,
+      required: true,
+      allowNull: false
+    }
+  });
   Permission.associate = (models) => {};
   return Permission;
 };

@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
         required: true,
         allowNull: false,
         validate: {
-          min: 13,
-          max: 13
+          // max: 13,
+          // min: 13
         }
       },
       password: {
@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
+      underscored: true,
       tableName: "users",
       indexes: [{ fields: ["email"] }]
     }
@@ -64,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Role, {
       foreignKey: "role_id",
       targetKey: "id",
-      as: "role"
+      as: "user_role"
     });
 
     User.belongsTo(models.Location, {
