@@ -1,13 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-  const phoneVerification = sequelize.define("phoneVerification", {
-    phone_number: {
-      type: DataTypes.STRING,
-      required: true
+  const phone_verification = sequelize.define(
+    "phone_verification",
+    {
+      phone_number: {
+        type: DataTypes.STRING,
+        required: true,
+        unique: true
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
-    verfied: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    }
-  });
-  return phoneVerification;
+    { tableName: "phonne_verification" }
+  );
+  return phone_verification;
 };

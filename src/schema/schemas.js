@@ -1,4 +1,7 @@
-const { User, phoneVerification } = require("../models/index");
+const {
+  User,
+  phoneverification: phoneVerification
+} = require("../models/index");
 const { phoneRegex } = require("../utils/patterns");
 
 exports.signupSchema = {
@@ -57,6 +60,7 @@ exports.phoneVerificationSchema = {
         if (!value) return Promise.reject("Phone number field is required");
         let valid = phoneRegex.test(value);
         // verify regex pattern (+234XXXXXXXXXX)
+        console.log(User, phoneVerification);
         if (!valid) {
           errorMessage = "Invalid Phone Number Pattern";
           return Promise.reject("Invalid Phone Number Pattern");
@@ -68,6 +72,7 @@ exports.phoneVerificationSchema = {
             if (number && number.verified == true) {
               return Promise.reject("Number exists");
             }
+            return true;
           })
           .catch(); // log error
       }
