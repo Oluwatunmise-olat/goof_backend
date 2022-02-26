@@ -11,7 +11,6 @@ exports.verifyPhone = async (req) => {
 
   if (errors.length > 0) {
     const errorsArr = extractMessage(errors);
-    console.log(errorsArr);
     return { error: true, errorData: errorsArr };
   }
 

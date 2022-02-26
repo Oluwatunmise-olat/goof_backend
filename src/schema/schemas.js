@@ -65,10 +65,20 @@ exports.phoneVerificationSchema = {
         return phone_verification
           .findOne({ where: { phone_number: value } })
           .then((number) => {
-            if (number && number.verified == true) {
-              return Promise.reject("Number exists");
+            if (req.method === "POST") {
+              if (number && number.verified == true) {
+                return Promise.reject("Number exists");
+              }
+              return true;
+            } else if (req.method === "PUT") {
+              if (!number) {
+                return Promise.reject("Invalid");
+              }
+              if (number.verified) {
+                return Promise.reject("Number Verified");
+              }
+              return Promise.resolve();
             }
-            return true;
           })
           .catch(); // log error
       }
