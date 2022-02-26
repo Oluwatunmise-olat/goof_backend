@@ -11,6 +11,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("phone_verifications");
+    await queryInterface.dropTable("phone_verification");
   }
 };
