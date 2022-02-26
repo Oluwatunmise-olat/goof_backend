@@ -54,7 +54,7 @@ exports.phoneVerificationSchema = {
     isEmpty: false,
     custom: {
       options: (value, { req }) => {
-        errorMessage = "";
+        if (!value) return Promise.reject("Phone number field is required");
         let valid = phoneRegex.test(value);
         // verify regex pattern (+234XXXXXXXXXX)
         if (!valid) {
@@ -71,7 +71,6 @@ exports.phoneVerificationSchema = {
           })
           .catch(); // log error
       }
-    },
-    errorMessage: "Phone number field is required"
+    }
   }
 };

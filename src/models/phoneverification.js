@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       required: true
     },
-    code: {
-      type: DataTypes.STRING,
-      required: true
-    },
     verfied: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

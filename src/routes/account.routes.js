@@ -9,7 +9,7 @@ router.post(
   checkSchema(phoneVerificationSchema),
   controller.phoneVerificationHandler
 );
-router.put("/verify/phone", controller.updatePhoneVerificationHandler);
+// router.put("/verify/phone", controller.updatePhoneVerificationHandler);
 router.get("/signup", controller.signupHandler);
 
 module.exports = router;
