@@ -1,4 +1,1 @@
-define realtionship between permissions and role
-
-
 USER ROLE SHOULD NOT BE NULL

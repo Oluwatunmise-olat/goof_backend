@@ -1,5 +1,17 @@
 let { User } = require("../models/index");
 
+const { verifyPhone } = require("../service/account.service");
+
+exports.phoneVerificationHandler = (req, res, next) => {
+  let valid;
+
+  try {
+    valid = verifyPhone(req);
+  } catch (error) {
+    // handle error
+  }
+};
+
 exports.signupHandler = async (req, res, next) => {
   // validate user input
   // validate email
@@ -9,7 +21,4 @@ exports.signupHandler = async (req, res, next) => {
   // check constraint for email and phone number
   // perform signup
   // send email
-
-  // TODO:: PERMISSION TABLE
-
 };
