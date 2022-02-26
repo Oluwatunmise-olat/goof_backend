@@ -10,6 +10,7 @@ exports.phoneVerificationHandler = (req, res, next) => {
   } catch (error) {
     // handle error
   }
+  return res.sendStatus(200)
 };
 
 exports.signupHandler = async (req, res, next) => {

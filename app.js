@@ -6,8 +6,8 @@ const app = express();
 let { sequelize } = require("./src/models/index");
 const accountRouter = require("./src/routes/account.routes");
 
+app.use(express.json());
 const port = config.get("port");
-app.use(express.urlencoded({ extended: false }));
 app.use("/api", accountRouter);
 
 sequelize
