@@ -1,25 +1,30 @@
 let { User } = require("../models/index");
 
-const { verifyPhone } = require("../service/account.service");
+const {
+  verifyPhone,
+  updateVerifyPhone
+} = require("../service/account.service");
 const response = require("../utils/response");
 
 exports.phoneVerificationHandler = async (req, res, next) => {
   let result;
 
   try {
-    result = await verifyPhone(req);
+    result =
+      req.method == "POST"
+        ? await verifyPhone(req)
+        : await updateVerifyPhone(req);
+
+    if (result.error) {
+      return res
+        .status(400)
+        .json(response({ status: false, errorData: result.errorData }));
+    }
+    return res.status(200).json(response({ status: true, msg: result.msg }));
   } catch (error) {
     // log error
   }
-  if (result.error) {
-    return res
-      .status(400)
-      .json(response((status = false), (errorData = result.errorData)));
-  }
-  return res.status(200).json(response((status = true), (msg = result.msg)));
 };
-
-exports.updatePhoneVerificationHandler = (req, res, next) => {};
 
 exports.signupHandler = async (req, res, next) => {
   // validate user input

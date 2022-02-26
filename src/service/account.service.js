@@ -26,3 +26,28 @@ exports.verifyPhone = async (req) => {
     return resp;
   }
 };
+
+exports.updateVerifyPhone = async (req) => {
+  const { errors } = validationResult(req);
+  const { phone_number, code } = req.body;
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  let [status, data] = await verifyCode(phone_number, code);
+  if (!status) {
+    // log error
+  } else {
+    await phone_verification.update(
+      { verified: true },
+      {
+        where: { phone_number }
+      }
+    );
+    resp.msg = "phone number verified";
+    return resp;
+  }
+};
