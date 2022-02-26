@@ -12,8 +12,7 @@ const sendCode = async (number) => {
       .verifications.create({ to: number, channel: "sms" });
     return [true, response.status];
   } catch (error) {
-    console.error(error); // log error (server error)
-    return [false, "failed"];
+    return [false, error];
   }
 };
 
@@ -24,7 +23,7 @@ const verifyCode = async (number, code) => {
       .verificationChecks.create({ to: number, code: code });
     return [true, response];
   } catch (error) {
-    return [false, "failed"]; // log error (server error)
+    return [false, "failed"]; // log error
   }
 };
 

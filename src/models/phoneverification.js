@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false
       }
     },
-    { tableName: "phonne_verification" }
+    { tableName: "phone_verification", timestamps: false }
   );
   return phone_verification;
 };

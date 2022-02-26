@@ -1,7 +1,4 @@
-const {
-  User,
-  phoneverification: phoneVerification
-} = require("../models/index");
+const { User, phone_verification } = require("../models/index");
 const { phoneRegex } = require("../utils/patterns");
 
 exports.signupSchema = {
@@ -60,21 +57,44 @@ exports.phoneVerificationSchema = {
         if (!value) return Promise.reject("Phone number field is required");
         let valid = phoneRegex.test(value);
         // verify regex pattern (+234XXXXXXXXXX)
-        console.log(User, phoneVerification);
-        if (!valid) {
-          errorMessage = "Invalid Phone Number Pattern";
-          return Promise.reject("Invalid Phone Number Pattern");
-        }
+        if (!valid) return Promise.reject("Invalid Phone Number Pattern");
         // verify if number exists in verification table
-        return phoneVerification
+        return phone_verification
           .findOne({ where: { phone_number: value } })
           .then((number) => {
-            if (number && number.verified == true) {
-              return Promise.reject("Number exists");
-            }
+            if (number && number.verified) return Promise.reject("verified");
             return true;
           })
           .catch(); // log error
+      }
+    }
+  }
+};
+
+exports.updatePhoneVerificationSchema = {
+  code: {
+    in: ["body"],
+    trim: true,
+    isEmpty: false
+  },
+  phone_number: {
+    in: ["body"],
+    trim: true,
+    isEmpty: false,
+    custom: {
+      options: (value, { req }) => {
+        if (!value) return Promise.reject("Phone number field is required");
+        let valid = phoneRegex.test(value);
+        if (!valid) {
+          return Promise.reject("Invalid Phone Number Pattern");
+        }
+        return phone_verification
+          .findOne({ where: { phone_number: value } })
+          .then((number) => {
+            if (!number) return Promise.reject("Not Found");
+            if (number.verified) return Promise.reject("verified");
+          })
+          .catch();
       }
     }
   }
