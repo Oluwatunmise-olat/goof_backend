@@ -4,10 +4,10 @@ const config = require("config");
 const app = express();
 
 let { sequelize } = require("./src/models/index");
-const accountRouter = require("./src/routes/account");
+const accountRouter = require("./src/routes/account.routes");
 
+app.use(express.json());
 const port = config.get("port");
-
 app.use("/api", accountRouter);
 
 sequelize

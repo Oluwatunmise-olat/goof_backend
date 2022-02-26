@@ -1,4 +1,2 @@
-define realtionship between permissions and role
-
-
-USER ROLE SHOULD NOT BE NULL
+USER ROLE SHOULD NOT BE NULL, should resolve to "user"
+migrate phoneVerification model
