@@ -41,9 +41,11 @@ exports.updateVerifyPhone = async (req) => {
   }
 
   let [status, data] = await verifyCode(phone_number, code);
-  console.log(status, data);
   if (!status) {
-    // log error
+    resp.errorData = [{ msg: "Code expired" }];
+    resp.error = true;
+    resp.code = 101;
+    return resp;
   }
   if (data.status == "approved") {
     await phone_verification.update(

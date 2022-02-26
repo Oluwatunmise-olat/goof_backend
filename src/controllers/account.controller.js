@@ -16,9 +16,10 @@ exports.phoneVerificationHandler = async (req, res, next) => {
         : await updateVerifyPhone(req);
 
     if (result.error) {
+      let code = result.code !== undefined ? result.code : "";
       return res
         .status(400)
-        .json(response({ status: false, errorData: result.errorData }));
+        .json(response({ status: false, errorData: result.errorData, code }));
     }
     return res.status(200).json(response({ status: true, msg: result.msg }));
   } catch (error) {

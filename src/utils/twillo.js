@@ -23,7 +23,7 @@ const verifyCode = async (number, code) => {
       .verificationChecks.create({ to: number, code: code });
     return [true, response];
   } catch (error) {
-    return [false, "failed"]; // log error (server error)
+    return [false, "failed"]; // log error
   }
 };
 
