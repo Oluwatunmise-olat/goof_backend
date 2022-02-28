@@ -1,3 +1,5 @@
+// helper function for returning Api response to client
+
 module.exports = ({ status, msg, data, errorData, code }) => {
   status = status == undefined ? true : status;
   msg = msg == undefined ? "" : msg;

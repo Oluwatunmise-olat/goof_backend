@@ -1,3 +1,5 @@
+// helper functions for handling sending verificaton codes and verification of codes via twilio
+
 const axios = require("axios");
 const config = require("config");
 

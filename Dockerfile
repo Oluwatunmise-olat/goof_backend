@@ -12,6 +12,6 @@ ENV NODE_ENV=dev
 
 EXPOSE 80
 
-RUN . ./startup.sh
+RUN ./startup.sh
 
 RUN ["node", "app.js"]
