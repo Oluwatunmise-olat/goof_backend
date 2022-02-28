@@ -1,4 +1,3 @@
-let { User } = require("../models/index");
 
 const {
   verifyPhone,

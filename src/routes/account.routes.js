@@ -18,7 +18,7 @@ router
     checkSchema(updatePhoneVerificationSchema),
     controller.phoneVerificationHandler
   );
-router.get("/signup", checkSchema(signupHandler), controller.signupHandler);
+router.get("/signup", checkSchema(signUpSchema), controller.signupHandler);
 
 module.exports = router;
 
