@@ -5,6 +5,7 @@ const app = express();
 
 let { sequelize } = require("./src/models/index");
 const accountRouter = require("./src/routes/account.routes");
+const logger = require("./logger/log");
 
 app.use(express.json());
 const port = config.get("port");
@@ -14,10 +15,9 @@ sequelize
   .authenticate()
   .then(() => {
     app.listen(port || 3000, () => {
-      // log connected
-      console.log("Connected");
+      logger.info("Server Connected");
     });
   })
   .catch((err) => {
-    console.error(err);
+    logger.error(err);
   });
