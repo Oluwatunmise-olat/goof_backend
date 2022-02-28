@@ -5,6 +5,7 @@ const {
   updateVerifyPhone
 } = require("../service/account.service");
 const response = require("../utils/response");
+const logger = require("../../logger/log");
 
 exports.phoneVerificationHandler = async (req, res, next) => {
   let result;
@@ -23,7 +24,9 @@ exports.phoneVerificationHandler = async (req, res, next) => {
     }
     return res.status(200).json(response({ status: true, msg: result.msg }));
   } catch (error) {
-    // log error
+    logger.error(
+      `phone verification handler error [controllers/account.controllers] ${error.message}: ${error}`
+    );
   }
 };
 

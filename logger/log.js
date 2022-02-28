@@ -1,4 +1,5 @@
 const { createLogger, format, transports } = require("winston");
+const path = require("path");
 
 const logLevels = {
   error: 0,
@@ -18,7 +19,10 @@ const logger = createLogger({
   levels: logLevels,
   transports: [
     new transports.Console({ level: "info" }),
-    new transports.File({ filename: "logs/app.log", level: "error" })
+    new transports.File({
+      filename: "logs/app.log",
+      level: "error"
+    })
   ]
 });
 

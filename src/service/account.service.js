@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
 const { phone_verification } = require("../models/index");
+const logger = require("../../logger/log");
 
 exports.verifyPhone = async (req) => {
   const { errors } = validationResult(req);
@@ -17,7 +18,7 @@ exports.verifyPhone = async (req) => {
   // send verification code and save in db
   let [status, data] = await sendCode(phone_number);
   if (!status) {
-    // log error
+    logger.error(`Twilio send verification error: ${data}`);
   } else {
     let exists = await phone_verification.findOne({ where: { phone_number } });
     if (!exists) {

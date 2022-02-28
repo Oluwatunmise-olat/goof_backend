@@ -1,5 +1,6 @@
 const { User, phone_verification } = require("../models/index");
 const { phoneRegex } = require("../utils/patterns");
+const logger = require("../../logger/log");
 
 exports.signupSchema = {
   firstname: {
@@ -65,7 +66,11 @@ exports.phoneVerificationSchema = {
             if (number && number.verified) return Promise.reject("verified");
             return true;
           })
-          .catch(); // log error
+          .catch((err) => {
+            logger.error(
+              `Error fetching data from db - phone validation schema ${err}`
+            );
+          });
       }
     }
   }
@@ -94,7 +99,11 @@ exports.updatePhoneVerificationSchema = {
             if (!number) return Promise.reject("Not Found");
             if (number.verified) return Promise.reject("verified");
           })
-          .catch();
+          .catch((err) => {
+            logger.error(
+              `Error fetching data from db - update phone validation schema ${err}`
+            );
+          });
       }
     }
   }
