@@ -115,7 +115,13 @@ exports.signUpSchema = {
           .then((result) => {
             if (!result || !result.verified)
               return Promise.reject("Phone number not verified");
-            return Promise.resolve();
+            // check constraint
+            return User.findOne({ where: { phone_number: value } }).then(
+              (user) => {
+                if (user) return Promise.reject("Phone number taken");
+                return Promise.resolve();
+              }
+            );
           })
           .catch((err) => {
             logger.error(

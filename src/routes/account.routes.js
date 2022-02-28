@@ -4,7 +4,8 @@ const { checkSchema, check } = require("express-validator");
 const controller = require("../controllers/account.controller.js");
 const {
   phoneVerificationSchema,
-  updatePhoneVerificationSchema
+  updatePhoneVerificationSchema,
+  signUpSchema
 } = require("../schema/schemas");
 
 router
@@ -17,7 +18,7 @@ router
     checkSchema(updatePhoneVerificationSchema),
     controller.phoneVerificationHandler
   );
-router.get("/signup", controller.signupHandler);
+router.get("/signup", checkSchema(signupHandler), controller.signupHandler);
 
 module.exports = router;
 

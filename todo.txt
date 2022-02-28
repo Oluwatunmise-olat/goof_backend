@@ -1,5 +1,9 @@
 USER ROLE SHOULD NOT BE NULL, should resolve to "user"
 documentation
-testing
 
 sanitize user inputs
+user signup flow
+testing
+seeders(roles)
+location update endpoint
+testing
