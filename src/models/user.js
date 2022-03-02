@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 
+const logger = require("../../logger/log");
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
@@ -81,7 +83,9 @@ module.exports = (sequelize, DataTypes) => {
     try {
       hash = await bcrypt.hash(password, salt);
     } catch (error) {
-      // log error
+      logger.error(`
+        Error hasing password [models/user.js]: makePassword (bcrypt)
+      `);
     }
     return hash;
   };
@@ -93,7 +97,9 @@ module.exports = (sequelize, DataTypes) => {
     try {
       valid = await bcrypt.compare(password, self.password);
     } catch (error) {
-      // log error
+      logger.error(`
+        Error comparing password [models/user.js]: checkPassword (bcrypt)
+      `);
     }
 
     return valid;

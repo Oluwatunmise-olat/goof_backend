@@ -1,10 +1,10 @@
-let { User } = require("../models/index");
 
 const {
   verifyPhone,
   updateVerifyPhone
 } = require("../service/account.service");
 const response = require("../utils/response");
+const logger = require("../../logger/log");
 
 exports.phoneVerificationHandler = async (req, res, next) => {
   let result;
@@ -23,17 +23,14 @@ exports.phoneVerificationHandler = async (req, res, next) => {
     }
     return res.status(200).json(response({ status: true, msg: result.msg }));
   } catch (error) {
-    // log error
+    logger.error(
+      `phone verification handler error [controllers/account.controllers] ${error.message}: ${error}`
+    );
   }
 };
 
 exports.signupHandler = async (req, res, next) => {
-  // validate user input
-  // validate email
-  // validate phone_number
-  // verify phone number
-  // verify role_id
   // check constraint for email and phone number
   // perform signup
-  // send email
+  // send welcome email
 };
