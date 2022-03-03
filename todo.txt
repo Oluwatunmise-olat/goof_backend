@@ -4,6 +4,5 @@ documentation
 !sanitize user inputs
 user signup flow
 testing
-seeders(roles)
 location update endpoint
 testing

@@ -90,6 +90,8 @@ exports.signup = async (req) => {
       role_id,
       avatar: avatar == null || undefined ? "" : avatar
     });
+    //TODO:: - Exclude password hash
+    // - Include role data!
     return { error: false, data: user, msg: "User created" };
   } catch (error) {
     logger.error(`
@@ -97,5 +99,3 @@ exports.signup = async (req) => {
     `);
   }
 };
-
-// include role data
