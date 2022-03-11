@@ -9,7 +9,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
-      alter table "users" remove column "email_verification_id"
+      alter table "users" drop column "email_verification_id"
     `);
   }
 };

@@ -82,6 +82,12 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: "id",
       as: "location"
     });
+
+    User.belongsTo(models.email_verification, {
+      foreignKey: "email_verification_id",
+      targetKey: "id",
+      as: "email_verification"
+    })
   };
 
   User.makePassword = async function (password) {
