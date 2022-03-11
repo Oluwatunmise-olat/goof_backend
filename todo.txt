@@ -2,7 +2,45 @@ USER ROLE SHOULD NOT BE NULL, should resolve to "user"
 documentation
 
 !sanitize user inputs
-user signup flow
-testing
-location update endpoint
-testing
+
+1. alter user table
+2. verify email endpoint
+3. signup with email
+4. signup with google
+5. signup with facebook
+
+6. login with facebook
+7. login with google
+8. login with email and password
+
+// on user creation create wallet that is not activated (Wallet is activated on pin set)
+// on user creation create cart 
+
+vendor endpoints
+
+1. become a vendor (create store and change user type to vendor)
+2. endpoint to see vendor application status (admin creates plan)
+3. subscribe to a plan endpoint
+4. create category (crud)
+5. add category items (crud)
+
+
+admin endpoints
+
+1. approve/decline vendor in waiting list
+2. see all vendor waiting list and details
+3. create payment plans
+
+user endpoints
+
+1. search for vendor by location/ name
+2. see all vendors on platform
+3. setup wallet pin
+4. fund wallet endpoint by bank transfer/ card
+5. setup location (cru)
+6. add product to cart (cru)
+7. order endpoint
+8. view order history endpoint
+9. view notifications
+10. view wallet details endpoint
+11. view cart details
