@@ -5,11 +5,22 @@ const app = express();
 
 let { sequelize } = require("./src/models/index");
 const accountRouter = require("./src/routes/account.routes");
+const oauthRouter = require("./src/routes/webhook.routes");
 const logger = require("./logger/log");
 
-app.use(express.json());
 const port = config.get("port");
+
+/**
+ * App middkewares
+ */
+
+app.use(express.json());
 app.use("/api", accountRouter);
+app.use("/webhook", oauthRouter);
+
+/**
+ * DB setup and server startup
+ */
 
 sequelize
   .authenticate()
@@ -21,3 +32,4 @@ sequelize
   .catch((err) => {
     logger.error(err);
   });
+

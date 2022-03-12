@@ -101,6 +101,7 @@ exports.signup = async (req) => {
   }
 };
 
+// after logged in
 exports.sendEmailCode = async (email) => {
   // create email verification with related user
   // before sending check: 
@@ -119,4 +120,8 @@ exports.verifyEmailCode = async (email, code) => {
   // if not valid send expired
   // else verify against code
   // if valid change users email_verified field to true
+};
+
+exports.signupWithGoogle = async () => {
+
 };

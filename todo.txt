@@ -4,12 +4,10 @@ documentation
 !sanitize user inputs
 
 1. alter user table (done)
-2. verify email endpoint
+2. verify email endpoint (after successful signup and login)
 3. signup with email
 4. signup with google
-5. signup with facebook
 
-6. login with facebook
 7. login with google
 8. login with email and password
 
