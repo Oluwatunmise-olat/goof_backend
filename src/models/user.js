@@ -54,13 +54,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: "",
         required: false
-      },
-      phone_verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      email_verified: {
-        type: DataTypes.BOOLEAN
       }
     },
     {
@@ -87,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email_verification_id",
       targetKey: "id",
       as: "email_verification"
-    })
+    });
   };
 
   User.makePassword = async function (password) {

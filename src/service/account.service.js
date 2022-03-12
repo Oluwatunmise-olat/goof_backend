@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
+const { getGoogleAuthUrl } = require("../utils/oauth");
 const { phone_verification, User } = require("../models/index");
 const logger = require("../../logger/log");
 
@@ -101,15 +102,15 @@ exports.signup = async (req) => {
   }
 };
 
+// after logged in
 exports.sendEmailCode = async (email) => {
   // create email verification with related user
-  // before sending check: 
+  // before sending check:
   // - if email exists and verified is false and it hasn't expired, resend code
   // - if email exits and it has expired, resend new code
   // - if email doesnt exist send code
   // - all conditions must be associated with logged in user
   // send code using nodemailer
-
 };
 
 exports.verifyEmailCode = async (email, code) => {
@@ -120,3 +121,9 @@ exports.verifyEmailCode = async (email, code) => {
   // else verify against code
   // if valid change users email_verified field to true
 };
+
+exports.googleConsentScreen = () => {
+  return getGoogleAuthUrl();
+};
+
+exports.signupWithGoogle = async () => {};
