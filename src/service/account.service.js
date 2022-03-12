@@ -5,7 +5,7 @@ const { sendCode, verifyCode } = require("../utils/twillo");
 const { phone_verification, User } = require("../models/index");
 const logger = require("../../logger/log");
 
-exports.verifyPhone = async (req) => {
+exports.sendPhoneCode = async (req) => {
   const { errors } = validationResult(req);
   const { phone_number } = req.body;
   const resp = { error: false };
@@ -31,7 +31,7 @@ exports.verifyPhone = async (req) => {
   }
 };
 
-exports.updateVerifyPhone = async (req) => {
+exports.verifyPhoneCode = async (req) => {
   const { errors } = validationResult(req);
   const { phone_number, code } = req.body;
   const resp = { error: false };
@@ -88,7 +88,8 @@ exports.signup = async (req) => {
       password_hash,
       phone_number,
       role_id,
-      avatar: avatar == null || undefined ? "" : avatar
+      avatar: avatar == null || undefined ? "" : avatar,
+      phone_verified: true
     });
     //TODO:: - Exclude password hash
     // - Include role data!
@@ -98,4 +99,24 @@ exports.signup = async (req) => {
       Error saving user in db(users) [service/account.service.js]
     `);
   }
+};
+
+exports.sendEmailCode = async (email) => {
+  // create email verification with related user
+  // before sending check: 
+  // - if email exists and verified is false and it hasn't expired, resend code
+  // - if email exits and it has expired, resend new code
+  // - if email doesnt exist send code
+  // - all conditions must be associated with logged in user
+  // send code using nodemailer
+
+};
+
+exports.verifyEmailCode = async (email, code) => {
+  // verifies that users email_verified field is FALSE
+  // then checks that the email exists in email_verification table
+  // if it exists check expiry validity
+  // if not valid send expired
+  // else verify against code
+  // if valid change users email_verified field to true
 };

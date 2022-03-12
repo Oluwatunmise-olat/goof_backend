@@ -21,10 +21,3 @@ router
 router.get("/signup", checkSchema(signUpSchema), controller.signupHandler);
 
 module.exports = router;
-
-// from freelancer side
-/**
- * 1. payment security
- * 2. brings accountability and structure, transparency
- * 3. multisignature incase a freelaner doesnt do a work and says it is done
- */

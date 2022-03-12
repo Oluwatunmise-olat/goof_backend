@@ -1,0 +1,1 @@
+// Handles everything related to sending of email

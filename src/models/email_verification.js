@@ -37,6 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [{ fields: ["email"] }]
     }
   );
-  email_verification.associate = (models) => {};
+  email_verification.associate = (models) => {
+    email_verification.hasOne(models.User, {
+      foreignKey: "email_verificaation_id",
+      targetKey: "id",
+      as: "user_email_verification"
+    });
+  };
   return email_verification;
 };

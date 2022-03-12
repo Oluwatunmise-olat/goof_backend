@@ -1,6 +1,6 @@
 const {
-  verifyPhone,
-  updateVerifyPhone,
+  sendPhoneCode,
+  verifyPhoneCode,
   signup
 } = require("../service/account.service");
 const response = require("../utils/response");
@@ -12,8 +12,8 @@ exports.phoneVerificationHandler = async (req, res, next) => {
   try {
     result =
       req.method == "POST"
-        ? await verifyPhone(req)
-        : await updateVerifyPhone(req);
+        ? await sendPhoneCode(req)
+        : await verifyPhoneCode(req);
 
     if (result.error) {
       let code = result.code !== undefined ? result.code : "";
@@ -44,3 +44,5 @@ exports.signupHandler = async (req, res, next) => {
     return next(error);
   }
 };
+
+// follow tdd (red green refactor)
