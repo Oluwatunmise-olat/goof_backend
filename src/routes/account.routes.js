@@ -18,7 +18,12 @@ router
     checkSchema(updatePhoneVerificationSchema),
     controller.phoneVerificationHandler
   );
-router.post("/signup/email", checkSchema(signUpSchema), controller.signupHandler);
-router.post("/signup/google");
+router.post(
+  "/signup/email",
+  checkSchema(signUpSchema),
+  controller.signupHandler
+);
+router.get("/signup/google/constent", controller.googleConsent);
+// router.post("/signup/google");
 
 module.exports = router;

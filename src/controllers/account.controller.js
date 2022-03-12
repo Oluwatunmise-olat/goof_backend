@@ -1,7 +1,8 @@
 const {
   sendPhoneCode,
   verifyPhoneCode,
-  signup
+  signup,
+  googleConsentScreen
 } = require("../service/account.service");
 const response = require("../utils/response");
 const logger = require("../../logger/log");
@@ -34,15 +35,25 @@ exports.signupHandler = async (req, res, next) => {
     if (resp.error)
       return res
         .status(400)
-        .json(response((status = false), (errorData = resp.errorData)));
+        .json(response({ status: false, errorData: resp.errorData }));
 
     logger.info(`User created: [${resp.data.id}]`);
     return res
       .status(201)
-      .json(response((status = true), (msg = resp.msg), (data = resp.data)));
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
   } catch (error) {
     return next(error);
   }
 };
 
 // follow tdd (red green refactor)
+
+exports.googleConsent = (req, res) => {
+  return res.status(200).json(
+    response({
+      status: true,
+      msg: "Google Oauth Constent Screen",
+      data: { uri: googleConsentScreen() }
+    })
+  );
+};

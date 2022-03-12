@@ -5,7 +5,8 @@ exports.getUserFromGoogle = () => {
 };
 
 exports.getGoogleAuthUrl = () => {
-  const baseUrl = "https://accounts.google.com/o/oauth2//v2/auth";
+  // returns the google auth constent uri
+  const baseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const config = {
     redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
     client_id: process.env.GOOGLE_OAUTH_CLIENT_ID,
