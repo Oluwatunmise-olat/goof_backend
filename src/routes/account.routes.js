@@ -23,7 +23,7 @@ router.post(
   checkSchema(signUpSchema),
   controller.signupHandler
 );
-router.get("/signup/google/constent", controller.googleConsent);
+router.get("/signup/google/constent", controller.withGoogle);
 // router.post("/signup/google");
 
 module.exports = router;

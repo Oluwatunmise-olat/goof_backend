@@ -126,4 +126,8 @@ exports.googleConsentScreen = () => {
   return getGoogleAuthUrl();
 };
 
-exports.signupWithGoogle = async () => {};
+exports.googleUser = () => {
+  /**
+   * 
+   */
+}

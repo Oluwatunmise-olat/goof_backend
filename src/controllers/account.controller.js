@@ -48,7 +48,7 @@ exports.signupHandler = async (req, res, next) => {
 
 // follow tdd (red green refactor)
 
-exports.googleConsent = (req, res) => {
+exports.withGoogle = (req, res) => {
   return res.status(200).json(
     response({
       status: true,
@@ -56,4 +56,8 @@ exports.googleConsent = (req, res) => {
       data: { uri: googleConsentScreen() }
     })
   );
+};
+
+exports.googleHook = (req, res) => {
+  const { code } = req.params;
 };
