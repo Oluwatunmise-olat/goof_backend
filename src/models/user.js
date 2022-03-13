@@ -59,7 +59,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       underscored: true,
       tableName: "users",
-      indexes: [{ fields: ["email"] }]
+      indexes: [{ fields: ["email"] }],
+      hooks: {
+        afterCreate: (instance, options)=>{
+          // generate user wallet and cart
+          logger.info(instance.id)
+        }
+      }
     }
   );
 

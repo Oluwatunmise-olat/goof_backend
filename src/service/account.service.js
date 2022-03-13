@@ -86,8 +86,7 @@ exports.signup = async (req) => {
       avatar: avatar == null || undefined ? "" : avatar,
       phone_verified: true
     });
-    //TODO:: - Exclude password hash
-    // - Include role data!
+
     let roleInfo = await Role.findOne({ where: { id: user.role_id } });
     const { dataValues } = user;
     delete dataValues.password;
