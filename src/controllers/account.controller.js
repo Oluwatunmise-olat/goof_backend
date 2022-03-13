@@ -2,7 +2,8 @@ const {
   sendPhoneCode,
   verifyPhoneCode,
   signup,
-  googleConsentScreen
+  googleConsentScreen,
+  googleUser
 } = require("../service/account.service");
 const response = require("../utils/response");
 const logger = require("../../logger/log");
@@ -58,6 +59,8 @@ exports.withGoogle = (req, res) => {
   );
 };
 
-exports.googleHook = (req, res) => {
-  const { code } = req.params;
+exports.googleHook = async (req, res) => {
+  const { code } = req.query;
+  let data = await googleUser(code);
+  // console.log(data)
 };

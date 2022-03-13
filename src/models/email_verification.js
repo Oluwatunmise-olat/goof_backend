@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   email_verification.associate = (models) => {
     email_verification.hasOne(models.User, {
-      foreignKey: "email_verificaation_id",
+      foreignKey: "email_verification_id",
       targetKey: "id",
       as: "user_email_verification"
     });

@@ -2,8 +2,8 @@ const { validationResult } = require("express-validator");
 
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
-const { getGoogleAuthUrl } = require("../utils/oauth");
-const { phone_verification, User } = require("../models/index");
+const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
+const { phone_verification, User, Role } = require("../models/index");
 const logger = require("../../logger/log");
 
 exports.sendPhoneCode = async (req) => {
@@ -69,16 +69,10 @@ exports.signup = async (req) => {
     return { error: true, errorData: errorsArr };
   }
 
-  const {
-    firstname,
-    lastname,
-    role_id,
-    email,
-    password,
-    phone_number,
-    avatar
-  } = req.body;
+  let { firstname, lastname, role_id, email, password, phone_number, avatar } =
+    req.body;
 
+  phone_number = phone_number.split("+")[1];
   // encrpty password
   const password_hash = await User.makePassword(password);
   try {
@@ -86,7 +80,7 @@ exports.signup = async (req) => {
       firstname,
       lastname,
       email,
-      password_hash,
+      password: password_hash,
       phone_number,
       role_id,
       avatar: avatar == null || undefined ? "" : avatar,
@@ -94,10 +88,18 @@ exports.signup = async (req) => {
     });
     //TODO:: - Exclude password hash
     // - Include role data!
-    return { error: false, data: user, msg: "User created" };
+    let roleInfo = await Role.findOne({ where: { id: user.role_id } });
+    const { dataValues } = user;
+    delete dataValues.password;
+    delete dataValues.role_id;
+    return {
+      error: false,
+      data: { ...dataValues, role_data: { ...roleInfo.dataValues } },
+      msg: "User created"
+    };
   } catch (error) {
     logger.error(`
-      Error saving user in db(users) [service/account.service.js]
+      Error saving user in db(users) [service/account.service.js]: ${error}
     `);
   }
 };
@@ -126,8 +128,15 @@ exports.googleConsentScreen = () => {
   return getGoogleAuthUrl();
 };
 
-exports.googleUser = () => {
+exports.googleUser = async (code) => {
   /**
-   * 
+   * gets user info from google and creates user if id token not in db
+   * else generate jwt for user
    */
-}
+  try {
+    const data = await getTokens(code);
+    return data;
+  } catch (error) {
+    // log error
+  }
+};
