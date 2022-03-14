@@ -1,1 +1,353 @@
 error: 28-Feb-22Y 12:08:45: password authentication failed for user "postgres"
+error: 13-Mar-22Y 14:18:18: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:18:18: 
+              Error fetching data from db(phone verification) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+
+              
+error: 13-Mar-22Y 14:18:18: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:19:58: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:19:58: 
+              Error fetching data from db(phone verification) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+
+              
+error: 13-Mar-22Y 14:19:58: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:22:42: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:22:42: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:22:42: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:25:52: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:25:52: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:25:52: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:25:55: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:25:55: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:25:55: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:26:55: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:26:55: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:26:55: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:26:57: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:26:57: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:26:57: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:28:34: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:28:34: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:28:34: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:29:40: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:29:40: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:29:40: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:30:08: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:30:08: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:30:08: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:30:57: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:30:57: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:30:57: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:33:56: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:33:56: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:33:56: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:38:11: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:38:11: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:38:11: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:40:42: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:40:42: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:40:43: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:41:38: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:41:38: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:41:38: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:43:14: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:43:14: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:43:14: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:44:11: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:44:11: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:44:11: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:45:28: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:45:28: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:45:28: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:46:24: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:46:24: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:46:24: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:53:10: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:53:10: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:53:10: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:53:29: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:53:29: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:53:29: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:53:41: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:53:41: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:53:41: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:54:43: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:54:43: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:54:43: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:54:45: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:54:45: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:54:45: 
+            Error fetching data from db(roles) - user signup validation schema Invalid role_id
+
+            
+error: 13-Mar-22Y 14:55:22: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:55:22: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:55:22: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:56:53: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:56:53: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:56:53: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:56:55: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:56:55: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:56:55: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:58:19: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:58:19: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:58:19: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:59:03: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:59:03: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:59:03: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:59:36: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:59:36: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:59:36: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 14:59:38: Error fetching data from db(users) - user signup validation schema SequelizeDatabaseError: column "email_verificaation_id" does not exist
+error: 13-Mar-22Y 14:59:38: 
+              Error fetching data from db(phone verification) - user signup validation schema Phone number not verified
+
+              
+error: 13-Mar-22Y 14:59:38: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+
+            
+error: 13-Mar-22Y 15:14:14: 
+            Error fetching data from db(roles) - user signup validation schema SequelizeDatabaseError: column "created_at" does not exist
+            
+error: 13-Mar-22Y 15:38:44: 
+          Error fetching data from db(phone verification) - [schema/schemas.js] SequelizeDatabaseError: column "email_verificaation_id" does not exist
+          
+error: 13-Mar-22Y 15:55:01: 
+      Error saving user in db(users) [service/account.service.js]
+    
+error: 13-Mar-22Y 15:57:12: 
+      Error saving user in db(users) [service/account.service.js]: notNull Violation: User.password cannot be null
+    
+error: 13-Mar-22Y 15:58:00: 
+      Error saving user in db(users) [service/account.service.js]: notNull Violation: User.password cannot be null
+    
+error: 13-Mar-22Y 15:58:32: 
+      Error saving user in db(users) [service/account.service.js]: value too long for type character varying(13)
+    
+error: 13-Mar-22Y 17:01:34: 
+      Error saving user in db(users) [service/account.service.js]: Validation error
+    
+error: 13-Mar-22Y 17:02:37: 
+      Error saving user in db(users) [service/account.service.js]: Validation error
+    
+error: 13-Mar-22Y 17:03:49: 
+      Error saving user in db(users) [service/account.service.js]: SequelizeUniqueConstraintError: Validation error
+    
+error: 13-Mar-22Y 17:04:58: 
+      Error saving user in db(users) [service/account.service.js]: SequelizeUniqueConstraintError: Validation error
+    
+error: 14-Mar-22Y 12:02:17: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: Cannot read properties of undefined (reading 'create')
+    
+error: 14-Mar-22Y 12:11:43: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: Cannot read properties of undefined (reading 'create')
+    
+error: 14-Mar-22Y 12:17:45: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: user.afterCreate is not a function
+    
+error: 14-Mar-22Y 12:35:31: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:39:41: 
+      Error saving user in db(users) [service/account.service.js]: Error: The second argument was removed in favor of the options object.
+    
+error: 14-Mar-22Y 12:40:43: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:41:45: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:42:41: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:43:09: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:43:58: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:45:14: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 14:30:15: 
+      Error saving user in db(users) [service/account.service.js]: SequelizeForeignKeyConstraintError: insert or update on table "wallets" violates foreign key constraint "user_id_fk"
+    
+error: 14-Mar-22Y 14:32:35: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
+    
+error: 14-Mar-22Y 15:07:14: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
+    
+error: 14-Mar-22Y 16:12:51: database "test_goof" does not exist

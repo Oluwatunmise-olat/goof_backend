@@ -65,129 +65,102 @@ exports.updatePhoneVerificationSchema = {
   }
 };
 
-exports.signUpSchema = {
+exports.signupSchema = {
   firstname: {
     in: ["body"],
-    isEmpty: false,
-    trim: true,
-    errorMessage: errMsg("firstname")
+    exists: true,
+    errorMessage: errMsg("firstname"),
+    trim: true
   },
   lastname: {
     in: ["body"],
-    isEmpty: false,
-    trim: true,
-    errorMessage: errMsg("lastname")
+    exists: true,
+    errorMessage: errMsg("firstname"),
+    trim: true
   },
-  email: {
+  password_confirm: {
     in: ["body"],
-    isEmpty: false,
-    trim: true,
-    errorMessage: errMsg("email"),
-    normalizeEmail: true,
+    exists: true,
     custom: {
       options: (value) => {
-        return User.findOne({ where: { email: value } })
-          .then((user) => {
-            if (user) return Promise.reject("User Already Exists");
-            return Promise.resolve();
-          })
-          .catch((err) => {
-            logger.error(
-              `Error fetching data from db(users) - user signup validation schema ${err}`
-            );
-          });
-      }
-    }
-  },
-  phone_number: {
-    in: ["body"],
-    isEmpty: false,
-    errorMessage: errMsg("phone_number"),
-    trim: true,
-    custom: {
-      options: (value) => {
-        // check valid pattern
-        const valid = phoneRegex.test(value);
-        if (!valid) return Promise.reject("Invalid Phone Number Pattern");
-        // check its verified
-        return phone_verification
-          .findOne({ phone_number: value })
-          .then((result) => {
-            if (!result || !result.verified)
-              return Promise.reject("Phone number not verified");
-            // check constraint
-            return User.findOne({ where: { phone_number: value } }).then(
-              (user) => {
-                if (user) return Promise.reject("Phone number taken");
-                return Promise.resolve();
-              }
-            );
-          })
-          .catch((err) => {
-            logger.error(
-              `
-              Error fetching data from db(phone verification) - user signup validation schema ${err}
-
-              `
-            );
-          });
+        if (!value) return Promise.reject(errMsg("password_confirm"));
+        if (value.length < 5) return Promise.reject("Password confirm too short")
+        return Promise.resolve()
       }
     }
   },
   password: {
     in: ["body"],
-    isEmpty: false,
-    errorMessage: errMsg("password"),
-    trim: true,
-    isLength: {
-      options: { min: 5 },
-      errorMessage: "Password too short"
-    },
+    exists: true,
     custom: {
-      options: (value, { req }) => {
-        let { password_confirm } = req.body;
-        if (password_confirm && password_confirm !== value)
-          return Promise.reject("Password doesn't match");
+      options: (value, {req})=>{
+        let {password_confirm} = req.body
+        if (!value) return Promise.reject(errMsg("password_confirm"));
+        if (value.length < 5) return Promise.reject("Password confirm too short")
+        if (!value == password_confirm) return Promise.reject("Password Mismatch")
+        return Promise.resolve()
       }
     }
   },
-  password_confirm: {
-    in: ["body"],
-    isEmpty: false,
-    errorMessage: errMsg("password_confirm"),
-    trim: true,
-    isLength: {
-      options: { min: 5 },
-      errorMessage: "Password confirm too short"
-    }
-  },
   avatar: {
-    // optional
-    optional: {
-      options: { nullable: true }
-    }
+    optional: {nullable: true}
   },
   role_id: {
     in: ["body"],
-    isEmpty: false,
-    errorMessage: errMsg("role_id"),
+    exists: true,
     custom: {
-      options: (value) => {
-        // verify it's an int
-        if (!typeof value == "number")
-          return Promise.reject("Invalid role_id type");
-        // verify role_id exists
-        return Role.findByPk(value)
-          .then((role) => {
-            if (!role) return Promise.reject("Invalid role_id");
-            return Promise.resolve();
-          })
-          .catch((err) => {
-            logger.error(`
-            Error fetching data from db(roles) - user signup validation schema ${err}
-
-            `);
-          });
+      options: async (value)=>{
+        if (typeof value != "number") return Promise.reject("Invalid role_id datatype");
+        try {
+          const role = await Role.findByPk(value)
+          if (!role) return Promise.reject("Invalid role_id")
+          return Promise.resolve()
+        } catch (error) {
+          logger.error(`
+            Error fetching data from db(roles) - [schema/schmas.js] ${error}
+            `)
+        }
+      }
+    }
+  },
+  phone_number: {
+    in: ["body"],
+    exists: true,
+    custom: {
+      options: async (value)=>{
+        if (!value) return Promise.reject(errMsg("phone_number"))
+        if (!phoneRegex.test(value)) return Promise.reject("Invalid Phone Number Pattern");
+        try {
+          const exists = await phone_verification.findOne({ where: { phone_number: value } })
+          const user = await User.findOne({ where: {phone_number: value}})
+          if (!exists || !exists.verified) return Promise.reject("Phone number not verified");
+          if (user) return Promise.reject("Phone number taken")
+          return Promise.resolve()
+        } catch (error) {
+          logger.error(`
+          Error fetching data from db(phone verification) - [schema/schemas.js] ${error}
+          `)
+        }
+      }
+    }
+  },
+  email: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("email"),
+    normalizeEmail: true,
+    custom: {
+      options: async (value)=>{
+        if (!value) return Promise.reject(errMsg("email"))
+        try {
+          const exists = await User.findOne({ where: {email: value}})
+          if (exists) return Promise.reject("Email Taken")
+          return Promise.resolve()
+        } catch (error) {
+          logger.error(`
+            Error fetching data from db(users) - [schema/schemas.js] ${error}
+          `)
+        }
       }
     }
   }

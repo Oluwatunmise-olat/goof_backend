@@ -12,7 +12,6 @@ module.exports = {
         "password" varchar NOT NULL,
         "phone_number" varchar(13) UNIQUE NOT NULL,
         "avatar" varchar,
-        "location_id" int,
         "role_id" int
       )   `
     );

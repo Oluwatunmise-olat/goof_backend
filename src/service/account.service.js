@@ -2,8 +2,14 @@ const { validationResult } = require("express-validator");
 
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
-const { getGoogleAuthUrl } = require("../utils/oauth");
-const { phone_verification, User } = require("../models/index");
+const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
+const {
+  phone_verification,
+  User,
+  Role,
+  Wallet,
+  sequelize
+} = require("../models/index");
 const logger = require("../../logger/log");
 
 exports.sendPhoneCode = async (req) => {
@@ -69,35 +75,52 @@ exports.signup = async (req) => {
     return { error: true, errorData: errorsArr };
   }
 
-  const {
-    firstname,
-    lastname,
-    role_id,
-    email,
-    password,
-    phone_number,
-    avatar
-  } = req.body;
+  let { firstname, lastname, role_id, email, password, phone_number, avatar } =
+    req.body;
 
-  // encrpty password
+  phone_number = phone_number.split("+")[1];
+  // encrypt password
   const password_hash = await User.makePassword(password);
   try {
-    let user = await User.create({
-      firstname,
-      lastname,
-      email,
-      password_hash,
-      phone_number,
-      role_id,
-      avatar: avatar == null || undefined ? "" : avatar,
-      phone_verified: true
+    return await sequelize.transaction(async (t) => {
+      let user = await User.create(
+        {
+          firstname,
+          lastname,
+          email,
+          password: password_hash,
+          phone_number,
+          role_id,
+          avatar: avatar == null || undefined ? "" : avatar,
+          phone_verified: true
+        },
+        { transaction: t }
+      );
+
+      // create user wallet
+      await user.afterCreate(
+        Wallet,
+        { user_id: user.dataValues.id },
+        { transaction: t }
+      );
+
+      let roleInfo = await Role.findOne({
+        where: { id: user.dataValues.role_id }
+      });
+
+      const { dataValues } = user;
+      delete dataValues.password;
+      delete dataValues.role_id;
+
+      return {
+        error: false,
+        data: { ...dataValues, role_data: { ...roleInfo.dataValues } },
+        msg: "User created"
+      };
     });
-    //TODO:: - Exclude password hash
-    // - Include role data!
-    return { error: false, data: user, msg: "User created" };
   } catch (error) {
     logger.error(`
-      Error saving user in db(users) [service/account.service.js]
+      Error saving user in db(users) [service/account.service.js]: ${error}
     `);
   }
 };
@@ -126,4 +149,15 @@ exports.googleConsentScreen = () => {
   return getGoogleAuthUrl();
 };
 
-exports.signupWithGoogle = async () => {};
+exports.googleUser = async (code) => {
+  /**
+   * gets user info from google and creates user if id token not in db
+   * else generate jwt for user
+   */
+  try {
+    const data = await getTokens(code);
+    return data;
+  } catch (error) {
+    // log error
+  }
+};

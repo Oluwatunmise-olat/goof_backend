@@ -2,7 +2,8 @@ const {
   sendPhoneCode,
   verifyPhoneCode,
   signup,
-  googleConsentScreen
+  googleConsentScreen,
+  googleUser
 } = require("../service/account.service");
 const response = require("../utils/response");
 const logger = require("../../logger/log");
@@ -48,7 +49,7 @@ exports.signupHandler = async (req, res, next) => {
 
 // follow tdd (red green refactor)
 
-exports.googleConsent = (req, res) => {
+exports.withGoogle = (req, res) => {
   return res.status(200).json(
     response({
       status: true,
@@ -56,4 +57,10 @@ exports.googleConsent = (req, res) => {
       data: { uri: googleConsentScreen() }
     })
   );
+};
+
+exports.googleHook = async (req, res) => {
+  const { code } = req.query;
+  let data = await googleUser(code);
+  // console.log(data)
 };

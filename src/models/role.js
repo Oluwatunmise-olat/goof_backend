@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true
       }
     },
-    { underscored: true, indexes: [{ fields: ["name"] }] }
+    { underscored: true, indexes: [{ fields: ["name"] }], timestamps: false }
   );
   Role.associate = (models) => {
     Role.hasMany(models.User, {

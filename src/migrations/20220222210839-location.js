@@ -7,7 +7,8 @@ module.exports = {
       CREATE TABLE IF NOT EXISTS "locations" (
         "id" SERIAL UNIQUE PRIMARY KEY NOT NULL,
         "longitude" DECIMAL NOT NULL,
-        "latitude" DECIMAL NOT NULL
+        "latitude" DECIMAL NOT NULL,
+        "user_id" INT NOT NULL
       )
       `
     );

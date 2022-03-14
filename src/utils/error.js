@@ -6,6 +6,6 @@ exports.extractMessage = (arr) => {
 };
 
 exports.errMsg = (fieldname) => {
-  // helpeer function to set express-validator error message
-  return `${fieldname} is required`;
+  // helper function to set express-validator error message
+  return `${fieldname} field is required`;
 };

@@ -59,7 +59,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       underscored: true,
       tableName: "users",
-      indexes: [{ fields: ["email"] }]
+      indexes: [{ fields: ["email"] }],
+      hooks: {
+        afterCreate: async (instance, options) => {
+          // generate user wallet and cart
+          // await Wallet.create({ user_id: instance.id }); circular import ish
+        }
+      }
     }
   );
 
@@ -76,10 +82,22 @@ module.exports = (sequelize, DataTypes) => {
       as: "location"
     });
 
-    User.belongsTo(models.email_verification, {
-      foreignKey: "email_verification_id",
+    User.hasOne(models.email_verification, {
+      foreignKey: "user_id",
       targetKey: "id",
-      as: "email_verification"
+      as: "user_email"
+    });
+
+    User.hasOne(models.Cart, {
+      foreignKey: "user_id",
+      targetKey: "id",
+      as: "user_cart"
+    });
+
+    User.hasOne(models.Wallet, {
+      foreignKey: "user_id",
+      targetKey: "id",
+      as: "wallet"
     });
   };
 
@@ -107,8 +125,14 @@ module.exports = (sequelize, DataTypes) => {
         Error comparing password [models/user.js]: checkPassword (bcrypt)
       `);
     }
-
     return valid;
+  };
+
+  User.prototype.afterCreate = async (model, data, opt = false) => {
+    if (opt) {
+      return await model.create({ ...data }, opt);
+    }
+    return await model.create({ ...data });
   };
 
   return User;

@@ -5,7 +5,7 @@ const controller = require("../controllers/account.controller.js");
 const {
   phoneVerificationSchema,
   updatePhoneVerificationSchema,
-  signUpSchema
+  signupSchema
 } = require("../schema/schemas");
 
 router
@@ -20,10 +20,9 @@ router
   );
 router.post(
   "/signup/email",
-  checkSchema(signUpSchema),
+  checkSchema(signupSchema),
   controller.signupHandler
 );
-router.get("/signup/google/constent", controller.googleConsent);
-// router.post("/signup/google");
+router.get("/signup/google/constent", controller.withGoogle);
 
 module.exports = router;

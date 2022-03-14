@@ -1,4 +1,7 @@
 const querystring = require("querystring");
+const axios = require("axios");
+
+// Change to a class
 
 exports.getUserFromGoogle = () => {
   // gets user from Google with authorization code
@@ -19,4 +22,24 @@ exports.getGoogleAuthUrl = () => {
     ].join(" ")
   };
   return `${baseUrl}?${querystring.stringify(config)}`;
+};
+
+exports.getTokens = async (code) => {
+  /**
+   * Using authorization code from user
+   * we make a call to googleapis to get access token and id token
+   */
+  const baseUrl = "https://oauth2.googleapis.com/token";
+  const config = {
+    code,
+    client_id: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    client_secret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
+    grant_type: "authorization_code"
+  };
+  return await axios.post(baseUrl, querystring.stringify(config), {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
 };
