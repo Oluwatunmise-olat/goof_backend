@@ -1,7 +1,7 @@
 const {
-  sendPhoneCode,
-  verifyPhoneCode,
-  signup,
+  sendphoneCode,
+  verifyphoneCode,
+  signupwithEmail,
   googleConsentScreen,
   googleUser
 } = require("../service/account.service");
@@ -14,8 +14,8 @@ exports.phoneVerificationHandler = async (req, res, next) => {
   try {
     result =
       req.method == "POST"
-        ? await sendPhoneCode(req)
-        : await verifyPhoneCode(req);
+        ? await sendphoneCode(req)
+        : await verifyphoneCode(req);
 
     if (result.error) {
       let code = result.code !== undefined ? result.code : "";
@@ -32,7 +32,7 @@ exports.phoneVerificationHandler = async (req, res, next) => {
 exports.signupHandler = async (req, res, next) => {
   // send welcome email
   try {
-    const resp = await signup(req);
+    const resp = await signupwithEmail(req);
     if (resp.error)
       return res
         .status(400)
