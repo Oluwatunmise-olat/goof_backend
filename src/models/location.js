@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Location.associate = (models) => {
-    Location.hasOne(models.User, {
-      foreignKey: "location_id",
+    Location.belongsTo(models.User, {
+      foreignKey: "user_id",
       targetKey: "id",
       as: "user_location"
     });

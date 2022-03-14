@@ -103,6 +103,12 @@ exports.signup = async (req) => {
         { user_id: user.dataValues.id },
         { transaction: t }
       );
+      // create cart
+      await cart.afterCreate(
+        Cart,
+        { user_id: user.dataValues.id },
+        { transaction: t }
+      );
 
       let roleInfo = await Role.findOne({
         where: { id: user.dataValues.role_id }
