@@ -2,20 +2,29 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
+    await queryInterface.addConstraint("wallets", {
+      fields: ["user_id"],
+      type: "foreign key",
+      name: "fk_user_id",
+      references: {
+        table: "users",
+        field: "id"
+      },
+      onDelete: "set null",
+      onUpdate: "cascade"
+    })
+    await queryInterface.addConstraint("wallets", {
+      type: "unique",
+      fields: ["user_id"],
+      name: "unique_wallet_user_id"
+    })
+
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    await queryInterface.removeConstraint("wallets", "fk_user_id")
+    await queryInterface.removeConstraint("wallets", {
+      name: "unique_wallet_user_id"
+    })
   }
 };
