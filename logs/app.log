@@ -308,3 +308,36 @@ error: 13-Mar-22Y 17:03:49:
 error: 13-Mar-22Y 17:04:58: 
       Error saving user in db(users) [service/account.service.js]: SequelizeUniqueConstraintError: Validation error
     
+error: 14-Mar-22Y 12:02:17: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: Cannot read properties of undefined (reading 'create')
+    
+error: 14-Mar-22Y 12:11:43: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: Cannot read properties of undefined (reading 'create')
+    
+error: 14-Mar-22Y 12:17:45: 
+      Error saving user in db(users) [service/account.service.js]: TypeError: user.afterCreate is not a function
+    
+error: 14-Mar-22Y 12:35:31: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:39:41: 
+      Error saving user in db(users) [service/account.service.js]: Error: The second argument was removed in favor of the options object.
+    
+error: 14-Mar-22Y 12:40:43: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:41:45: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:42:41: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:43:09: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:43:58: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    
+error: 14-Mar-22Y 12:45:14: 
+      Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
+    

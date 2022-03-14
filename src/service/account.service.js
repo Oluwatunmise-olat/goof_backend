@@ -3,7 +3,13 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
 const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
-const { phone_verification, User, Role } = require("../models/index");
+const {
+  phone_verification,
+  User,
+  Role,
+  Wallet,
+  sequelize
+} = require("../models/index");
 const logger = require("../../logger/log");
 
 exports.sendPhoneCode = async (req) => {
@@ -76,26 +82,45 @@ exports.signup = async (req) => {
   // encrpty password
   const password_hash = await User.makePassword(password);
   try {
-    let user = await User.create({
-      firstname,
-      lastname,
-      email,
-      password: password_hash,
-      phone_number,
-      role_id,
-      avatar: avatar == null || undefined ? "" : avatar,
-      phone_verified: true
-    });
+    return await sequelize.transaction(async (t) => {
+      let user = await User.create(
+        {
+          firstname,
+          lastname,
+          email,
+          password: password_hash,
+          phone_number,
+          role_id,
+          avatar: avatar == null || undefined ? "" : avatar,
+          phone_verified: true
+        },
+        { transaction: t }
+      );
 
-    let roleInfo = await Role.findOne({ where: { id: user.role_id } });
-    const { dataValues } = user;
-    delete dataValues.password;
-    delete dataValues.role_id;
-    return {
-      error: false,
-      data: { ...dataValues, role_data: { ...roleInfo.dataValues } },
-      msg: "User created"
-    };
+      // create user wallet
+      const wallet = await user.createWallet(
+        Wallet,
+        { user_id: user.dataValues.id },
+        { transaction: t }
+      );
+
+      user.wallet_id = wallet.dataValues.id;
+      await user.save({ transaction: t });
+
+      let roleInfo = await Role.findOne({
+        where: { id: user.dataValues.role_id }
+      });
+
+      const { dataValues } = user;
+      delete dataValues.password;
+      delete dataValues.role_id;
+
+      return {
+        error: false,
+        data: { ...dataValues, role_data: { ...roleInfo.dataValues } },
+        msg: "User created"
+      };
+    });
   } catch (error) {
     logger.error(`
       Error saving user in db(users) [service/account.service.js]: ${error}

@@ -61,9 +61,9 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       indexes: [{ fields: ["email"] }],
       hooks: {
-        afterCreate: (instance, options)=>{
+        afterCreate: async (instance, options) => {
           // generate user wallet and cart
-          logger.info(instance.id)
+          // await Wallet.create({ user_id: instance.id }); circular import ish
         }
       }
     }
@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "wallet_id",
       targetKey: "id",
       as: "wallet"
-    })
+    });
   };
 
   User.makePassword = async function (password) {
@@ -119,8 +119,15 @@ module.exports = (sequelize, DataTypes) => {
         Error comparing password [models/user.js]: checkPassword (bcrypt)
       `);
     }
-
     return valid;
+  };
+
+  User.prototype.createWallet = async (model, data, opt = false) => {
+    console.log(data, opt)
+    if (opt) {
+      return await model.create(data, opt);
+    }
+    return await model.create(data);
   };
 
   return User;

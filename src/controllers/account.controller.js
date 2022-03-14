@@ -33,6 +33,7 @@ exports.signupHandler = async (req, res, next) => {
   // send welcome email
   try {
     const resp = await signup(req);
+    console.log(resp)
     if (resp.error)
       return res
         .status(400)
