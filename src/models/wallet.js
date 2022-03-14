@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Wallet.associate = (models) => {
-    Wallet.hasOne(models.User, {
-      foreignKey: "wallet_id",
+    Wallet.belongsTo(models.User, {
+      foreignKey: "user_id",
       targetKey: "id",
       as: "user"
     });

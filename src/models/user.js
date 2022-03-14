@@ -88,8 +88,14 @@ module.exports = (sequelize, DataTypes) => {
       as: "email_verification"
     });
 
-    User.belongsTo(models.Wallet, {
-      foreignKey: "wallet_id",
+    User.hasOne(models.Cart, {
+      foreignKey: "user_id",
+      targetKey: "id",
+      as: "user_cart"
+    });
+
+    User.hasOne(models.Wallet, {
+      foreignKey: "user_id",
       targetKey: "id",
       as: "wallet"
     });
@@ -122,12 +128,12 @@ module.exports = (sequelize, DataTypes) => {
     return valid;
   };
 
-  User.prototype.createWallet = async (model, data, opt = false) => {
-    console.log(data, opt)
+  User.prototype.afterCreate = async (model, data, opt = false) => {
+    const self = this;
     if (opt) {
-      return await model.create(data, opt);
+      return await model.create({ ...data, user_id: self.id }, opt);
     }
-    return await model.create(data);
+    return await model.create({ ...data, user_id: self.id });
   };
 
   return User;

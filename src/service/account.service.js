@@ -79,7 +79,7 @@ exports.signup = async (req) => {
     req.body;
 
   phone_number = phone_number.split("+")[1];
-  // encrpty password
+  // encrypt password
   const password_hash = await User.makePassword(password);
   try {
     return await sequelize.transaction(async (t) => {
@@ -98,14 +98,11 @@ exports.signup = async (req) => {
       );
 
       // create user wallet
-      const wallet = await user.createWallet(
+      await user.afterCreate(
         Wallet,
         { user_id: user.dataValues.id },
         { transaction: t }
       );
-
-      user.wallet_id = wallet.dataValues.id;
-      await user.save({ transaction: t });
 
       let roleInfo = await Role.findOne({
         where: { id: user.dataValues.role_id }

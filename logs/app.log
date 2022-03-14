@@ -341,3 +341,9 @@ error: 14-Mar-22Y 12:43:58:
 error: 14-Mar-22Y 12:45:14: 
       Error saving user in db(users) [service/account.service.js]: Error: WHERE parameter "id" has invalid "undefined" value
     
+error: 14-Mar-22Y 14:30:15: 
+      Error saving user in db(users) [service/account.service.js]: SequelizeForeignKeyConstraintError: insert or update on table "wallets" violates foreign key constraint "user_id_fk"
+    
+error: 14-Mar-22Y 14:32:35: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
+    
