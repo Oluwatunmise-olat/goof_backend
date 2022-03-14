@@ -82,10 +82,10 @@ module.exports = (sequelize, DataTypes) => {
       as: "location"
     });
 
-    User.belongsTo(models.email_verification, {
-      foreignKey: "email_verification_id",
+    User.hasOne(models.email_verification, {
+      foreignKey: "user_id",
       targetKey: "id",
-      as: "email_verification"
+      as: "user_email"
     });
 
     User.hasOne(models.Cart, {
@@ -129,11 +129,10 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.prototype.afterCreate = async (model, data, opt = false) => {
-    const self = this;
     if (opt) {
-      return await model.create({ ...data, user_id: self.id }, opt);
+      return await model.create({ ...data }, opt);
     }
-    return await model.create({ ...data, user_id: self.id });
+    return await model.create({ ...data });
   };
 
   return User;

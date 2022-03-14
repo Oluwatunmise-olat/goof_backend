@@ -38,10 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   email_verification.associate = (models) => {
-    email_verification.hasOne(models.User, {
-      foreignKey: "email_verification_id",
+    email_verification.belongsTo(models.User, {
+      foreignKey: "user_id",
       targetKey: "id",
-      as: "user_email_verification"
+      as: "user"
     });
   };
   return email_verification;

@@ -347,3 +347,7 @@ error: 14-Mar-22Y 14:30:15:
 error: 14-Mar-22Y 14:32:35: 
       Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
     
+error: 14-Mar-22Y 15:07:14: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
+    
+error: 14-Mar-22Y 16:12:51: database "test_goof" does not exist
