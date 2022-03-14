@@ -1,23 +1,46 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const genCode = require("../utils/generate_code");
+
 module.exports = (sequelize, DataTypes) => {
-  class wallets extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+  // Note: wallet becomes active upon pin setup
+  const Wallet = sequelize.define(
+    "Wallet",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      wallet_id: {
+        type: DataTypes.STRING,
+        defaultValue: genCode().slice(0, 8).toUpperCase(),
+        unique: true,
+        allowNull: false
+      },
+      pin: {
+        // six digits pin
+        type: DataTypes.STRING,
+        required: true,
+        defaultValue: null
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
+    },
+    {
+      underscored: true,
+      timestamps: true
     }
-  }
-  wallets.init({
-    id: DataTypes.NUMBER
-  }, {
-    sequelize,
-    modelName: 'wallets',
-  });
-  return wallets;
+  );
+
+  Wallet.associate = (models) => {
+    Wallet.hasOne(models.User, {
+      foreignKey: "wallet_id",
+      targetKey: "id",
+      as: "user"
+    });
+  };
+
+  return Wallet;
 };
