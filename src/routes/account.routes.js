@@ -16,7 +16,7 @@ router
   )
   .put(
     checkSchema(updatephoneVerificationSchema),
-    controller.phoneVerificationHandler
+    controller.phoneverificationHandler
   );
 router.post(
   "/signup/email",

@@ -1,6 +1,14 @@
 {
   "scripts": {
-    "dev": "set NODE_ENV=development&& nodemon app.js"
+    "dev": "set NODE_ENV=test&& nodemon server.js",
+    "setup:test":"set NODE_ENV=test&& npx sequelize-cli db:migrate",
+    "test": "set NODE_ENV=test&& jest --detectOpenHandles --runInBand"
+  },
+  "jest": {
+    "testMatch":[
+      "**/src/tests/*.test.js"
+    ],
+    "testEnvironment": "node"
   },
   "dependencies": {
     "axios": "^0.26.1",
@@ -17,7 +25,9 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "supertest": "^6.2.2"
   }
 }
