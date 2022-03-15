@@ -8,7 +8,7 @@ const {
 const response = require("../utils/response");
 const logger = require("../../logger/log");
 
-exports.phoneVerificationHandler = async (req, res, next) => {
+exports.phoneverificationHandler = async (req, res, next) => {
   let result;
 
   try {
@@ -47,7 +47,7 @@ exports.signupHandler = async (req, res, next) => {
   }
 };
 
-// follow tdd (red green refactor)
+exports.loginHandler = async (req, res) => {};
 
 exports.withGoogle = (req, res) => {
   return res.status(200).json(
@@ -60,7 +60,7 @@ exports.withGoogle = (req, res) => {
 };
 
 exports.googleHook = async (req, res) => {
+  // gets access token and id token
   const { code } = req.query;
   let data = await googleUser(code);
-  // console.log(data)
 };

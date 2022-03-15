@@ -3,7 +3,7 @@ const { phoneRegex } = require("../utils/patterns");
 const logger = require("../../logger/log");
 const { errMsg } = require("../utils/error");
 
-exports.phoneVerificationSchema = {
+exports.phoneverificationSchema = {
   phone_number: {
     in: ["body"],
     trim: true,
@@ -31,7 +31,7 @@ exports.phoneVerificationSchema = {
   }
 };
 
-exports.updatePhoneVerificationSchema = {
+exports.updatephoneVerificationSchema = {
   code: {
     in: ["body"],
     trim: true,

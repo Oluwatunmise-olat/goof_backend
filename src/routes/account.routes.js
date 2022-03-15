@@ -3,19 +3,19 @@ const { checkSchema, check } = require("express-validator");
 
 const controller = require("../controllers/account.controller.js");
 const {
-  phoneVerificationSchema,
-  updatePhoneVerificationSchema,
+  phoneverificationSchema,
+  updatephoneVerificationSchema,
   signupSchema
 } = require("../schema/schemas");
 
 router
   .route("/verify/phone")
   .post(
-    checkSchema(phoneVerificationSchema),
-    controller.phoneVerificationHandler
+    checkSchema(phoneverificationSchema),
+    controller.phoneverificationHandler
   )
   .put(
-    checkSchema(updatePhoneVerificationSchema),
+    checkSchema(updatephoneVerificationSchema),
     controller.phoneVerificationHandler
   );
 router.post(
