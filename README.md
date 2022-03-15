@@ -6,5 +6,6 @@
 
 
 ### Note: To run test:
-1. go into config/database.js and setup test db configjurations (Note: You have to create the database yourself has sequelize doesn;t handle this for you).
-2. run files in seeder directory on test db (npx sequelize-cli db:seed:all)
+1. Go into config/database.js and setup test db configjurations (Note: You have to create the database yourself has sequelize doesn;t handle this for you).
+2. Run files in seeder directory on test db (npx sequelize-cli db:seed:all).
+3. Before starting test make sure to drop all migartions to have a fresh setup.

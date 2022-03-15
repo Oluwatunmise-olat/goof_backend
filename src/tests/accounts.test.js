@@ -21,7 +21,6 @@ describe("POST api/auth/login", () => {
         email: "oolat31@gmail.com",
         password: "test"
       })
-      console.log(response);
       expect(response.status).toBe(200);
     });
   });
