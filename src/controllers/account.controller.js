@@ -1,21 +1,21 @@
 const {
-  sendPhoneCode,
-  verifyPhoneCode,
-  signup,
+  sendphoneCode,
+  verifyphoneCode,
+  signupwithEmail,
   googleConsentScreen,
   googleUser
 } = require("../service/account.service");
 const response = require("../utils/response");
 const logger = require("../../logger/log");
 
-exports.phoneVerificationHandler = async (req, res, next) => {
+exports.phoneverificationHandler = async (req, res, next) => {
   let result;
 
   try {
     result =
       req.method == "POST"
-        ? await sendPhoneCode(req)
-        : await verifyPhoneCode(req);
+        ? await sendphoneCode(req)
+        : await verifyphoneCode(req);
 
     if (result.error) {
       let code = result.code !== undefined ? result.code : "";
@@ -32,7 +32,7 @@ exports.phoneVerificationHandler = async (req, res, next) => {
 exports.signupHandler = async (req, res, next) => {
   // send welcome email
   try {
-    const resp = await signup(req);
+    const resp = await signupwithEmail(req);
     if (resp.error)
       return res
         .status(400)
@@ -47,7 +47,7 @@ exports.signupHandler = async (req, res, next) => {
   }
 };
 
-// follow tdd (red green refactor)
+exports.loginHandler = async (req, res) => {};
 
 exports.withGoogle = (req, res) => {
   return res.status(200).json(
@@ -60,7 +60,7 @@ exports.withGoogle = (req, res) => {
 };
 
 exports.googleHook = async (req, res) => {
+  // gets access token and id token
   const { code } = req.query;
   let data = await googleUser(code);
-  // console.log(data)
 };

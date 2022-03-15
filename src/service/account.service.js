@@ -12,7 +12,7 @@ const {
 } = require("../models/index");
 const logger = require("../../logger/log");
 
-exports.sendPhoneCode = async (req) => {
+exports.sendphoneCode = async (req) => {
   const { errors } = validationResult(req);
   const { phone_number } = req.body;
   const resp = { error: false };
@@ -38,7 +38,7 @@ exports.sendPhoneCode = async (req) => {
   }
 };
 
-exports.verifyPhoneCode = async (req) => {
+exports.verifyphoneCode = async (req) => {
   const { errors } = validationResult(req);
   const { phone_number, code } = req.body;
   const resp = { error: false };
@@ -67,7 +67,7 @@ exports.verifyPhoneCode = async (req) => {
   }
 };
 
-exports.signup = async (req) => {
+exports.signupwithEmail = async (req) => {
   const { errors } = validationResult(req);
 
   if (errors.length > 0) {
@@ -103,6 +103,12 @@ exports.signup = async (req) => {
         { user_id: user.dataValues.id },
         { transaction: t }
       );
+      // create cart
+      await cart.afterCreate(
+        Cart,
+        { user_id: user.dataValues.id },
+        { transaction: t }
+      );
 
       let roleInfo = await Role.findOne({
         where: { id: user.dataValues.role_id }
@@ -123,6 +129,13 @@ exports.signup = async (req) => {
       Error saving user in db(users) [service/account.service.js]: ${error}
     `);
   }
+};
+
+exports.loginwithEmail = async () => {
+  // use tdd
+  // verify email and password
+  // generate jwt
+  // return user data
 };
 
 // after logged in

@@ -11,8 +11,8 @@ documentation
 7. login with google
 8. login with email and password
 
-// on user creation create wallet that is not activated (Wallet is activated on pin set)
-// on user creation create cart 
+// on user creation create wallet that is not activated (Wallet is activated on pin set) (done)
+// on user creation create cart (done)
 
 vendor endpoints
 

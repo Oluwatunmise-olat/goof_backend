@@ -351,3 +351,10 @@ error: 14-Mar-22Y 15:07:14:
       Error saving user in db(users) [service/account.service.js]: ReferenceError: self is not defined
     
 error: 14-Mar-22Y 16:12:51: database "test_goof" does not exist
+error: 14-Mar-22Y 16:21:52: 
+          Error fetching data from db(phone verification) - [schema/schemas.js] SequelizeDatabaseError: column "location_id" does not exist
+          
+error: 14-Mar-22Y 16:21:52: 
+            Error fetching data from db(users) - [schema/schemas.js] SequelizeDatabaseError: column "location_id" does not exist
+          
+error: 15-Mar-22Y 14:25:36: database "goof_testDB" does not exist

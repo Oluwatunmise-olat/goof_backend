@@ -76,8 +76,8 @@ module.exports = (sequelize, DataTypes) => {
       as: "user_role"
     });
 
-    User.belongsTo(models.Location, {
-      foreignKey: "location_id",
+    User.hasOne(models.Location, {
+      foreignKey: "user_id",
       targetKey: "id",
       as: "location"
     });
