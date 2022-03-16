@@ -1,16 +1,7 @@
 const app = require("../../app");
 const supertest = require("supertest");
 const { User, Wallet, Cart } = require("../models/index");
-
-const user = {
-  firstname: "test",
-  lastname: "ford",
-  password_confirm: "password",
-  password: "password",
-  role_id: 4,
-  phone_number: "+2349060579834",
-  email: "testford@gmail.com"
-};
+const { user1, user2 } = require("./data/users.data");
 
 describe("POST api/auth/signup/email", () => {
   let endpoint = "/api/auth/signup/email";
@@ -23,7 +14,7 @@ describe("POST api/auth/signup/email", () => {
 
   afterEach(async () => {
     // wallet and cart is automatically dropped because it is cascaded
-    let user = await User.findOne({ where: { email: "testford@gmail.com" } });
+    let user = await User.findOne({ where: { email: user1.email } });
     if (user) return user.destroy();
   });
 
@@ -33,8 +24,9 @@ describe("POST api/auth/signup/email", () => {
     // should have a wallet associated with user
     // should have a cart associated with user
     it("should test user creation", async () => {
-      const response = await request.post(endpoint).send(user);
+      const response = await request.post(endpoint).send(user1);
       const user_id = response.body.data.id;
+      const { data, status } = response.body;
       const associated_wallet = await Wallet.findOne({
         where: { user_id }
       });
@@ -42,11 +34,11 @@ describe("POST api/auth/signup/email", () => {
         where: { user_id }
       });
       expect(response.status).toBe(201);
-      expect(response.body.data.role_data.id).toBeDefined();
-      expect(response.body.data.role_data.id).toBe(4);
-      expect(response.body.data.firstname).toBe("test");
-      expect(response.body.status).toBeTruthy();
-      
+      expect(data.role_data.id).toBeDefined();
+      expect(data.role_data.id).toBe(4);
+      expect(data.firstname).toBe(user1.firstname);
+      expect(status).toBeTruthy();
+
       expect(associated_wallet.dataValues.user_id).toBeDefined();
       expect(associated_wallet.dataValues.user_id).toBe(user_id);
 
@@ -60,7 +52,16 @@ describe("POST api/auth/signup/email", () => {
     // should return a json object
     // should expect errorData to be defined as an Array of errors
     // should have a status of false
-    // it("", async () => {})
+    // should not create a user
+    it("should fail return json object describing errors", async () => {
+      // we don't send the email field here
+      const response = await request.post(endpoint).send(user2);
+      const { errorData, status } = response.body;
+      expect(response.status).toBe(400);
+      expect(errorData).toBeDefined();
+      expect(status).toBeFalsy();
+      expect(errorData.length >= 1).toBeTruthy();
+    });
   });
 });
 
