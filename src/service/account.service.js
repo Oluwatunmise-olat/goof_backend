@@ -145,15 +145,20 @@ exports.loginwithEmail = async (req) => {
   // check user exists
   try {
     const userExists = await models.User.findOne({ where: { email } });
+
+    if (!userExists)
+      return { ...resp, error: true, errorData: [{ msg: "Unauthenticated" }] };
+
     const passwordValid = await userExists.checkPassword(
-      user.dataValues,
+      userExists.dataValues,
       password
     );
-    if (!userExists || !passwordValid)
+
+    if (!passwordValid)
       return { ...resp, error: true, errorData: [{ msg: "Unauthenticated" }] };
 
     const userRole = await models.Role.findOne({
-      where: { user_id: userExists.dataValues.id }
+      where: { id: userExists.dataValues.role_id }
     });
 
     // generate jwt
@@ -161,6 +166,9 @@ exports.loginwithEmail = async (req) => {
       user_id: userExists.dataValues.id,
       role_id: userRole.dataValues.id
     });
+
+    delete userExists.dataValues.password;
+    delete userExists.dataValues.role_id;
 
     return {
       ...resp,

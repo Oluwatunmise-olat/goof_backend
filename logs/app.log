@@ -364,3 +364,21 @@ error: 16-Mar-22Y 06:21:04:
 error: 16-Mar-22Y 06:21:57: 
       Error saving user in db(users) [service/account.service.js]: ReferenceError: Cart is not defined
     
+error: 16-Mar-22Y 14:28:57: 
+          Error fetching data from db(phone verification) - [schema/schemas.js] ReferenceError: exits is not defined
+          
+error: 16-Mar-22Y 14:30:38: 
+          Error fetching data from db(phone verification) - [schema/schemas.js] TypeError: console.lof is not a function
+          
+error: 16-Mar-22Y 14:38:14: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 14:39:29: 
+      Error fetching logging user [service/account.service.js]: TypeError: Cannot read properties of null (reading 'checkPassword')
+    
+error: 16-Mar-22Y 14:40:57: 
+      Error fetching logging user [service/account.service.js]: TypeError: Cannot read properties of null (reading 'checkPassword')
+    
+error: 16-Mar-22Y 14:47:14: 
+      Error fetching logging user [service/account.service.js]: SequelizeDatabaseError: column Role.user_id does not exist
+    

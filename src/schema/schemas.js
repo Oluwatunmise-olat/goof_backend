@@ -140,7 +140,7 @@ exports.signupSchema = {
             where: { phone_number: value }
           });
           const user = await User.findOne({ where: { phone_number: value } });
-          if (!exists || !exists.verified)
+          if (!exists.dataValues.id || !exists.dataValues.verified)
             return Promise.reject("Phone number not verified");
           if (user) return Promise.reject("Phone number taken");
           return Promise.resolve();
@@ -162,7 +162,7 @@ exports.signupSchema = {
         if (!value) return Promise.reject(errMsg("email"));
         try {
           const exists = await User.findOne({ where: { email: value } });
-          if (exists) return Promise.reject("Email Taken");
+          if (exists.dataValues.id) return Promise.reject("Email Taken");
           return Promise.resolve();
         } catch (error) {
           logger.error(`

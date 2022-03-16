@@ -87,6 +87,7 @@ describe("POST api/auth/login", () => {
     // should return a json response
     // status code should be 200
     // expect data to be defined
+    // should not return password
     it("should respond with status code 200", async () => {
       const response = await request.post(endpoint).send({
         email: user1.email,
