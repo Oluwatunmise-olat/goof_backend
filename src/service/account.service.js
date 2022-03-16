@@ -5,6 +5,7 @@ const { sendCode, verifyCode } = require("../utils/twillo");
 const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
 const models = require("../models/index");
 const logger = require("../../logger/log");
+const { genAccessToken } = require("../service/jwt.service");
 
 exports.sendphoneCode = async (req) => {
   const { errors } = validationResult(req);
@@ -132,10 +133,47 @@ exports.loginwithEmail = async (req) => {
   // generate jwt
   // return user data
   const { errors } = validationResult(req);
+  const resp = { error: false };
 
   if (errors.length > 0) {
     const errorsArr = extractMessage(errors);
     return { error: true, errorData: errorsArr };
+  }
+
+  const { email, password } = req.body;
+
+  // check user exists
+  try {
+    const userExists = await models.User.findOne({ where: { email } });
+    const passwordValid = await userExists.checkPassword(
+      user.dataValues,
+      password
+    );
+    if (!userExists || !passwordValid)
+      return { ...resp, error: true, errorData: [{ msg: "Unauthenticated" }] };
+
+    const userRole = await models.Role.findOne({
+      where: { user_id: userExists.dataValues.id }
+    });
+
+    // generate jwt
+    const accessToken = await genAccessToken({
+      user_id: userExists.dataValues.id,
+      role_id: userRole.dataValues.id
+    });
+
+    return {
+      ...resp,
+      data: {
+        ...userExists.dataValues,
+        role_data: { ...userRole.dataValues },
+        accessToken: accessToken
+      }
+    };
+  } catch (error) {
+    logger.error(`
+      Error fetching logging user [service/account.service.js]: ${error}
+    `);
   }
 };
 

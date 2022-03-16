@@ -72,13 +72,13 @@ describe("POST api/auth/login", () => {
     request = supertest(app);
   });
 
-  beforeEach(()=>{
+  beforeEach(() => {
     // create user and hash password
-  })
+  });
 
-  afterEach(()=>{
+  afterEach(() => {
     // destroy user
-  })
+  });
 
   afterAll(() => {});
 
@@ -89,24 +89,34 @@ describe("POST api/auth/login", () => {
     // expect data to be defined
     it("should respond with status code 200", async () => {
       const response = await request.post(endpoint).send({
-        email: "oolat31@gmail.com",
-        password: "test"
+        email: user1.email,
+        password: user1.password
       });
+      const { status, data } = response.body;
       expect(response.status).toBe(200);
+      expect(status).toBeTruthy();
+      expect(data).toBeDefined();
+      expect(data.id).toBeDefined();
+      expect(data.access_token).toBeDefined();
+      expect(data.phone_number).toBe(user1.phone_number);
     });
   });
 
   describe("given an invalid username and password", () => {
-    // should return 400 status code
+    // should return 401 status code
     // should return a json response
     // response should contain errorData which is an Array
-    it("should return 400 status code", async () => {
+    it("should return 401 status code", async () => {
       const response = await request.post(endpoint).send({
-        email: "test@example.com",
-        password: "password"
+        email: user1.email,
+        password: user2.password
       });
-      expect(response.status).toBe(404);
-      expect(response.body.errorData).toBeDefined();
+      const { status, errorData, data } = response.body;
+      expect(response.status).toBe(401);
+      expect(errorData).toBeDefined();
+      expect(errorData.length >= 1).toBeTruthy();
+      expect(status).toBeFalsy();
+      expect(data).not.toBeDefined();
     });
   });
 });

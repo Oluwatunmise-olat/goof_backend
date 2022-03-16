@@ -45,12 +45,16 @@ exports.loginHandler = async (req, res) => {
   try {
     const resp = await services.loginwithEmail(req);
     if (resp.error)
-      return res
-        .status(400)
-        .json(response({ status: false, errorData: resp.errorData }));
+      return res.status(401).json(
+        response({
+          status: false,
+          errorData: resp.errorData,
+          msg: "Invalid Credentials"
+        })
+      );
 
     logger.info(`User Log In: [${resp.data.id}]`);
-    return res
+    return resp
       .status(200)
       .json(response({ status: true, msg: resp.msg, data: resp.data }));
   } catch (error) {
