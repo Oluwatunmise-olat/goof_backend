@@ -43,7 +43,16 @@ exports.signupHandler = async (req, res, next) => {
 
 exports.loginHandler = async (req, res) => {
   try {
-    const resp = await services.loginwithEmail();
+    const resp = await services.loginwithEmail(req);
+    if (resp.error)
+      return res
+        .status(400)
+        .json(response({ status: false, errorData: resp.errorData }));
+
+    logger.info(`User Log In: [${resp.data.id}]`);
+    return res
+      .status(200)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
   } catch (error) {
     return next(error);
   }

@@ -3,14 +3,7 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
 const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
-const {
-  phone_verification,
-  User,
-  Role,
-  Wallet,
-  Cart,
-  sequelize
-} = require("../models/index");
+const models = require("../models/index");
 const logger = require("../../logger/log");
 
 exports.sendphoneCode = async (req) => {
@@ -28,9 +21,11 @@ exports.sendphoneCode = async (req) => {
   if (!status) {
     logger.error(`Twilio send verification error: ${data}`);
   } else {
-    let exists = await phone_verification.findOne({ where: { phone_number } });
+    let exists = await models.phone_verification.findOne({
+      where: { phone_number }
+    });
     if (!exists) {
-      await phone_verification.create({
+      await models.phone_verification.create({
         phone_number
       });
     }
@@ -57,7 +52,7 @@ exports.verifyphoneCode = async (req) => {
     return resp;
   }
   if (data.status == "approved") {
-    await phone_verification.update(
+    await models.phone_verification.update(
       { verified: true },
       {
         where: { phone_number }
@@ -81,10 +76,10 @@ exports.signupwithEmail = async (req) => {
 
   phone_number = phone_number.split("+")[1];
   // encrypt password
-  const password_hash = await User.makePassword(password);
+  const password_hash = await models.User.makePassword(password);
   try {
-    return await sequelize.transaction(async (t) => {
-      let user = await User.create(
+    return await models.sequelize.transaction(async (t) => {
+      let user = await models.User.create(
         {
           firstname,
           lastname,
@@ -100,18 +95,18 @@ exports.signupwithEmail = async (req) => {
 
       // create user wallet
       await user.afterCreate(
-        Wallet,
+        models.Wallet,
         { user_id: user.dataValues.id },
         { transaction: t }
       );
       // create cart
       await user.afterCreate(
-        Cart,
+        models.Cart,
         { user_id: user.dataValues.id },
         { transaction: t }
       );
 
-      let roleInfo = await Role.findOne({
+      let roleInfo = await models.Role.findOne({
         where: { id: user.dataValues.role_id }
       });
 
@@ -132,11 +127,16 @@ exports.signupwithEmail = async (req) => {
   }
 };
 
-exports.loginwithEmail = async () => {
-  // use tdd
+exports.loginwithEmail = async (req) => {
   // verify email and password
   // generate jwt
   // return user data
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
 };
 
 // after logged in
