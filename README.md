@@ -10,3 +10,4 @@
 2. set NODE_ENV=test
 3. Run files in seeder directory on test db (npx sequelize-cli db:seed:all).
 4. Before starting test make sure to drop all migartions to have a fresh setup.
+5. After All test run (npm run post:test) to drop all migrations
