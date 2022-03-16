@@ -1,10 +1,4 @@
-const {
-  sendphoneCode,
-  verifyphoneCode,
-  signupwithEmail,
-  googleConsentScreen,
-  googleUser
-} = require("../service/account.service");
+const services = require("../service/account.service");
 const response = require("../utils/response");
 const logger = require("../../logger/log");
 
@@ -14,8 +8,8 @@ exports.phoneverificationHandler = async (req, res, next) => {
   try {
     result =
       req.method == "POST"
-        ? await sendphoneCode(req)
-        : await verifyphoneCode(req);
+        ? await services.sendphoneCode(req)
+        : await services.verifyphoneCode(req);
 
     if (result.error) {
       let code = result.code !== undefined ? result.code : "";
@@ -32,7 +26,7 @@ exports.phoneverificationHandler = async (req, res, next) => {
 exports.signupHandler = async (req, res, next) => {
   // send welcome email
   try {
-    const resp = await signupwithEmail(req);
+    const resp = await services.signupwithEmail(req);
     if (resp.error)
       return res
         .status(400)
@@ -47,14 +41,20 @@ exports.signupHandler = async (req, res, next) => {
   }
 };
 
-exports.loginHandler = async (req, res) => {};
+exports.loginHandler = async (req, res) => {
+  try {
+    const resp = await services.loginwithEmail();
+  } catch (error) {
+    return next(error);
+  }
+};
 
 exports.withGoogle = (req, res) => {
   return res.status(200).json(
     response({
       status: true,
       msg: "Google Oauth Constent Screen",
-      data: { uri: googleConsentScreen() }
+      data: { uri: services.googleConsentScreen() }
     })
   );
 };
@@ -62,5 +62,5 @@ exports.withGoogle = (req, res) => {
 exports.googleHook = async (req, res) => {
   // gets access token and id token
   const { code } = req.query;
-  let data = await googleUser(code);
+  let data = await services.googleUser(code);
 };

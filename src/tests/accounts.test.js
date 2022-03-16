@@ -68,9 +68,19 @@ describe("POST api/auth/signup/email", () => {
 describe("POST api/auth/login", () => {
   let endpoint = "/api/auth/login/email";
 
-  // afterAll(() => {
-  //   request.close();
-  // });
+  beforeAll(() => {
+    request = supertest(app);
+  });
+
+  beforeEach(()=>{
+    // create user and hash password
+  })
+
+  afterEach(()=>{
+    // destroy user
+  })
+
+  afterAll(() => {});
 
   describe("given a valid username and password", () => {
     // should return user data including access token
