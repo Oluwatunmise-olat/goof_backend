@@ -84,8 +84,9 @@ exports.signupSchema = {
     custom: {
       options: (value) => {
         if (!value) return Promise.reject(errMsg("password_confirm"));
-        if (value.length < 5) return Promise.reject("Password confirm too short")
-        return Promise.resolve()
+        if (value.length < 5)
+          return Promise.reject("Password confirm too short");
+        return Promise.resolve();
       }
     }
   },
@@ -93,32 +94,35 @@ exports.signupSchema = {
     in: ["body"],
     exists: true,
     custom: {
-      options: (value, {req})=>{
-        let {password_confirm} = req.body
+      options: (value, { req }) => {
+        let { password_confirm } = req.body;
         if (!value) return Promise.reject(errMsg("password_confirm"));
-        if (value.length < 5) return Promise.reject("Password confirm too short")
-        if (!value == password_confirm) return Promise.reject("Password Mismatch")
-        return Promise.resolve()
+        if (value.length < 5)
+          return Promise.reject("Password confirm too short");
+        if (!value == password_confirm)
+          return Promise.reject("Password Mismatch");
+        return Promise.resolve();
       }
     }
   },
   avatar: {
-    optional: {nullable: true}
+    optional: { nullable: true }
   },
   role_id: {
     in: ["body"],
     exists: true,
     custom: {
-      options: async (value)=>{
-        if (typeof value != "number") return Promise.reject("Invalid role_id datatype");
+      options: async (value) => {
+        if (typeof value != "number")
+          return Promise.reject("Invalid role_id datatype");
         try {
-          const role = await Role.findByPk(value)
-          if (!role) return Promise.reject("Invalid role_id")
-          return Promise.resolve()
+          const role = await Role.findByPk(value);
+          if (!role) return Promise.reject("Invalid role_id");
+          return Promise.resolve();
         } catch (error) {
           logger.error(`
             Error fetching data from db(roles) - [schema/schmas.js] ${error}
-            `)
+            `);
         }
       }
     }
@@ -127,19 +131,23 @@ exports.signupSchema = {
     in: ["body"],
     exists: true,
     custom: {
-      options: async (value)=>{
-        if (!value) return Promise.reject(errMsg("phone_number"))
-        if (!phoneRegex.test(value)) return Promise.reject("Invalid Phone Number Pattern");
+      options: async (value) => {
+        if (!value) return Promise.reject(errMsg("phone_number"));
+        if (!phoneRegex.test(value))
+          return Promise.reject("Invalid Phone Number Pattern");
         try {
-          const exists = await phone_verification.findOne({ where: { phone_number: value } })
-          const user = await User.findOne({ where: {phone_number: value}})
-          if (!exists || !exists.verified) return Promise.reject("Phone number not verified");
-          if (user) return Promise.reject("Phone number taken")
-          return Promise.resolve()
+          const exists = await phone_verification.findOne({
+            where: { phone_number: value }
+          });
+          const user = await User.findOne({ where: { phone_number: value } });
+          if (!exists.dataValues.id || !exists.dataValues.verified)
+            return Promise.reject("Phone number not verified");
+          if (user) return Promise.reject("Phone number taken");
+          return Promise.resolve();
         } catch (error) {
           logger.error(`
           Error fetching data from db(phone verification) - [schema/schemas.js] ${error}
-          `)
+          `);
         }
       }
     }
@@ -150,18 +158,31 @@ exports.signupSchema = {
     errorMessage: errMsg("email"),
     normalizeEmail: true,
     custom: {
-      options: async (value)=>{
-        if (!value) return Promise.reject(errMsg("email"))
+      options: async (value) => {
+        if (!value) return Promise.reject(errMsg("email"));
         try {
-          const exists = await User.findOne({ where: {email: value}})
-          if (exists) return Promise.reject("Email Taken")
-          return Promise.resolve()
+          const exists = await User.findOne({ where: { email: value } });
+          if (exists.dataValues.id) return Promise.reject("Email Taken");
+          return Promise.resolve();
         } catch (error) {
           logger.error(`
             Error fetching data from db(users) - [schema/schemas.js] ${error}
-          `)
+          `);
         }
       }
     }
+  }
+};
+
+exports.loginSchema = {
+  email: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("email")
+  },
+  password: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("password")
   }
 };

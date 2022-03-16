@@ -1,16 +1,7 @@
 const app = require("../../app");
 const supertest = require("supertest");
 const { User, Wallet, Cart } = require("../models/index");
-
-const user = {
-  firstname: "test",
-  lastname: "ford",
-  password_confirm: "password",
-  password: "password",
-  role_id: 4,
-  phone_number: "+2349060579834",
-  email: "testford@gmail.com"
-};
+const { user1, user2 } = require("./data/users.data");
 
 describe("POST api/auth/signup/email", () => {
   let endpoint = "/api/auth/signup/email";
@@ -23,7 +14,7 @@ describe("POST api/auth/signup/email", () => {
 
   afterEach(async () => {
     // wallet and cart is automatically dropped because it is cascaded
-    let user = await User.findOne({ where: { email: "testford@gmail.com" } });
+    let user = await User.findOne({ where: { email: user1.email } });
     if (user) return user.destroy();
   });
 
@@ -33,8 +24,9 @@ describe("POST api/auth/signup/email", () => {
     // should have a wallet associated with user
     // should have a cart associated with user
     it("should test user creation", async () => {
-      const response = await request.post(endpoint).send(user);
+      const response = await request.post(endpoint).send(user1);
       const user_id = response.body.data.id;
+      const { data, status } = response.body;
       const associated_wallet = await Wallet.findOne({
         where: { user_id }
       });
@@ -42,11 +34,11 @@ describe("POST api/auth/signup/email", () => {
         where: { user_id }
       });
       expect(response.status).toBe(201);
-      expect(response.body.data.role_data.id).toBeDefined();
-      expect(response.body.data.role_data.id).toBe(4);
-      expect(response.body.data.firstname).toBe("test");
-      expect(response.body.status).toBeTruthy();
-      
+      expect(data.role_data.id).toBeDefined();
+      expect(data.role_data.id).toBe(4);
+      expect(data.firstname).toBe(user1.firstname);
+      expect(status).toBeTruthy();
+
       expect(associated_wallet.dataValues.user_id).toBeDefined();
       expect(associated_wallet.dataValues.user_id).toBe(user_id);
 
@@ -60,42 +52,87 @@ describe("POST api/auth/signup/email", () => {
     // should return a json object
     // should expect errorData to be defined as an Array of errors
     // should have a status of false
-    // it("", async () => {})
+    // should not create a user
+    it("should fail return json object describing errors", async () => {
+      // we don't send the email field here
+      const response = await request.post(endpoint).send(user2);
+      const { errorData, status } = response.body;
+      expect(response.status).toBe(400);
+      expect(errorData).toBeDefined();
+      expect(status).toBeFalsy();
+      expect(errorData.length >= 1).toBeTruthy();
+    });
   });
 });
 
 describe("POST api/auth/login", () => {
   let endpoint = "/api/auth/login/email";
 
-  // afterAll(() => {
-  //   request.close();
-  // });
+  beforeAll(() => {
+    request = supertest(app);
+  });
+
+  beforeEach(async () => {
+    // create user and hash password
+    const data = {
+      ...user1,
+      avatar: "",
+      phone_number: user1.phone_number.split("+")[1]
+    };
+
+    delete data.password_confirm;
+
+    const password_hash = await User.makePassword(user1.password);
+    await User.create({
+      ...data,
+      password: password_hash
+    });
+  });
+
+  afterEach(async () => {
+    // destroy user
+    const user = await User.findOne({ where: { email: user1.email } });
+    if (user) user.destroy();
+  });
+
+  afterAll(() => {});
 
   describe("given a valid username and password", () => {
     // should return user data including access token
     // should return a json response
     // status code should be 200
     // expect data to be defined
+    // should not return password
     it("should respond with status code 200", async () => {
       const response = await request.post(endpoint).send({
-        email: "oolat31@gmail.com",
-        password: "test"
+        email: user1.email,
+        password: user1.password
       });
+      const { status, data } = response.body;
       expect(response.status).toBe(200);
+      expect(status).toBeTruthy();
+      expect(data).toBeDefined();
+      expect(data.id).toBeDefined();
+      expect(data.access_token).toBeDefined();
+      expect(data.phone_number).toBe(user1.phone_number.split("+")[1]);
     });
   });
 
   describe("given an invalid username and password", () => {
-    // should return 400 status code
+    // should return 401 status code
     // should return a json response
     // response should contain errorData which is an Array
-    it("should return 400 status code", async () => {
+    it("should return 401 status code", async () => {
       const response = await request.post(endpoint).send({
-        email: "test@example.com",
-        password: "password"
+        email: user1.email,
+        password: user2.password
       });
-      expect(response.status).toBe(404);
-      expect(response.body.errorData).toBeDefined();
+      const { status, errorData, data } = response.body;
+      expect(response.status).toBe(401);
+      expect(errorData).toBeDefined();
+      expect(errorData.length >= 1).toBeTruthy();
+      expect(status).toBeFalsy();
+      expect(data).toEqual({});
     });
   });
 });

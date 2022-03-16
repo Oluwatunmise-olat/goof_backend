@@ -6,8 +6,13 @@
 
 
 ### Note: To run test:
-1. Go into config/database.js and setup test db configjurations (Note: You have to create the database yourself as sequelize doesn't handle this for you).
+
+Assumption is made that all dependencies have been installed
+
+1. Go into config/database.js and setup test db configurations.
 2. set NODE_ENV=test
-3. Run files in seeder directory on test db (npx sequelize-cli db:seed:all).
-4. Before starting test make sure to drop all migartions to have a fresh setup.
-5. After All test run (npm run post:test) to drop all migrations
+3. create db: run `npm run create-db:test`
+4. create migrations: run `npm run setup:test`
+5. create seed data on test db: run `npx sequelize-cli db:seed:all`.
+6. test: run `npm run test`
+7. After All test drop the db: run `npm run drop-db:test`

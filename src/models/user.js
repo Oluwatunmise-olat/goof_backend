@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-
 const logger = require("../../logger/log");
 
 module.exports = (sequelize, DataTypes) => {
@@ -114,18 +113,17 @@ module.exports = (sequelize, DataTypes) => {
     return hash;
   };
 
-  User.prototype.checkPassword = async function (password) {
-    const self = this;
+  User.prototype.checkPassword = async function (user, rawPassword) {
     let valid;
 
     try {
-      valid = await bcrypt.compare(password, self.password);
+      valid = await bcrypt.compare(rawPassword, user.password);
+      return valid;
     } catch (error) {
       logger.error(`
         Error comparing password [models/user.js]: checkPassword (bcrypt)
       `);
     }
-    return valid;
   };
 
   User.prototype.afterCreate = async (model, data, opt = false) => {
