@@ -2,17 +2,7 @@ USER ROLE SHOULD NOT BE NULL, should resolve to "user"
 documentation
 
 !sanitize user inputs
-
-1. alter user table (done)
-2. verify email endpoint (after successful signup and login)
-3. signup with email (done)
-4. signup with google (done)
-
 7. login with google
-8. login with email and password
-
-// on user creation create wallet that is not activated (Wallet is activated on pin set) (done)
-// on user creation create cart (done)
 
 vendor endpoints
 
@@ -42,3 +32,9 @@ user endpoints
 9. view notifications
 10. view wallet details endpoint
 11. view cart details
+
+-> reset password
+-> forgot password
+-> logout
+-> setup wallet
+-> setup location

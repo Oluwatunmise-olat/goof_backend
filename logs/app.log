@@ -382,3 +382,63 @@ error: 16-Mar-22Y 14:40:57:
 error: 16-Mar-22Y 14:47:14: 
       Error fetching logging user [service/account.service.js]: SequelizeDatabaseError: column Role.user_id does not exist
     
+error: 16-Mar-22Y 15:28:32: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:28:32: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:38:08: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:38:09: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:40:44: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:40:45: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:48:02: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:48:03: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:52:27: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:52:27: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:53:12: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:53:12: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:54:47: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 15:54:47: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:00:01: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:00:03: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:01:03: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:01:03: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:05:22: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 16-Mar-22Y 16:05:23: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          

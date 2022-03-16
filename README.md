@@ -14,4 +14,5 @@ Assumption is made that all dependencies have been installed
 3. create db: run `npm run create-db:test`
 4. create migrations: run `npm run setup:test`
 5. create seed data on test db: run `npx sequelize-cli db:seed:all`.
-6. After All test drop the db: run `npm run drop-db:test`
+6. test: run `npm run test`
+7. After All test drop the db: run `npm run drop-db:test`

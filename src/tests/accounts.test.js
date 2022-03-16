@@ -72,12 +72,27 @@ describe("POST api/auth/login", () => {
     request = supertest(app);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // create user and hash password
+    const data = {
+      ...user1,
+      avatar: "",
+      phone_number: user1.phone_number.split("+")[1]
+    };
+
+    delete data.password_confirm;
+
+    const password_hash = await User.makePassword(user1.password);
+    await User.create({
+      ...data,
+      password: password_hash
+    });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     // destroy user
+    const user = await User.findOne({ where: { email: user1.email } });
+    if (user) user.destroy();
   });
 
   afterAll(() => {});
@@ -99,7 +114,7 @@ describe("POST api/auth/login", () => {
       expect(data).toBeDefined();
       expect(data.id).toBeDefined();
       expect(data.access_token).toBeDefined();
-      expect(data.phone_number).toBe(user1.phone_number);
+      expect(data.phone_number).toBe(user1.phone_number.split("+")[1]);
     });
   });
 
@@ -117,7 +132,7 @@ describe("POST api/auth/login", () => {
       expect(errorData).toBeDefined();
       expect(errorData.length >= 1).toBeTruthy();
       expect(status).toBeFalsy();
-      expect(data).not.toBeDefined();
+      expect(data).toEqual({});
     });
   });
 });

@@ -89,7 +89,6 @@ exports.signupwithEmail = async (req) => {
           phone_number,
           role_id,
           avatar: avatar == null || undefined ? "" : avatar,
-          phone_verified: true
         },
         { transaction: t }
       );
@@ -175,7 +174,7 @@ exports.loginwithEmail = async (req) => {
       data: {
         ...userExists.dataValues,
         role_data: { ...userRole.dataValues },
-        accessToken: accessToken
+        access_token: accessToken
       }
     };
   } catch (error) {
