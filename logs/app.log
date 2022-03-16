@@ -358,3 +358,9 @@ error: 14-Mar-22Y 16:21:52:
             Error fetching data from db(users) - [schema/schemas.js] SequelizeDatabaseError: column "location_id" does not exist
           
 error: 15-Mar-22Y 14:25:36: database "goof_testDB" does not exist
+error: 16-Mar-22Y 06:21:04: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: cart is not defined
+    
+error: 16-Mar-22Y 06:21:57: 
+      Error saving user in db(users) [service/account.service.js]: ReferenceError: Cart is not defined
+    

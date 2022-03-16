@@ -8,6 +8,7 @@ const {
   User,
   Role,
   Wallet,
+  Cart,
   sequelize
 } = require("../models/index");
 const logger = require("../../logger/log");
@@ -104,7 +105,7 @@ exports.signupwithEmail = async (req) => {
         { transaction: t }
       );
       // create cart
-      await cart.afterCreate(
+      await user.afterCreate(
         Cart,
         { user_id: user.dataValues.id },
         { transaction: t }

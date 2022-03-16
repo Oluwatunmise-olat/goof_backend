@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "set NODE_ENV=test&& nodemon server.js",
     "setup:test":"set NODE_ENV=test&& npx sequelize-cli db:migrate",
-    "test": "set NODE_ENV=test&& jest --detectOpenHandles --runInBand"
+    "test": "set NODE_ENV=test&& jest --detectOpenHandles --runInBand",
+    "post:test": "npx sequelize-cli db:migrate:undo:all"
   },
   "jest": {
     "testMatch":[
