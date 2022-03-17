@@ -164,7 +164,7 @@ describe("POST api/auth/password/forgot", () => {
       if (user) user.destroy();
     });
 
-    it("should send a reset password link to user eamil", async () => {
+    it("should send a reset password link to user email", async () => {
       // it should return a success msg
       // it should return a status of true
       // status code should be 200
@@ -173,6 +173,10 @@ describe("POST api/auth/password/forgot", () => {
       const response = await request
         .post(endpoint)
         .send({ email: user1.email });
+
+      const restPasswordInstance = await models.Reset_Password.findOne({
+        where: { email: user1.email }
+      });
 
       const { data, msg, errorData, status } = response.body;
 
