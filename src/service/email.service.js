@@ -12,6 +12,8 @@ class EmailService {
 
   static welcome_mail() {}
 
+  static verify_email() {}
+
   static code_reset_mail(to, subject, token) {
     this._send({
       to,
@@ -47,12 +49,12 @@ class EmailService {
       process.env.NODE_ENV == "test" ||
       process.env.NODE_ENV == "developemnt"
     ) {
-      const port = config.get("port");
-      const host = config.get("host");
+      const port = config.get("mail.port");
+      const host = config.get("mail.host");
       const user = config.get("mail.user");
       const password = config.get("mail.password");
 
-      const transporter = new createTransport({
+      const transporter = createTransport({
         host,
         port,
         auth: {
@@ -62,13 +64,25 @@ class EmailService {
       });
 
       const [status, msg] = this.__verifyTransporter(transporter);
-      if (status) {
-        return transporter;
+      if (!status) {
+        // log error
       }
-      // log error
+      return transporter;
     }
 
     if (process.env.NODE_ENV == "production") {
+      const api_key = config.get("mail.api_key");
+      const domain = config.get("mail.domain");
+
+      const transporter = createTransport(
+        mailgun({ auth: { api_key, domain } })
+      );
+
+      const [status, msg] = this.__verifyTransporter(transporter);
+      if (!status) {
+        //log error
+      }
+      return transporter;
     }
   }
 }
