@@ -164,7 +164,7 @@ describe("POST api/auth/password/forgot", () => {
       if (user) user.destroy();
     });
 
-    it("should send a reset password link to user eamil", async () => {
+    it("should send a reset password link to a valid user email", async () => {
       // it should return a success msg
       // it should return a status of true
       // status code should be 200
@@ -174,6 +174,10 @@ describe("POST api/auth/password/forgot", () => {
         .post(endpoint)
         .send({ email: user1.email });
 
+      const restPasswordInstance = await models.Reset_Password.findOne({
+        where: { email: user1.email }
+      });
+
       const { data, msg, errorData, status } = response.body;
 
       expect(response.status).toBe(200);
@@ -181,6 +185,27 @@ describe("POST api/auth/password/forgot", () => {
       expect(errorData).toEqual({});
       expect(msg).toBeDefined();
       expect(status).toBeTruthy();
+      expect(restPasswordInstance.email).toEqual(user1.email);
+    });
+
+    it("should not send a reset password link given invalid email", async () => {
+      // it should return a status code of 400
+      // it should not create an instance of reste password
+      // status should be falsy
+      // errorData should be defined
+      const response = await request
+        .post(endpoint)
+        .send({ email: user2.email });
+      const { status, errorData, data } = response.body;
+
+      const restPasswordInstance = await models.Reset_Password.findOne({
+        email: user2.email
+      });
+
+      expect(response.status).toBe(400);
+      expect(errorData).toBeDefined();
+      expect(status).toBeFalsy();
+      expect(restPasswordInstance.email).toBe(undefined);
     });
   });
 });
