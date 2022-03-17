@@ -3,9 +3,11 @@ Goof is a delivery service that handles it's users delivery to their door step b
 
 ### Services:
  - ## Email:
-    Note: You should create an account for both cases (mailtrap and sendgrid) and add the configuration to the config/development & config/production files respectively.
-    
-    - For development, mailtrap (fake smtp server) is used to avoid cluttering your email
+    Note: 
+      - You should create an account for both cases (mailtrap and sendgrid) and add the configuration to the config/ development & config/production files respectively.
+      - Don't forget to set your environment variables (check example.sh for sample guide).
+
+    - For development, mailtrap (fake smtp server) is used to avoid cluttering your email [MailTrap](https://mailtrap.io)
     - For production, sendgrid is configured to be used (consider subscribing for a plan)
 
 
