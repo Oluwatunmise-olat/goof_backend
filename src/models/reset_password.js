@@ -1,4 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
+  /**
+   * @params
+   *  - token: This token is only valid for 30mins
+   */
   const reset_password = sequelize.define(
     "Reset_Password",
     {
