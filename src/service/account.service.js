@@ -88,7 +88,7 @@ exports.signupwithEmail = async (req) => {
           password: password_hash,
           phone_number,
           role_id,
-          avatar: avatar == null || undefined ? "" : avatar,
+          avatar: avatar == null || undefined ? "" : avatar
         },
         { transaction: t }
       );
@@ -184,7 +184,41 @@ exports.loginwithEmail = async (req) => {
   }
 };
 
-// after logged in
+exports.forgotPassword = async (req) => {
+  // email should exist in db
+  // create a token that expires
+  const { errors } = validationResult(req);
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { email, type } = req.body;
+
+  try {
+    const exists = await models.User.findOne({ where: { email } });
+    if (!exists)
+      return {
+        ...resp,
+        msg: "A reset instruction will be sent to this email."
+      };
+
+    // generate token
+    const token = "djdkkd"
+    // check if a token has been generated for email and hasn't been used of expired
+    // else generate token for user
+    // send token
+  } catch (error) {}
+};
+
+// once token is used once, delete it from db
+
+exports.resetPassword = (req) => {
+  const { token, password } = req.body;
+};
+
 exports.sendEmailCode = async (email) => {
   // create email verification with related user
   // before sending check:
