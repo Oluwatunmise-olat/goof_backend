@@ -3,11 +3,11 @@
     "dev": "set NODE_ENV=development&& nodemon server.js",
     "drop-db:test": "set NODE_ENV=test&& npx sequelize-cli db:drop",
     "create-db:test": "set NODE_ENV=test&& npx sequelize-cli db:create",
-    "setup:test":"set NODE_ENV=test&& npx sequelize-cli db:migrate",
+    "setup:test": "set NODE_ENV=test&& npx sequelize-cli db:migrate",
     "test": "set NODE_ENV=test&& jest --detectOpenHandles --runInBand"
   },
   "jest": {
-    "testMatch":[
+    "testMatch": [
       "**/src/tests/*.test.js"
     ],
     "testEnvironment": "node"
@@ -19,6 +19,7 @@
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "nodemailer": "^6.7.2",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",

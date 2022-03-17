@@ -174,7 +174,7 @@ describe("POST api/auth/password/forgot", () => {
         .post(endpoint)
         .send({ email: user1.email });
 
-      const restPasswordInstance = await models.Reset_Password.findOne({
+      const restPasswordInstance = await models.Reset_Token.findOne({
         where: { email: user1.email }
       });
 
@@ -198,7 +198,7 @@ describe("POST api/auth/password/forgot", () => {
         .send({ email: user2.email });
       const { status, errorData, data } = response.body;
 
-      const restPasswordInstance = await models.Reset_Password.findOne({
+      const restPasswordInstance = await models.Reset_Token.findOne({
         email: user2.email
       });
 
