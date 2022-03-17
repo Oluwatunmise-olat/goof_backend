@@ -6,6 +6,7 @@
 const { createTransport } = require("nodemailer");
 const mailgun = require("nodemailer-mailgun-transport");
 const config = require("config");
+const logger = require("../../logger/log");
 
 class EmailService {
   transporter = this.__createTransport();
@@ -65,7 +66,7 @@ class EmailService {
 
       const [status, msg] = this.__verifyTransporter(transporter);
       if (!status) {
-        // log error
+        logger.error(`Error with mail transporter [service/email]: ${msg}`);
       }
       return transporter;
     }
@@ -80,7 +81,7 @@ class EmailService {
 
       const [status, msg] = this.__verifyTransporter(transporter);
       if (!status) {
-        //log error
+        logger.error(`Error with mail transporter [service/email]: ${msg}`);
       }
       return transporter;
     }
