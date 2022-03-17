@@ -136,3 +136,38 @@ describe("POST api/auth/login", () => {
     });
   });
 });
+
+describe("POST api/auth/password/forgot", () => {
+  describe("given a valid user eamil", () => {
+    const endpoint = "/api/auth/password/forgot";
+
+    beforeEach(() => {});
+
+    afterEach(() => {});
+
+    it("should send a reset password link to user eamil", async () => {
+      // it should return a success msg
+      // it should return a status of true
+      // status code should be 200
+      // an instance of rest_password table should be created
+      // errorData should be undefined
+      const response = await request
+        .post(endpoint)
+        .send({ email: user1.email });
+
+      const { data, msg, errorData, status } = response.body;
+
+      expect(response.status).toBe(200);
+      expect(data).toEqual({});
+      expect(errorData).toEqual({});
+      expect(msg).toBeDefined();
+      expect(status).toBeTruthy();
+    });
+  });
+});
+
+describe("POST api/auth/password/reset", () => {
+  describe("given user is logged in", () => {
+    const endpoint = "/api/auth/password/reset";
+  });
+});

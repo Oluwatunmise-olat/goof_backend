@@ -186,3 +186,24 @@ exports.loginSchema = {
     errorMessage: errMsg("password")
   }
 };
+
+exports.forgotPasswordSchema = {
+  email: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("email")
+  }
+};
+
+exports.resetPasswordSchema = {
+  email: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("email")
+  },
+  token: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("token")
+  }
+};
