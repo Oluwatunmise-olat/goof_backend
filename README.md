@@ -2,13 +2,13 @@
 Goof is a delivery service that handles it's users delivery to their door step by acting as a bridge between users and vendors.
 
 ### Services:
- - ## Email:
+ - ## Email
     Note: 
       - You should create an account for both cases (mailtrap and sendgrid) and add the configuration to the config/ development & config/production files respectively.
       - Don't forget to set your environment variables (check example.sh for sample guide).
 
     - For development, mailtrap (fake smtp server) is used to avoid cluttering your email [MailTrap](https://mailtrap.io)
-    - For production, sendgrid is configured to be used (consider subscribing for a plan)
+    - For production, mailgun is configured to be used (consider subscribing for a plan)
 
 
 ### Note: To run test:
@@ -22,3 +22,7 @@ Assumption is made that all dependencies have been installed
 5. create seed data on test db: run `npx sequelize-cli db:seed:all`.
 6. test: run `npm run test`
 7. After All test drop the db: run `npm run drop-db:test`
+
+### General setup:
+ Look into the example.sh file and setup all necessary environment variables
+ 

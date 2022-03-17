@@ -15,4 +15,4 @@ export SERVER_SECRET_KEY=<server_secret_key>
 export MAILTRAP_USER=<mailtrap_user>
 export MAILTRAP_PASSWORD=<mailtrap_password>
 export MAILTRAP_PORT=<mailtrap_port>
-
+export COMPANY_EMAI=<company@gmail.com>
