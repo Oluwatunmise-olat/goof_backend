@@ -141,9 +141,28 @@ describe("POST api/auth/password/forgot", () => {
   describe("given a valid user eamil", () => {
     const endpoint = "/api/auth/password/forgot";
 
-    beforeEach(() => {});
+    beforeEach(async () => {
+      // create user and hash password
+      const data = {
+        ...user1,
+        avatar: "",
+        phone_number: user1.phone_number.split("+")[1]
+      };
 
-    afterEach(() => {});
+      delete data.password_confirm;
+
+      const password_hash = await User.makePassword(user1.password);
+      await User.create({
+        ...data,
+        password: password_hash
+      });
+    });
+
+    afterEach(async () => {
+      // destroy user
+      const user = await User.findOne({ where: { email: user1.email } });
+      if (user) user.destroy();
+    });
 
     it("should send a reset password link to user eamil", async () => {
       // it should return a success msg
