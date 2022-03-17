@@ -15,4 +15,7 @@ export SERVER_SECRET_KEY=<server_secret_key>
 export MAILTRAP_USER=<mailtrap_user>
 export MAILTRAP_PASSWORD=<mailtrap_password>
 export MAILTRAP_PORT=<mailtrap_port>
-export COMPANY_EMAI=<company@gmail.com>
+export COMPANY_EMAIL=<company@gmail.com>
+# from your account control panel
+export MAILGUN_API_KEY=<mailgun_api_key>
+export MAILGUN_DOMAIN=<mailgun_domain>
