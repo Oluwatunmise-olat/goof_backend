@@ -164,7 +164,7 @@ describe("POST api/auth/password/forgot", () => {
       if (user) user.destroy();
     });
 
-    it("should send a reset password link to user email", async () => {
+    it("should send a reset password link to a valid user email", async () => {
       // it should return a success msg
       // it should return a status of true
       // status code should be 200
@@ -186,6 +186,13 @@ describe("POST api/auth/password/forgot", () => {
       expect(msg).toBeDefined();
       expect(status).toBeTruthy();
     });
+
+    it("should not send a reset password link given invalid email", async()=>{
+      // it should return a status code of 400
+      // it should not create an instance of reste password
+      // status should be falsy
+      // errorData should be defined
+    })
   });
 });
 
