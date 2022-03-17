@@ -12,3 +12,7 @@ export GOOGLE_OAUTH_CLIENT_ID=<google_oauth_client_id>
 export GOOGLE_OAUTH_CLIENT_SECRET=<google_oauth_client_secret>
 export GOOGLE_OAUTH_REDIRECT_URI=<google_oauth_redirect_uri>
 export SERVER_SECRET_KEY=<server_secret_key>
+export MAILTRAP_USER=<mailtrap_user>
+export MAILTRAP_PASSWORD=<mailtrap_password>
+export MAILTRAP_PORT=<mailtrap_port>
+
