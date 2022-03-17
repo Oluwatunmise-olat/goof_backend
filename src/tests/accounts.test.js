@@ -1,6 +1,6 @@
 const app = require("../../app");
 const supertest = require("supertest");
-const { User, Wallet, Cart } = require("../models/index");
+const models = require("../models/index");
 const { user1, user2 } = require("./data/users.data");
 
 describe("POST api/auth/signup/email", () => {
@@ -14,7 +14,7 @@ describe("POST api/auth/signup/email", () => {
 
   afterEach(async () => {
     // wallet and cart is automatically dropped because it is cascaded
-    let user = await User.findOne({ where: { email: user1.email } });
+    let user = await models.User.findOne({ where: { email: user1.email } });
     if (user) return user.destroy();
   });
 
@@ -27,10 +27,10 @@ describe("POST api/auth/signup/email", () => {
       const response = await request.post(endpoint).send(user1);
       const user_id = response.body.data.id;
       const { data, status } = response.body;
-      const associated_wallet = await Wallet.findOne({
+      const associated_wallet = await models.Wallet.findOne({
         where: { user_id }
       });
-      const associated_cart = await Cart.findOne({
+      const associated_cart = await models.Cart.findOne({
         where: { user_id }
       });
       expect(response.status).toBe(201);
@@ -82,8 +82,8 @@ describe("POST api/auth/login", () => {
 
     delete data.password_confirm;
 
-    const password_hash = await User.makePassword(user1.password);
-    await User.create({
+    const password_hash = await models.User.makePassword(user1.password);
+    await models.User.create({
       ...data,
       password: password_hash
     });
@@ -91,7 +91,7 @@ describe("POST api/auth/login", () => {
 
   afterEach(async () => {
     // destroy user
-    const user = await User.findOne({ where: { email: user1.email } });
+    const user = await models.User.findOne({ where: { email: user1.email } });
     if (user) user.destroy();
   });
 
@@ -134,5 +134,59 @@ describe("POST api/auth/login", () => {
       expect(status).toBeFalsy();
       expect(data).toEqual({});
     });
+  });
+});
+
+describe("POST api/auth/password/forgot", () => {
+  describe("given a valid user eamil", () => {
+    const endpoint = "/api/auth/password/forgot";
+
+    beforeEach(async () => {
+      // create user and hash password
+      const data = {
+        ...user1,
+        avatar: "",
+        phone_number: user1.phone_number.split("+")[1]
+      };
+
+      delete data.password_confirm;
+
+      const password_hash = await models.User.makePassword(user1.password);
+      await models.User.create({
+        ...data,
+        password: password_hash
+      });
+    });
+
+    afterEach(async () => {
+      // destroy user
+      const user = await models.User.findOne({ where: { email: user1.email } });
+      if (user) user.destroy();
+    });
+
+    it("should send a reset password link to user eamil", async () => {
+      // it should return a success msg
+      // it should return a status of true
+      // status code should be 200
+      // an instance of rest_password table should be created
+      // errorData should be undefined
+      const response = await request
+        .post(endpoint)
+        .send({ email: user1.email });
+
+      const { data, msg, errorData, status } = response.body;
+
+      expect(response.status).toBe(200);
+      expect(data).toEqual({});
+      expect(errorData).toEqual({});
+      expect(msg).toBeDefined();
+      expect(status).toBeTruthy();
+    });
+  });
+});
+
+describe("POST api/auth/password/reset", () => {
+  describe("given user is logged in", () => {
+    const endpoint = "/api/auth/password/reset";
   });
 });
