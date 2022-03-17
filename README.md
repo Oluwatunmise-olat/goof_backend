@@ -1,8 +1,10 @@
 ### **GOOF API**
+Goof is a delivery service that handles it's users delivery to their door step by acting as a bridge between users and vendors.
 
-#### Goof is a delivery service that handles it's users delivery to their door step by acting as a bridge between users and vendors.
-
-
+### Services:
+ - ## Email:
+    - For development, mailtrap (fake smtp server) is used to avoid cluttering your email
+    - For production, sendgrid is configured to be used (consider subscribing for a plan)
 
 
 ### Note: To run test:
