@@ -9,29 +9,24 @@ const config = require("config");
 const logger = require("../../logger/log");
 
 module.exports = class EmailService {
-  
-  constructor () {
-    this.transporter = this.__createTransport();
-
-  }
-
   static welcome_mail() {}
 
   static verify_email() {}
 
-  static code_reset_mail(to, subject, token) {
-    this._send({
+  async code_reset_mail(to, subject, token) {
+    console.log(this);
+    await this._send({
       to,
       subject,
       html: `
-        <h1>Hello, testing. This reset your email <a href=${token}>reset password</a></h1>
+        <h1>Hello, testing. This reset your email ${token}reset password</h1>
       `
     });
   }
 
   static vendor_waiting_status_mail() {}
 
-  _send(opts) {
+  async _send(opts) {
     /**
      * @params opts: {
      *  to: "",
@@ -39,13 +34,10 @@ module.exports = class EmailService {
      *  msg: "",
      * }
      */
-    this.transporter.sendMail({ ...opts, from: process.env.COMPANY_EMAIL });
-  }
-
-  __verifyTransporter(transporter) {
-    return transporter.verify(error, (success) => {
-      if (error) return [false, error];
-      return [true, null];
+    const transporter = this.__createTransport();
+    return await transporter.sendMail({
+      ...opts,
+      from: process.env.COMPANY_EMAIL
     });
   }
 
@@ -53,8 +45,7 @@ module.exports = class EmailService {
     if (
       process.env.NODE_ENV == "test" ||
       process.env.NODE_ENV == "development"
-      ) {
-      logger.info("called")
+    ) {
       const port = config.get("mail.port");
       const host = config.get("mail.host");
       const user = config.get("mail.user");
@@ -69,11 +60,6 @@ module.exports = class EmailService {
         }
       });
 
-
-      const [status, msg] = this.__verifyTransporter(transporter);
-      if (!status) {
-        logger.error(`Error with mail transporter [service/email]: ${msg}`);
-      }
       return transporter;
     }
 
@@ -85,10 +71,6 @@ module.exports = class EmailService {
         mailgun({ auth: { api_key, domain } })
       );
 
-      const [status, msg] = this.__verifyTransporter(transporter);
-      if (!status) {
-        logger.error(`Error with mail transporter [service/email]: ${msg}`);
-      }
       return transporter;
     }
   }
