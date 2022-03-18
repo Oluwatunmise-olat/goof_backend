@@ -8,8 +8,12 @@ const mailgun = require("nodemailer-mailgun-transport");
 const config = require("config");
 const logger = require("../../logger/log");
 
-class EmailService {
-  transporter = this.__createTransport();
+module.exports = class EmailService {
+  
+  constructor () {
+    this.transporter = this.__createTransport();
+
+  }
 
   static welcome_mail() {}
 
@@ -48,8 +52,9 @@ class EmailService {
   __createTransport() {
     if (
       process.env.NODE_ENV == "test" ||
-      process.env.NODE_ENV == "developemnt"
-    ) {
+      process.env.NODE_ENV == "development"
+      ) {
+      logger.info("called")
       const port = config.get("mail.port");
       const host = config.get("mail.host");
       const user = config.get("mail.user");
@@ -63,6 +68,7 @@ class EmailService {
           pass: password
         }
       });
+
 
       const [status, msg] = this.__verifyTransporter(transporter);
       if (!status) {
@@ -86,4 +92,4 @@ class EmailService {
       return transporter;
     }
   }
-}
+};
