@@ -2,8 +2,8 @@ const moment = require("moment");
 
 module.exports = (sequelize, DataTypes) => {
   /**
-   * @params
-   *  - token: This token is only valid for 30mins
+   * @attributes
+   *  - token: This token is only valid for 5mins
    *  - type: This model is used for two actions of password reset (wallet pin and account password)
    */
   const reset_token = sequelize.define(
@@ -15,8 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       token: {
         unique: true,
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 6,
+          max: 6
+        }
       },
       type: {
         required: true,
@@ -24,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
           values: ["wallet", "account"]
         })
       },
-      expiresIn: {
+      expires_in: {
         type: DataTypes.TIME,
-        defaultValue: moment().add(30, "minutes").format("hh:mm") // current time + 30 mins
+        defaultValue: moment().add(5, "minutes").format("hh:mm") // current time + 5 mins
       }
     },
     { modelName: "reset_token", underscored: true, timestamps: true }
