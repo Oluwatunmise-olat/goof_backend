@@ -5,5 +5,5 @@ module.exports = () => {
 };
 
 exports.reset_code = () => {
-  return crypto.randomBytes(32).toString("base64").split("=")[0];
+  return Math.floor(100000 + Math.random() * 900000);
 };
