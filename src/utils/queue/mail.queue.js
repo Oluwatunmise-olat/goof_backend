@@ -23,15 +23,15 @@ emailQueue.process("vendor", async (job) => {
 
 module.exports = class EmailQueue {
   static async verifyMail(data) {
-    await emailQueue.add("verify", data);
+    await emailQueue.add("verify", data, { attempts: 5 });
   }
   static async resetMail(data) {
-    await emailQueue.add("reset", data);
+    await emailQueue.add("reset", data, { attempts: 5 });
   }
   static async welcomeMail(data) {
-    await emailQueue.add("welcome", data);
+    await emailQueue.add("welcome", data, { attempts: 5 });
   }
   static async vendorStatusMail(data) {
-    await emailQueue.add("vendor", data);
+    await emailQueue.add("vendor", data, { attempts: 5 });
   }
 };
