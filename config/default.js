@@ -4,6 +4,8 @@ module.exports = {
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
   SMS_SERVICE: process.env.SMS_SERVICE,
   redis: {
-    url: process.env.REDIS_URL
+    url: process.env.REDIS_URL,
+    port: process.env.REDIS_PORT,
+    host: process.env.REDIS_HOST
   }
 };
