@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       expires_in: {
         type: DataTypes.TIME,
-        defaultValue: moment().add(5, "minutes").format("hh:mm") // current time + 5 mins
+        defaultValue: moment().add(10, "minutes").format("hh:mm") // current time + 10 mins
       }
     },
     { modelName: "reset_token", underscored: true, timestamps: true }
