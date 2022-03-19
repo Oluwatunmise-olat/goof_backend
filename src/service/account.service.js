@@ -10,6 +10,7 @@ const mailer = require("../utils/queue/mail.queue");
 const { genAccessToken } = require("./jwt.service");
 const blacklistToken = require("./jwt.service");
 const extractAuthToken = require("../utils/headers");
+const moment = require("moment");
 
 exports.sendphoneCode = async (req) => {
   const { errors } = validationResult(req);
@@ -265,10 +266,28 @@ exports.verifyPinCode = (req) => {
   }
 
   const { email, token, type } = req.body;
-  // get user with email and type form reset token
-  // verify the token has not expired
+  // get user with email and type from reset token
   // if valid delete token and send a success message
   // else send a invalid message
+  const tokenResetInst = await models.reset_token.findOne({
+    where: { email, type }
+  });
+  if (!tokenResetInst)
+    return { ...resp, error: true, errorData: [{ msg: "Invalid" }] };
+  // if token isn't correct
+  if (!tokenResetInst.token == token)
+    return { ...resp, error: true, errorData: [{ msg: "Invalid Token" }] };
+  // verify the token has not expired
+
+  // check [error with comparison]
+  if (tokenResetInst.expires_in < moment().format("hh:mm:ss")) {
+    // case of expiry
+    return { ...resp, error: true, errorData: [{ msg: "Token Expired" }] };
+  }
+
+  // delete token and return success
+  await tokenResetInst.destroy();
+  return { ...resp, msg: "success" };
 };
 
 exports.resetPassword = async (req) => {
