@@ -19,10 +19,13 @@ Assumption is made that all dependencies have been installed
 2. set NODE_ENV=test
 3. create db: run `npm run create-db:test`
 4. create migrations: run `npm run setup:test`
-5. create seed data on test db: run `npx sequelize-cli db:seed:all`.
+5. create seed data on test db: run `npm run seed`.
 6. test: run `npm run test`
 7. After All test drop the db: run `npm run drop-db:test`
 
 ### General setup:
  Look into the example.sh file and setup all necessary environment variables
+
+### TODO:
+1. create docker compose file to startup the system (because of redis and all ...)
  
