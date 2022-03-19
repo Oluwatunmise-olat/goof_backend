@@ -8,7 +8,7 @@ Goof is a delivery service that handles it's users delivery to their door step b
       - Don't forget to set your environment variables (check example.sh for sample guide).
 
     - For development, mailtrap (fake smtp server) is used to avoid cluttering your email [MailTrap](https://mailtrap.io)
-    - For production, mailgun is configured to be used (consider subscribing for a plan)
+    - For production, mailgun is configured to be used (consider subscribing for a plan) [MailGun](https://www.mailgun.com)
 
 
 ### Note: To run test:
@@ -28,4 +28,5 @@ Assumption is made that all dependencies have been installed
 
 ### TODO:
 1. create docker compose file to startup the system (because of redis and all ...)
+2. create a seperate docker compose file & dockerfile for testing purposes
  
