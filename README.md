@@ -28,4 +28,5 @@ Assumption is made that all dependencies have been installed
 
 ### TODO:
 1. create docker compose file to startup the system (because of redis and all ...)
+2. create a seperate docker compose file & dockerfile for testing purposes
  
