@@ -8,31 +8,33 @@ const mailgun = require("nodemailer-mailgun-transport");
 const config = require("config");
 const logger = require("../../logger/log");
 
-module.exports = class EmailService {
-  static welcome_mail() {}
+class EmailService {
+  async welcome_mail() {}
 
-  static verify_email() {}
+  async verify_email() {}
 
   async code_reset_mail(to, subject, token) {
-    console.log(this);
     await this._send({
       to,
       subject,
       html: `
-        <h1>Hello, testing. This reset your email ${token}reset password</h1>
+        <p>
+          You made a request to reset your goof account password.
+
+          <p>This pin expires in <b>10 minutes</b>
+          <p>Your reset pin is ${token}> to proceed</p>
+
+          <b>Note:</b> If you didn't initiate this request kindly ignore.
+        </p>
       `
     });
   }
 
-  static vendor_waiting_status_mail() {}
+  async vendor_status_mail() {}
 
   async _send(opts) {
     /**
-     * @params opts: {
-     *  to: "",
-     *  subject: "",
-     *  msg: "",
-     * }
+     * @params opts: {to: "",  subject: "",msg: ""}
      */
     const transporter = this.__createTransport();
     return await transporter.sendMail({
@@ -74,4 +76,6 @@ module.exports = class EmailService {
       return transporter;
     }
   }
-};
+}
+
+module.exports = new EmailService();

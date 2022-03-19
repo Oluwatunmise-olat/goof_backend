@@ -1,7 +1,6 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('reset_passwords', {
+    await queryInterface.createTable("reset_tokens", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,19 +8,31 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true
       },
-      createdAt: {
+      token: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true
+      },
+      expires_in: {
+        type: Sequelize.TIME
+      },
+      type: {
+        type: Sequelize.ENUM("wallet", "account")
+      },
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('reset_passwords');
+    await queryInterface.dropTable("reset_tokens");
   }
 };
