@@ -3,9 +3,13 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
 const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
+const { reset_code } = require("../utils/generate_code");
 const models = require("../models/index");
 const logger = require("../../logger/log");
-const { genAccessToken } = require("../service/jwt.service");
+const mailer = require("../utils/queue/mail.queue");
+const { genAccessToken } = require("./jwt.service");
+const blacklistToken = require("./jwt.service");
+const extractAuthToken = require("../utils/headers");
 
 exports.sendphoneCode = async (req) => {
   const { errors } = validationResult(req);
@@ -195,28 +199,143 @@ exports.forgotPassword = async (req) => {
     return { error: true, errorData: errorsArr };
   }
 
-  const { email, type } = req.body;
+  const { email, type, resend } = req.body;
 
   try {
     const exists = await models.User.findOne({ where: { email } });
     if (!exists)
       return {
         ...resp,
-        msg: "A reset instruction will be sent to this email."
+        msg: "A six digit pin has been sent to this email"
       };
 
-    // generate token
-    const token = "djdkkd"
-    // check if a token has been generated for email and hasn't been used of expired
+    // check if a token has been generated for email with type (account | wallet)
     // else generate token for user
     // send token
+
+    const sentToken = await models.reset_token.findOne({
+      where: { email, type }
+    });
+
+    if (sentToken && !resend)
+      return {
+        ...resp,
+        msg: "A six digit pin has been sent to this email"
+      };
+
+    if (sentToken && resend) {
+      await sendToken.destroy();
+    }
+
+    // generate token
+    // hash token
+    const token = reset_code();
+
+    await models.reset_token.create({
+      type,
+      email,
+      token
+    });
+
+    // send email with type
+
+    const subject =
+      type == "account" ? "Goof Account Reset Pin" : "Goof Wallet reset Pin";
+
+    await mailer.resetMail({
+      subject,
+      to: email,
+      token
+    });
+
+    return { ...resp, msg: "A six digit pin has been sent to this email" };
+  } catch (error) {
+    // log error
+  }
+};
+
+exports.verifyPinCode = (req) => {
+  // once token is used once, delete it from db
+  const { errors } = validationResult(req);
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { email, token, type } = req.body;
+  // get user with email and type form reset token
+  // verify the token has not expired
+  // if valid delete token and send a success message
+  // else send a invalid message
+};
+
+exports.resetPassword = async (req) => {
+  const { errors } = validationResult(req);
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { password, email } = req.body;
+
+  try {
+    const user = await models.User.findOne({ where: { email } });
+
+    const passwordHash = await models.User.makePassword(password);
+
+    user.password = passwordHash;
+    await user.save();
+
+    return { ...resp, msg: "Password reset successfull" };
+  } catch (error) {
+    // log error
+  }
+};
+
+exports.changePassword = async (req) => {
+  // allowed for auth users only
+  const { errors } = validationResult(req);
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { previous_password, new_password } = req.body;
+
+  try {
+    // compare the previous_password with the current auth password
+    const user = await models.User.findOne({ where: { id: req.user_id } });
+    const isValid = await user.checkPassword(user, previous_password);
+    if (!isValid)
+      return {
+        ...resp,
+        error: true,
+        errorData: [{ msg: "Invalid Password Credential" }]
+      };
+    user.password = await models.User.makePassword(new_password);
+    await user.save();
+
+    // extract token
+    const authToken = extractAuthToken(req.headers)[1];
+    // blacklist token
+    await blacklistToken(authToken);
+
+    return { ...resp, msg: "Password update successfull" };
   } catch (error) {}
 };
 
-// once token is used once, delete it from db
+exports.logout = (req) => {
+  // blacklist jwt
+  const authToken = extractAuthToken(req.headers)[1];
 
-exports.resetPassword = (req) => {
-  const { token, password } = req.body;
+  await blacklistToken(authToken);
+  return { ...resp, msg: "Successfully Logged out" };
 };
 
 exports.sendEmailCode = async (email) => {

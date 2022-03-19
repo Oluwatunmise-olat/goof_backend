@@ -20,3 +20,5 @@ export COMPANY_EMAIL=<company@gmail.com>
 export MAILGUN_API_KEY=<mailgun_api_key>
 export MAILGUN_DOMAIN=<mailgun_domain>
 export REDIS_URL=<redis_url>
+export REDIS_HOST=<redis_host>
+export REDIS_PORT=<redis_port>
