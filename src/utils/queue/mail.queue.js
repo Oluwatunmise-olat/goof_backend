@@ -5,7 +5,6 @@ const emailQueue = new require("bull")("Email", { redis: REDIS_URL });
 const mail = require("../../service/email.service");
 
 emailQueue.process("reset", async (job) => {
-  console.log(job);
   const { data } = job;
   await mail.code_reset_mail(data.to, data.subject, data.token);
 });
