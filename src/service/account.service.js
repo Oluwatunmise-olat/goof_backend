@@ -214,7 +214,7 @@ exports.forgotPassword = async (req) => {
     // else generate token for user
     // send token
 
-    const sentToken = await models.reset_token.findOne({
+    const sentToken = await models.Reset_Token.findOne({
       where: { email, type }
     });
 
@@ -225,14 +225,13 @@ exports.forgotPassword = async (req) => {
       };
 
     if (sentToken && resend) {
-      await sendToken.destroy();
+      await sentToken.destroy();
     }
 
     // generate token
-    // hash token
     const token = reset_code();
 
-    await models.reset_token.create({
+    await models.Reset_Token.create({
       type,
       email,
       token
@@ -252,10 +251,11 @@ exports.forgotPassword = async (req) => {
     return { ...resp, msg: "A six digit pin has been sent to this email" };
   } catch (error) {
     // log error
+    console.log(error.message);
   }
 };
 
-exports.verifyPinCode = (req) => {
+exports.verifyPinCode = async (req) => {
   // once token is used once, delete it from db
   const { errors } = validationResult(req);
   const resp = { error: false };
@@ -269,7 +269,7 @@ exports.verifyPinCode = (req) => {
   // get user with email and type from reset token
   // if valid delete token and send a success message
   // else send a invalid message
-  const tokenResetInst = await models.reset_token.findOne({
+  const tokenResetInst = await models.Reset_Token.findOne({
     where: { email, type }
   });
   if (!tokenResetInst)
@@ -304,6 +304,9 @@ exports.resetPassword = async (req) => {
   try {
     const user = await models.User.findOne({ where: { email } });
 
+    if (!user)
+      return { ...resp, error: true, errorData: [{ msg: "Invalid Email" }] };
+
     const passwordHash = await models.User.makePassword(password);
 
     user.password = passwordHash;
@@ -312,6 +315,7 @@ exports.resetPassword = async (req) => {
     return { ...resp, msg: "Password reset successfull" };
   } catch (error) {
     // log error
+    console.log(error.message);
   }
 };
 
@@ -349,7 +353,7 @@ exports.changePassword = async (req) => {
   } catch (error) {}
 };
 
-exports.logout = (req) => {
+exports.logout = async (req) => {
   // blacklist jwt
   const authToken = extractAuthToken(req.headers)[1];
 

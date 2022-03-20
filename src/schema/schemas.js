@@ -192,6 +192,65 @@ exports.forgotPasswordSchema = {
     in: ["body"],
     exists: true,
     errorMessage: errMsg("email")
+  },
+  type: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("type"),
+    custom: {
+      options: (value) => {
+        if (!value in ["account", "wallet"])
+          return Promise.reject("invalid type field");
+        return Promise.resolve();
+      }
+    }
+  },
+  resend: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("resend"),
+    custom: {
+      options: (value) => {
+        if (!value in [true, false])
+          return Promise.reject("Invalid resend type");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.verifyPinSchema = {
+  email: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    normalizeEmail: true,
+    errorMessage: errMsg("email")
+  },
+  token: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    errorMessage: errMsg("token"),
+    custom: {
+      options: (value) => {
+        if (!value.length == 6) return Promise.reject("Invalid token");
+        return Promise.resolve();
+      }
+    }
+  },
+  type: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    errorMessage: errMsg("type"),
+    custom: {
+      options: (value) => {
+        if (!value in ["account", "wallet"])
+          return Promise.reject("invalid type field");
+        return Promise.resolve();
+      }
+    }
   }
 };
 
@@ -201,9 +260,21 @@ exports.resetPasswordSchema = {
     exists: true,
     errorMessage: errMsg("email")
   },
-  token: {
+  password_confirm: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("token")
+    errorMessage: errMsg("password_confirm")
+  },
+  password: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("token"),
+    custom: {
+      options: (value, { req }) => {
+        if (!value == req.body.password_confirm)
+          return Promise.reject("Password doesn't match");
+        return Promise.resolve();
+      }
+    }
   }
 };

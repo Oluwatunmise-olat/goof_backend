@@ -1,7 +1,8 @@
 const config = require("config");
 const REDIS_URL = config.get("redis.url");
 
-const emailQueue = new require("bull")("Email", { redis: REDIS_URL });
+const Bull = require("bull");
+const emailQueue = new Bull("Email", { redis: REDIS_URL });
 const mail = require("../../service/email.service");
 
 emailQueue.process("reset", async (job) => {

@@ -33,8 +33,6 @@ user endpoints
 10. view wallet details endpoint
 11. view cart details
 
--> reset password (done)
--> forgot password (done)
--> logout (done)
+
 -> setup wallet
 -> setup location

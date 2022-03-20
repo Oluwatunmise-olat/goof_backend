@@ -1,4 +1,4 @@
-const genCode = require("../utils/generate_code");
+const { genCode } = require("../utils/generate_code");
 
 module.exports = (sequelize, DataTypes) => {
   // Note: wallet becomes active upon pin setup

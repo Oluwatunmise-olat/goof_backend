@@ -18,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          min: 6,
-          max: 6
+          min: 6
         }
       },
       type: {
@@ -30,10 +29,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       expires_in: {
         type: DataTypes.TIME,
-        defaultValue: moment().add(10, "minutes").format("hh:mm") // current time + 10 mins
+        defaultValue: () => moment().add(10, "minutes").format("hh:mm") // current time + 10 mins
       }
     },
-    { modelName: "reset_token", underscored: true, timestamps: true }
+    {
+      modelName: "Reset_Token",
+      tableName: "reset_tokens",
+      underscored: true,
+      timestamps: true
+    }
   );
   return reset_token;
 };
