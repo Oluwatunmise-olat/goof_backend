@@ -1,3 +1,4 @@
 {
-    "101": "Expired phone verification code"
+    "101": "Expired phone verification code",
+    "102": "Token label not Bearer"
 }

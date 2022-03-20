@@ -14,7 +14,15 @@ exports.genAccessToken = async (payload) => {
 };
 
 exports.verifyAccessToken = async (token) => {
-  return await jwt.verify(token, SECRET_KEY);
+  try {
+    const payload = await jwt.verify(token, SECRET_KEY);
+    return [true, payload];
+  } catch (error) {
+    if (error.name == "TokenExpiredError") return [false, "Token Expired"];
+    if (error.name == "JsonWebTokenError") return [false, "Token Tamperred"];
+
+    // log error
+  }
 };
 
 (async function () {
