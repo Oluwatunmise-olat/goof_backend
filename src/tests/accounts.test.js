@@ -210,8 +210,14 @@ describe("POST api/auth/password/forgot", () => {
   });
 });
 
-describe("POST api/auth/password/reset", () => {
+describe("POST api/auth/password/change", () => {
   describe("given user is logged in", () => {
     const endpoint = "/api/auth/password/reset";
   });
+
+  describe("given user is not logged in", () => {});
+});
+
+describe("GET api/auth/logout", () => {
+  it("should not authorize further request with old token", () => {});
 });

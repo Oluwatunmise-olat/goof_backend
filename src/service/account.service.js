@@ -214,7 +214,7 @@ exports.forgotPassword = async (req) => {
     // else generate token for user
     // send token
 
-    const sentToken = await models.reset_token.findOne({
+    const sentToken = await models.Reset_Token.findOne({
       where: { email, type }
     });
 
@@ -229,10 +229,9 @@ exports.forgotPassword = async (req) => {
     }
 
     // generate token
-    // hash token
     const token = reset_code();
 
-    await models.reset_token.create({
+    await models.Reset_Token.create({
       type,
       email,
       token
@@ -252,10 +251,11 @@ exports.forgotPassword = async (req) => {
     return { ...resp, msg: "A six digit pin has been sent to this email" };
   } catch (error) {
     // log error
+    console.log(error.message);
   }
 };
 
-exports.verifyPinCode = (req) => {
+exports.verifyPinCode = async (req) => {
   // once token is used once, delete it from db
   const { errors } = validationResult(req);
   const resp = { error: false };
@@ -269,7 +269,7 @@ exports.verifyPinCode = (req) => {
   // get user with email and type from reset token
   // if valid delete token and send a success message
   // else send a invalid message
-  const tokenResetInst = await models.reset_token.findOne({
+  const tokenResetInst = await models.Reset_Token.findOne({
     where: { email, type }
   });
   if (!tokenResetInst)
@@ -349,7 +349,7 @@ exports.changePassword = async (req) => {
   } catch (error) {}
 };
 
-exports.logout = (req) => {
+exports.logout = async (req) => {
   // blacklist jwt
   const authToken = extractAuthToken(req.headers)[1];
 

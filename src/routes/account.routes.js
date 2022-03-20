@@ -25,7 +25,11 @@ router.post(
   controller.loginHandler
 );
 
-router.post("/password/forgot", controller.forgotPasswordHandler);
+router.post(
+  "/password/forgot",
+  checkSchema(schemas.forgotPasswordSchema),
+  controller.forgotPasswordHandler
+);
 
 router.post("/password/verify-token", controller.verifyResetPinHandler);
 

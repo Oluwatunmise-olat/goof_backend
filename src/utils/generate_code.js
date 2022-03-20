@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 
-module.exports = () => {
+exports.genCode = () => {
   return crypto.randomBytes(40).toString("hex");
 };
 

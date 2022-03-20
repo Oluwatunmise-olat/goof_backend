@@ -18,7 +18,6 @@ exports.verifyAccessToken = async (token) => {
 };
 
 (async function () {
-  const client = redis.createClient();
   client.on("connect", (err) => {
     console.log("Client connected to Redis...");
   });

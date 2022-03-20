@@ -192,6 +192,30 @@ exports.forgotPasswordSchema = {
     in: ["body"],
     exists: true,
     errorMessage: errMsg("email")
+  },
+  type: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("type"),
+    custom: {
+      options: (value) => {
+        if (!value in ["account", "wallet"])
+          return Promise.reject("invalid type field");
+        return Promise.resolve();
+      }
+    }
+  },
+  resend: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("resend"),
+    custom: {
+      options: (value) => {
+        if (!value in [true, false])
+          return Promise.reject("Invalid resend type");
+        return Promise.resolve();
+      }
+    }
   }
 };
 

@@ -442,3 +442,15 @@ error: 16-Mar-22Y 16:05:22:
 error: 16-Mar-22Y 16:05:23: 
             Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
           
+error: 19-Mar-22Y 22:09:07: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 19-Mar-22Y 22:09:07: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 19-Mar-22Y 22:16:24: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
+error: 19-Mar-22Y 22:16:25: 
+            Error fetching data from db(users) - [schema/schemas.js] TypeError: Cannot read properties of null (reading 'dataValues')
+          
