@@ -44,7 +44,11 @@ router.post(
   controller.resetPasswordHandler
 );
 
-router.post("/password/change", IsAuth, controller.changePasswordHandler);
+router.patch(
+  "/password/change",
+  [IsAuth, checkSchema(schemas.changePasswordSchema)],
+  controller.changePasswordHandler
+);
 
 router.get("/logout", IsAuth, controller.logoutHandler);
 

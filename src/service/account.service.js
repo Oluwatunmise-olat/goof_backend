@@ -320,7 +320,6 @@ exports.resetPassword = async (req) => {
 };
 
 exports.changePassword = async (req) => {
-  // allowed for auth users only
   const { errors } = validationResult(req);
   const resp = { error: false };
 
@@ -333,7 +332,7 @@ exports.changePassword = async (req) => {
 
   try {
     // compare the previous_password with the current auth password
-    const user = await models.User.findOne({ where: { id: req.user_id } });
+    const user = await models.User.findOne({ where: { id: req.userID } });
     const isValid = await user.checkPassword(user, previous_password);
     if (!isValid)
       return {
@@ -345,9 +344,9 @@ exports.changePassword = async (req) => {
     await user.save();
 
     // extract token
-    const authToken = extractAuthToken(req.headers)[1];
+    const [status, authToken] = extractAuthToken(req.headers);
     // blacklist token
-    await blacklistToken(authToken);
+    await blacklistToken(authToken[1]);
 
     return { ...resp, msg: "Password update successfull" };
   } catch (error) {}

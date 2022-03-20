@@ -117,12 +117,26 @@ exports.resetPasswordHandler = async (req, res, next) => {
   }
 };
 
-exports.changePasswordHandler = async (req, res) => {};
+exports.changePasswordHandler = async (req, res, next) => {
+  try {
+    const resp = await services.changePassword(req);
+    if (resp.error)
+      return res.status(400).json(
+        response({
+          status: false,
+          errorData: resp.errorData
+        })
+      );
+    return res.status(200).json(response({ status: true, msg: resp.msg }));
+  } catch (error) {
+    return next(error);
+  }
+};
 
 exports.logoutHandler = async (req, res, next) => {
   try {
     const resp = await services.logout(req);
-    return res.status(200).json(response({status: true, msg: resp.msg}));
+    return res.status(200).json(response({ status: true, msg: resp.msg }));
   } catch (error) {
     return next(error);
   }

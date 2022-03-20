@@ -268,7 +268,32 @@ exports.resetPasswordSchema = {
   password: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("token"),
+    errorMessage: errMsg("password"),
+    custom: {
+      options: (value, { req }) => {
+        if (!value == req.body.password_confirm)
+          return Promise.reject("Password doesn't match");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.changePasswordSchema = {
+  previous_password: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("previous_password"),
+  },
+  password_confirm: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("password_confirm")
+  },
+  new_password: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("new_password"),
     custom: {
       options: (value, { req }) => {
         if (!value == req.body.password_confirm)
