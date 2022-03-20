@@ -8,8 +8,8 @@ const models = require("../models/index");
 const logger = require("../../logger/log");
 const mailer = require("../utils/queue/mail.queue");
 const { genAccessToken } = require("./jwt.service");
-const blacklistToken = require("./jwt.service");
-const extractAuthToken = require("../utils/headers");
+const { blacklistToken } = require("./jwt.service");
+const { extractAuth: extractAuthToken } = require("../utils/headers");
 const moment = require("moment");
 
 exports.sendphoneCode = async (req) => {
@@ -355,9 +355,11 @@ exports.changePassword = async (req) => {
 
 exports.logout = async (req) => {
   // blacklist jwt
-  const authToken = extractAuthToken(req.headers)[1];
+  const resp = { error: false };
 
-  await blacklistToken(authToken);
+  const [status, authToken] = extractAuthToken(req.headers);
+
+  await blacklistToken(authToken[1]);
   return { ...resp, msg: "Successfully Logged out" };
 };
 
