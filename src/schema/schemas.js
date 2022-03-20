@@ -219,6 +219,41 @@ exports.forgotPasswordSchema = {
   }
 };
 
+exports.verifyPinSchema = {
+  email: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    normalizeEmail: true,
+    errorMessage: errMsg("email")
+  },
+  token: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    errorMessage: errMsg("token"),
+    custom: {
+      options: (value) => {
+        if (!value.length == 6) return Promise.reject("Invalid token");
+        return Promise.resolve();
+      }
+    }
+  },
+  type: {
+    in: ["body"],
+    exists: true,
+    trim: true,
+    errorMessage: errMsg("type"),
+    custom: {
+      options: (value) => {
+        if (!value in ["account", "wallet"])
+          return Promise.reject("invalid type field");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
 exports.resetPasswordSchema = {
   email: {
     in: ["body"],

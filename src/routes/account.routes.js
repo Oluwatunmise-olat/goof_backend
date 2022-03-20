@@ -31,7 +31,11 @@ router.post(
   controller.forgotPasswordHandler
 );
 
-router.post("/password/verify-token", controller.verifyResetPinHandler);
+router.post(
+  "/password/verify-token",
+  checkSchema(schemas.verifyPinSchema),
+  controller.verifyResetPinHandler
+);
 
 router.post("/password/reset", controller.resetPasswordHandler);
 

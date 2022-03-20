@@ -65,7 +65,6 @@ exports.loginHandler = async (req, res, next) => {
 exports.forgotPasswordHandler = async (req, res, next) => {
   try {
     const resp = await services.forgotPassword(req);
-    console.log(resp);
     if (resp.error)
       return res.status(400).json(
         response({
@@ -82,7 +81,23 @@ exports.forgotPasswordHandler = async (req, res, next) => {
   }
 };
 
-exports.verifyResetPinHandler = async (req, res) => {};
+exports.verifyResetPinHandler = async (req, res, next) => {
+  try {
+    const resp = await services.verifyPinCode(req);
+    if (resp.error)
+      return res.status(400).json(
+        response({
+          status: false,
+          errorData: resp.errorData
+        })
+      );
+    return res
+      .status(200)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
 
 exports.resetPasswordHandler = async (req, res) => {};
 
