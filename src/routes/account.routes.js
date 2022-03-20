@@ -37,7 +37,11 @@ router.post(
   controller.verifyResetPinHandler
 );
 
-router.post("/password/reset", controller.resetPasswordHandler);
+router.post(
+  "/password/reset",
+  checkSchema(schemas.resetPasswordSchema),
+  controller.resetPasswordHandler
+);
 
 router.post("/password/change", controller.changePasswordHandler);
 

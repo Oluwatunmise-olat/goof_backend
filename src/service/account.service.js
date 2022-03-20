@@ -225,7 +225,7 @@ exports.forgotPassword = async (req) => {
       };
 
     if (sentToken && resend) {
-      await sendToken.destroy();
+      await sentToken.destroy();
     }
 
     // generate token
@@ -304,6 +304,9 @@ exports.resetPassword = async (req) => {
   try {
     const user = await models.User.findOne({ where: { email } });
 
+    if (!user)
+      return { ...resp, error: true, errorData: [{ msg: "Invalid Email" }] };
+
     const passwordHash = await models.User.makePassword(password);
 
     user.password = passwordHash;
@@ -312,6 +315,7 @@ exports.resetPassword = async (req) => {
     return { ...resp, msg: "Password reset successfull" };
   } catch (error) {
     // log error
+    console.log(error.message);
   }
 };
 

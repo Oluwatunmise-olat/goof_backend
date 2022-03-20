@@ -260,9 +260,21 @@ exports.resetPasswordSchema = {
     exists: true,
     errorMessage: errMsg("email")
   },
-  token: {
+  password_confirm: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("token")
+    errorMessage: errMsg("password_confirm")
+  },
+  password: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("token"),
+    custom: {
+      options: (value, { req }) => {
+        if (!value == req.body.password_confirm)
+          return Promise.reject("Password doesn't match");
+        return Promise.resolve();
+      }
+    }
   }
 };

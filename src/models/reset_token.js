@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       expires_in: {
         type: DataTypes.TIME,
-        defaultValue: moment().add(10, "minutes").format("hh:mm") // current time + 10 mins
+        defaultValue: () => moment().add(10, "minutes").format("hh:mm") // current time + 10 mins
       }
     },
     {

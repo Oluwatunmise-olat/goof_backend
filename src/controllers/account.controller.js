@@ -99,7 +99,23 @@ exports.verifyResetPinHandler = async (req, res, next) => {
   }
 };
 
-exports.resetPasswordHandler = async (req, res) => {};
+exports.resetPasswordHandler = async (req, res, next) => {
+  try {
+    const resp = await services.resetPassword(req);
+    if (resp.error)
+      return res.status(400).json(
+        response({
+          status: false,
+          errorData: resp.errorData
+        })
+      );
+    return res
+      .status(200)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
 
 exports.changePasswordHandler = async (req, res) => {};
 
