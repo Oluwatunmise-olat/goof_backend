@@ -3,6 +3,7 @@ const { checkSchema, check } = require("express-validator");
 
 const controller = require("../controllers/account.controller.js");
 const schemas = require("../schema/schemas");
+const IsAuth = require("../middleware/auth.middleware");
 
 router
   .route("/verify/phone")
@@ -43,9 +44,9 @@ router.post(
   controller.resetPasswordHandler
 );
 
-router.post("/password/change", controller.changePasswordHandler);
+router.post("/password/change", IsAuth, controller.changePasswordHandler);
 
-router.get("/logout", controller.logoutHandler);
+router.get("/logout", IsAuth, controller.logoutHandler);
 
 router.get("/signup/google/constent", controller.withGoogle);
 

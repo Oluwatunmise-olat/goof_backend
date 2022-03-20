@@ -119,7 +119,14 @@ exports.resetPasswordHandler = async (req, res, next) => {
 
 exports.changePasswordHandler = async (req, res) => {};
 
-exports.logoutHandler = async (req, res) => {};
+exports.logoutHandler = async (req, res, next) => {
+  try {
+    const resp = await services.logout(req);
+    return res.status(200).json(response({status: true, msg: resp.msg}));
+  } catch (error) {
+    return next(error);
+  }
+};
 
 exports.withGoogle = (req, res) => {
   return res.status(200).json(

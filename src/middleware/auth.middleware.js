@@ -1,9 +1,18 @@
-const extractHeader = require("../utils/headers");
+const { extractAuth: extractHeader } = require("../utils/headers");
 const response = require("../utils/response");
 const { verifyAccessToken, checkToken } = require("../service/jwt.service");
 
 module.exports = async (req, res, next) => {
-  const resp = extractHeader(req.headers);
+  const [status, resp] = extractHeader(req.headers);
+
+  if (!status)
+    return res.status(401).json(
+      response({
+        status: false,
+        errorData: [{ msg: "No Authorization Token" }],
+        code: 103
+      })
+    );
 
   // check if it's has a label of bearer token
   if (!resp[0] == "Bearer")

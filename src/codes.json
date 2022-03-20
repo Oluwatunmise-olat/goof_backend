@@ -1,4 +1,5 @@
 {
-    "101": "Expired phone verification code",
-    "102": "Token label not Bearer"
+  "101": "Expired phone verification code",
+  "102": "Token label not Bearer",
+  "103": "Authorization token required"
 }
