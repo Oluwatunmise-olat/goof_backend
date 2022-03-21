@@ -35,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         type: DataTypes.STRING,
         required: true,
-        allowNull: false,
-        validate: {
-          // max: 13,
-          // min: 13
-        }
+        allowNull: false
+      },
+      phone_verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       password: {
         type: DataTypes.STRING,
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Role, {
       foreignKey: "role_id",
       targetKey: "id",
-      as: "user_role"
+      as: "roleData"
     });
 
     User.hasOne(models.Location, {

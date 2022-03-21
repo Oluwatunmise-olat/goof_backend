@@ -23,16 +23,10 @@ user endpoints
 
 1. search for vendor by location/ name
 2. see all vendors on platform
-3. setup wallet pin
 4. fund wallet endpoint by bank transfer/ card
-5. setup location (cru)
 6. add product to cart (cru)
 7. order endpoint
 8. view order history endpoint
 9. view notifications
 10. view wallet details endpoint
 11. view cart details
-
-
--> setup wallet
--> setup location

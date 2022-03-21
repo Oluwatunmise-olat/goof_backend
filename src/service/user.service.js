@@ -1,5 +1,8 @@
 const models = require("../models/index");
+const { validationResult } = require("express-validator");
 
+const { extractMessage } = require("../utils/error");
+const logger = require("../../logger/log");
 
 exports.setLocation = async (req) => {
   const { errors } = validationResult(req);
@@ -39,13 +42,64 @@ exports.setLocation = async (req) => {
   }
 };
 
-exports.getWalletHistory = async (req) => {};
+exports.getUserProfile = async (req) => {
+  try {
+    const { dataValues } = await models.User.findOne({
+      where: { id: req.userID },
+      attributes: { exclude: ["password", "role_id"] },
+      include: [
+        {
+          model: models.Role,
+          as: "roleData",
+          attributes: ["id", "name"]
+        }
+      ]
+    });
+    const { dataValues: roleData } = dataValues.roleData;
+    let locationData = await models.Location.findOne({
+      where: { user_id: req.userID },
+      attributes: { exclude: ["user_id"] }
+    });
+    if (locationData.dataValues.length == 0) {
+      locationData = {};
+    } else {
+      locationData = locationData.dataValues;
+    }
 
-// today
-exports.getUserProfile = async (req) => {};
+    return { data: { ...dataValues, roleData, locationData } };
+  } catch (error) {
+    // log error
+    console.log(error.message);
+  }
+};
 
-// today
-exports.updateUserProfile = async (req) => {};
+exports.updateUserProfile = async (req) => {
+  const { firstname, lastname, avatar } = req.body;
+  const data = {};
+  if (firstname) data.firstname = firstname;
+  if (lastname) data.lastname = lastname;
+  if (avatar) data.avatar = avatar;
+
+  try {
+    const [_, resp] = await models.User.update(
+      { ...data },
+      {
+        where: { id: req.userID },
+        returning: true,
+        fields: ["firstname", "lastname", "avatar"]
+      }
+    );
+
+    updatedUser = resp[0].dataValues;
+    delete updatedUser.password;
+    delete updatedUser.role_id;
+
+    return {
+      msg: "User updated successfully",
+      data: { ...updatedUser }
+    };
+  } catch (error) {}
+};
 
 // today
 exports.getCart = async (req) => {};
