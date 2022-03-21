@@ -1,6 +1,5 @@
 const models = require("../models/index");
 
-
 exports.setLocation = async (req) => {
   const { errors } = validationResult(req);
   const resp = { error: false };
@@ -39,13 +38,66 @@ exports.setLocation = async (req) => {
   }
 };
 
-exports.getWalletHistory = async (req) => {};
+exports.getUserProfile = async (req) => {
+  try {
+    const { dataValues } = await models.User.findOne({
+      where: { id: req.userID },
+      attributes: { exclude: ["password", "role_id"] },
+      include: [
+        {
+          model: models.Role,
+          as: "roleData",
+          attributes: ["id", "name"]
+        }
+      ]
+    });
+    const { dataValues: roleData } = dataValues.roleData;
+    let locationData = await models.Location.findOne({
+      where: { user_id: req.userID }
+    });
+    if (!locationData) {
+      locationData = {};
+    } else {
+      locationData = locationData.dataValues;
+    }
 
-// today
-exports.getUserProfile = async (req) => {};
+    return { data: { ...dataValues, roleData, locationData: {} } };
+  } catch (error) {
+    // log error
+    console.log(error.message);
+  }
+};
 
-// today
-exports.updateUserProfile = async (req) => {};
+exports.updateUserProfile = async (req) => {
+  const { errors } = validationResult(req);
+  const resp = { error: false };
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { firstname, lastname, avatar } = req.body;
+  const data = {};
+  if (firstname) data.push(firstname);
+  if (lastname) data.push(lastname);
+  if (avatar) data.push(avatar);
+
+  try {
+    const user = await models.User.update(
+      { ...data },
+      { where: { id: req.userID } }
+    );
+
+    delete user.dataValues.password;
+
+    return {
+      ...resp,
+      msg: "User updated successfully",
+      data: { ...user.dataValues }
+    };
+  } catch (error) {}
+};
 
 // today
 exports.getCart = async (req) => {};

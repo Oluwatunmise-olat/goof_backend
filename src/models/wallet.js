@@ -13,19 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       wallet_id: {
         type: DataTypes.STRING,
-        defaultValue: genCode().slice(0, 8).toUpperCase(),
+        defaultValue: () => genCode().slice(0, 8).toUpperCase(),
         unique: true,
         allowNull: false
-      },
-      pin: {
-        // six digits pin
-        type: DataTypes.STRING,
-        required: true,
-        defaultValue: null
-      },
-      active: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
       }
     },
     {

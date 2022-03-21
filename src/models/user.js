@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Role, {
       foreignKey: "role_id",
       targetKey: "id",
-      as: "user_role"
+      as: "roleData",
     });
 
     User.hasOne(models.Location, {
