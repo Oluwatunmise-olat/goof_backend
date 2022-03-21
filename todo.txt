@@ -30,5 +30,3 @@ user endpoints
 9. view notifications
 10. view wallet details endpoint
 11. view cart details
-
--> show wallet balance on wallet setup

@@ -12,4 +12,6 @@ router.post(
   controller.setLocationHandler
 );
 
+router.patch("/profile/edit", IsAuth, controller.updateUserProfileHandler);
+
 module.exports = router;

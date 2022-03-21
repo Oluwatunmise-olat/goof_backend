@@ -26,3 +26,18 @@ exports.setLocationHandler = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.updateUserProfileHandler = async (req, res, next) => {
+  try {
+    const resp = await userService.updateUserProfile(req);
+    return res
+      .status(200)
+      .json(response({ status: true, data: resp.data, msg: resp.msg }));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.getCart = async (req, res, next) => {};
+
+exports.getWallet = async (req, res, next) => {};
