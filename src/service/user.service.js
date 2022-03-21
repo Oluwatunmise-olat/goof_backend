@@ -1,4 +1,8 @@
 const models = require("../models/index");
+const { validationResult } = require("express-validator");
+
+const { extractMessage } = require("../utils/error");
+const logger = require("../../logger/log");
 
 exports.setLocation = async (req) => {
   const { errors } = validationResult(req);
@@ -69,14 +73,6 @@ exports.getUserProfile = async (req) => {
 };
 
 exports.updateUserProfile = async (req) => {
-  const { errors } = validationResult(req);
-  const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { firstname, lastname, avatar } = req.body;
   const data = {};
   if (firstname) data.push(firstname);
@@ -84,17 +80,34 @@ exports.updateUserProfile = async (req) => {
   if (avatar) data.push(avatar);
 
   try {
-    const user = await models.User.update(
+    const { dataValues } = await models.User.update(
       { ...data },
-      { where: { id: req.userID } }
+      {
+        where: { id: req.userID },
+        attributes: { exclude: ["password", "role_id"] },
+        include: [
+          {
+            model: models.Role,
+            as: "roleData",
+            attributes: ["id", "name"]
+          }
+        ]
+      }
     );
 
-    delete user.dataValues.password;
+    const { dataValues: roleData } = dataValues.roleData;
+    let locationData = await models.Location.findOne({
+      where: { user_id: req.userID }
+    });
+    if (!locationData) {
+      locationData = {};
+    } else {
+      locationData = locationData.dataValues;
+    }
 
     return {
-      ...resp,
       msg: "User updated successfully",
-      data: { ...user.dataValues }
+      data: { ...dataValues, roleData, locationData: {} }
     };
   } catch (error) {}
 };

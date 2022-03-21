@@ -283,7 +283,7 @@ exports.changePasswordSchema = {
   previous_password: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("previous_password"),
+    errorMessage: errMsg("previous_password")
   },
   password_confirm: {
     in: ["body"],
@@ -301,5 +301,18 @@ exports.changePasswordSchema = {
         return Promise.resolve();
       }
     }
+  }
+};
+
+exports.setLocationSchema = {
+  longitude: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("longitude")
+  },
+  latitude: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("latitude")
   }
 };
