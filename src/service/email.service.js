@@ -1,7 +1,7 @@
 // Handles everything related to sending of email
 
 // mailtrap is used for development
-// mailgun is used for production
+// gmail is used for production
 
 const { createTransport } = require("nodemailer");
 const config = require("config");
@@ -14,24 +14,18 @@ class EmailService {
 
   async code_reset_mail(to, subject, token) {
     const msg = `
-    <p>
-      You made a request to reset your goof account password.
+                  <p>
+                    You made a request to reset your goof account password.
 
-      <p>This pin expires in <b>10 minutes</b>
-      <p>Your reset pin is ${token} to proceed</p>
+                    <p>This pin expires in <b>10 minutes</b>
+                    <p>Your reset pin is ${token} to proceed</p>
 
-      <b>Note:</b> If you didn't initiate this request kindly ignore.
-    </p>
-  `;
+                    <b>Note:</b> If you didn't initiate this request kindly ignore.
+                  </p>
+                `;
 
-    await this._send({
-      to,
-      subject,
-      html: msg
-    });
+    await this._send({ to, subject, html: msg });
   }
-
-  async vendor_status_mail() {}
 
   async _send(opts) {
     /**
@@ -41,17 +35,7 @@ class EmailService {
     const FROM = process.env.COMPANY_EMAIL;
 
     const transporter = this.__createTransport();
-    if (process.env.NODE_ENV != "production") {
-      return await transporter.sendMail({
-        ...opts,
-        from: FROM
-      });
-    }
-
-    return await transporter.messages().send({
-      ...opts,
-      from: FROM
-    });
+    return await transporter.sendMail({ ...opts, from: FROM });
   }
 
   __createTransport() {
@@ -77,15 +61,19 @@ class EmailService {
     }
 
     if (process.env.NODE_ENV == "production") {
-      const api_key = config.get("mail.api_key");
-      const domain = config.get("mail.domain");
+      const user = config.get("mail.gmail_user");
+      const password = config.get("mail.gmail_password");
 
-      var mailgun = require("mailgun-js")({
-        apiKey: api_key,
-        domain
+      const transporter = createTransport({
+        host,
+        port,
+        auth: {
+          user,
+          pass: password
+        }
       });
 
-      return mailgun;
+      return transporter;
     }
   }
 }
