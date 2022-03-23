@@ -13,12 +13,12 @@ module.exports = {
         defaultValue: "Unapproved"
       },
       about: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
         required: true
       },
       docs: {
-        type: Sequelize.VARCHAR,
+        type: Sequelize.STRING,
         allowNull: false,
         required: true
       },
