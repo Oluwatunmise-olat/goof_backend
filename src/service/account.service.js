@@ -92,6 +92,7 @@ exports.signupwithEmail = async (req) => {
           email,
           password: password_hash,
           phone_number,
+          phone_verified: true,
           role_id,
           avatar: avatar == null || undefined ? "" : avatar
         },

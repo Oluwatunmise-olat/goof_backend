@@ -101,9 +101,9 @@ exports.updateUserProfile = async (req) => {
   } catch (error) {}
 };
 
-// today
 exports.getCart = async (req) => {};
 
+// group by date
 exports.getNotifications = (req) => {};
 
 exports.updateNotification = async (req) => {};
@@ -117,3 +117,9 @@ exports.getOrder = async (req) => {};
 exports.createOrder = async (req) => {};
 
 exports.updateOrder = async (req) => {};
+
+exports.rateStore = async (req) => {};
+
+exports.addToCart = async (req) => {};
+
+// issues db design for days of the week
