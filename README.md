@@ -32,4 +32,8 @@ Assumption is made that all dependencies have been installed
  
  ### DB Schema [Proposed Schema still -> subject to change]:
  Below you would find the link to the database schema. 
+
  Note: Some operations are not performed on the database but redis hence, they would not be in the schema
+
+ [DB_SCHEMA](https://dbdiagram.io/d/62148066485e433543f462a8)
+
