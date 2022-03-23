@@ -1,23 +1,35 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class vendor extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+  const vendor = sequelize.define(
+    "Vendor",
+    {
+      status: {
+        type: DataTypes.ENUM({
+          values: ["Approved", "Unapproved"]
+        }),
+        defaultValue: "Unapproved"
+      },
+      docs: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      about: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        required: true
+      }
+    },
+    {
+      underscored: true,
+      timestamp: true,
+      modelName: "Vendor",
+      tableName: "vendors"
     }
-  }
-  vendor.init({
-    status: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'vendor',
-  });
+  );
+  vendor.associate = (models) => {
+    vendor.belongsTo(models.User, {
+      foreignKey: "owner",
+      targetKey: "id"
+    });
+  };
   return vendor;
 };

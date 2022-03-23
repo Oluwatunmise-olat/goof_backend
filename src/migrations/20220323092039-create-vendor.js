@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('vendors', {
+    await queryInterface.createTable("vendors", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,19 +9,30 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       status: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.ENUM("Approved", "Unapproved"),
+        defaultValue: "Unapproved"
       },
-      createdAt: {
+      about: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        required: true
+      },
+      docs: {
+        type: Sequelize.VARCHAR,
+        allowNull: false,
+        required: true
+      },
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('vendors');
+    await queryInterface.dropTable("vendors");
   }
 };
