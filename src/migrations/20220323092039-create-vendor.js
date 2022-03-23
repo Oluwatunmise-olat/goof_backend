@@ -29,6 +29,11 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      owner: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        required: true
       }
     });
   },
