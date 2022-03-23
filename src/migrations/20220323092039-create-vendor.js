@@ -13,12 +13,12 @@ module.exports = {
         defaultValue: "Unapproved"
       },
       about: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
         required: true
       },
       docs: {
-        type: Sequelize.VARCHAR,
+        type: Sequelize.STRING,
         allowNull: false,
         required: true
       },
@@ -29,6 +29,11 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      owner: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        required: true
       }
     });
   },
