@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   stores.associate = (models) => {
-    stores.belongsTo(models.vendors, {
+    stores.belongsTo(models.Vendor, {
       foreignKey: "vendor_id",
       targetKey: "id"
     });

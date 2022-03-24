@@ -1,7 +1,7 @@
 // Handles everything related to sending of email
 
 // mailtrap is used for development
-// gmail is used for production
+// <not sure yet> is used for production
 
 const { createTransport } = require("nodemailer");
 const config = require("config");
@@ -28,17 +28,19 @@ class EmailService {
   }
 
   async _send(opts) {
-    /**
-     * @params opts: {to: "",  subject: "",msg: ""}
-     */
-
     const FROM = process.env.COMPANY_EMAIL;
-
-    const transporter = this.__createTransport();
+    const transporter = await this.__createTransport();
+    transporter.verify((error, resp) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(resp);
+      }
+    });
     return await transporter.sendMail({ ...opts, from: FROM });
   }
 
-  __createTransport() {
+  async __createTransport() {
     if (
       process.env.NODE_ENV == "test" ||
       process.env.NODE_ENV == "development"
@@ -48,7 +50,7 @@ class EmailService {
       const user = config.get("mail.user");
       const password = config.get("mail.password");
 
-      const transporter = createTransport({
+      const transporter = await createTransport({
         host,
         port,
         auth: {
@@ -61,19 +63,7 @@ class EmailService {
     }
 
     if (process.env.NODE_ENV == "production") {
-      const user = config.get("mail.gmail_user");
-      const password = config.get("mail.gmail_password");
-
-      const transporter = createTransport({
-        host,
-        port,
-        auth: {
-          user,
-          pass: password
-        }
-      });
-
-      return transporter;
+      // use a diff service
     }
   }
 }

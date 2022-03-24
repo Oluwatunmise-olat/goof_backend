@@ -7,7 +7,8 @@ const mail = require("../../service/email.service");
 
 emailQueue.process("reset", async (job) => {
   const { data } = job;
-  await mail.code_reset_mail(data.to, data.subject, data.token);
+  resp = await mail.code_reset_mail(data.to, data.subject, data.token);
+  console.log(resp, "fimla")
 });
 
 emailQueue.process("verify", async (job) => {

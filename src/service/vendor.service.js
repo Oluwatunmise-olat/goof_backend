@@ -4,8 +4,14 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const logger = require("../../logger/log");
 
-exports.becomeAVendor = async () => {
+exports.becomeAVendor = async (req) => {
   // would create a vendor user
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
 };
 
 exports.vendorDashboard = async () => {
