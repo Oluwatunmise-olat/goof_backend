@@ -43,9 +43,10 @@ module.exports = async (req, res, next) => {
           response({ status: false, errorData: [{ msg: "Invalid Token" }] })
         );
     // extract user from token
-    const { user_id, role_id } = value;
+    const { user_id, role_id, role_name } = value;
     req.userID = user_id;
     req.roleID = role_id;
+    req.roleName = role_name;
 
     return next();
   } catch (error) {
