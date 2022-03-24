@@ -4,13 +4,32 @@ const { validationResult } = require("express-validator");
 const { extractMessage } = require("../utils/error");
 const logger = require("../../logger/log");
 
-exports.becomeAVendor = async (req) => {
+exports.aboutVendor = async (req) => {
   // would create a vendor user
   const { errors } = validationResult(req);
 
   if (errors.length > 0) {
     const errorsArr = extractMessage(errors);
     return { error: true, errorData: errorsArr };
+  }
+
+  const { docs, about } = req.body;
+
+  try {
+    const [vendor, created] = await models.Vendor.findOrCreate({
+      where: { owner: req.userID },
+      defaults: {
+        docs,
+        about
+      }
+    });
+
+    if (!created)
+      return { error: true, errorData: [{ msg: "Already a Vendor" }] };
+
+    return { error: false, msg: "Vendor Created" };
+  } catch (error) {
+    // log error
   }
 };
 
