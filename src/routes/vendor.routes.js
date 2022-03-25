@@ -14,4 +14,20 @@ router.post(
   controller.aboutVendorHandler
 );
 
+router.post(
+  "/store/create",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createStoreSchema),
+  controller.createStoreHandler
+);
+
+router.patch(
+  "/store/edit",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.editStoreSchema),
+  controller.updateStoreHandler
+);
+
 module.exports = router;
