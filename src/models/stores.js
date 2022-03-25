@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       store_phone_no: {
         type: DataTypes.STRING,
         validate: {
-          max: { args: [13], msg: "Maximum length of phone number must be 13" },
-          min: { args: [13], msg: "Minimum length of phone number must be 13" }
+          len: [13, 13]
         }
       },
       is_banned: {
@@ -30,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_available: {
         type: DataTypes.BOOLEAN,
-        required: true
+        required: true,
+        defaultValue: false
       }
     },
     {
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   stores.associate = (models) => {
-    stores.belongsTo(models.vendors, {
+    stores.belongsTo(models.Vendor, {
       foreignKey: "vendor_id",
       targetKey: "id"
     });

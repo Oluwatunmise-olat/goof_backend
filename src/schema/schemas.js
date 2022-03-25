@@ -1,4 +1,8 @@
-const { User, phone_verification, Role } = require("../models/index");
+const {
+  User,
+  phone_verification: Phone_Verification,
+  Role
+} = require("../models/index");
 const { phoneRegex } = require("../utils/patterns");
 const logger = require("../../logger/log");
 const { errMsg } = require("../utils/error");
@@ -7,25 +11,32 @@ exports.phoneverificationSchema = {
   phone_number: {
     in: ["body"],
     trim: true,
-    isEmpty: false,
+    exists: true,
+    errorMessage: errMsg("phone_number"),
     custom: {
-      options: (value, { req }) => {
-        if (!value) return Promise.reject("Phone number field is required");
+      options: async (value, { req }) => {
         let valid = phoneRegex.test(value);
-        // verify regex pattern (+234XXXXXXXXXX)
+
         if (!valid) return Promise.reject("Invalid Phone Number Pattern");
-        // verify if number exists in verification table
-        return phone_verification
-          .findOne({ where: { phone_number: value } })
-          .then((number) => {
-            if (number && number.verified) return Promise.reject("verified");
-            return true;
-          })
-          .catch((err) => {
-            logger.error(
-              `Error fetching data from db(phone verification) - phone validation schema ${err}`
-            );
+
+        if (value.length < 14 || value.length > 14) {
+          return Promise.reject("Phone number should have a length of 14");
+        }
+
+        try {
+          const numberExists = await Phone_Verification.findOne({
+            where: { phone_number: value }
           });
+
+          if (!numberExists) return Promise.resolve();
+
+          if (numberExists && numberExists.verified)
+            return Promise.reject("Verified");
+        } catch (error) {
+          logger.error(
+            `Error fetching data from db(phone verification) - phone validation schema ${err}`
+          );
+        }
       }
     }
   }
@@ -35,31 +46,36 @@ exports.updatephoneVerificationSchema = {
   code: {
     in: ["body"],
     trim: true,
-    isEmpty: false,
+    exists: true,
     errorMessage: errMsg("code")
   },
   phone_number: {
     in: ["body"],
     trim: true,
-    isEmpty: false,
+    exists: true,
+    errorMessage: errMsg("phone_number"),
     custom: {
       options: (value, { req }) => {
-        if (!value) return Promise.reject("Phone number field is required");
         let valid = phoneRegex.test(value);
         if (!valid) {
           return Promise.reject("Invalid Phone Number Pattern");
         }
-        return phone_verification
-          .findOne({ where: { phone_number: value } })
-          .then((number) => {
-            if (!number) return Promise.reject("Not Found");
-            if (number.verified) return Promise.reject("verified");
-          })
-          .catch((err) => {
-            logger.error(
-              `Error fetching data from db(phone verification) - update phone validation schema ${err}`
-            );
-          });
+        if (value.length < 14 || value.length > 14) {
+          return Promise.reject("Phone number should have a length of 14");
+        }
+
+        if (value) {
+          return Phone_Verification.findOne({ where: { phone_number: value } })
+            .then((number) => {
+              if (!number) return Promise.reject("Not Found");
+              if (number.verified) return Promise.reject("verified");
+            })
+            .catch((err) => {
+              logger.error(
+                `Error fetching data from db(phone verification) - update phone validation schema ${err}`
+              );
+            });
+        }
       }
     }
   }
@@ -75,15 +91,15 @@ exports.signupSchema = {
   lastname: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("firstname"),
+    errorMessage: errMsg("lastname"),
     trim: true
   },
   password_confirm: {
     in: ["body"],
     exists: true,
+    errorMessage: errMsg("password_confirm"),
     custom: {
       options: (value) => {
-        if (!value) return Promise.reject(errMsg("password_confirm"));
         if (value.length < 5)
           return Promise.reject("Password confirm too short");
         return Promise.resolve();
@@ -93,12 +109,12 @@ exports.signupSchema = {
   password: {
     in: ["body"],
     exists: true,
+    errorMessage: errMsg("password"),
+    bail: true,
     custom: {
       options: (value, { req }) => {
         let { password_confirm } = req.body;
-        if (!value) return Promise.reject(errMsg("password_confirm"));
-        if (value.length < 5)
-          return Promise.reject("Password confirm too short");
+        if (value.length < 5) return Promise.reject("Password too short");
         if (!value == password_confirm)
           return Promise.reject("Password Mismatch");
         return Promise.resolve();
@@ -111,14 +127,17 @@ exports.signupSchema = {
   role_id: {
     in: ["body"],
     exists: true,
+    errorMessage: errMsg("role_id"),
     custom: {
       options: async (value) => {
         if (typeof value != "number")
           return Promise.reject("Invalid role_id datatype");
         try {
-          const role = await Role.findByPk(value);
-          if (!role) return Promise.reject("Invalid role_id");
-          return Promise.resolve();
+          if (value) {
+            const role = await Role.findByPk(value);
+            if (!role) return Promise.reject("Invalid role_id");
+            return Promise.resolve();
+          }
         } catch (error) {
           logger.error(`
             Error fetching data from db(roles) - [schema/schmas.js] ${error}
@@ -130,23 +149,36 @@ exports.signupSchema = {
   phone_number: {
     in: ["body"],
     exists: true,
+    errorMessage: errMsg("phone_number"),
+    bail: true,
     custom: {
       options: async (value) => {
-        if (!value) return Promise.reject(errMsg("phone_number"));
+        if (value.length < 14 || value.length > 14) {
+          return Promise.reject("Phone number should have a length of 14");
+        }
         if (!phoneRegex.test(value))
           return Promise.reject("Invalid Phone Number Pattern");
+
         try {
-          const exists = await phone_verification.findOne({
+          let userPhone = value.split("+")[1];
+          const user = await User.findOne({
+            where: { phone_number: userPhone }
+          });
+
+          const phoneVerified = await Phone_Verification.findOne({
             where: { phone_number: value }
           });
-          const user = await User.findOne({ where: { phone_number: value } });
-          if (!exists.dataValues.id || !exists.dataValues.verified)
+
+          if (phoneVerified && !phoneVerified.verified)
             return Promise.reject("Phone number not verified");
-          if (user) return Promise.reject("Phone number taken");
+
+          if (user && user.dataValues.id)
+            return Promise.reject("Phone number taken");
+
           return Promise.resolve();
         } catch (error) {
           logger.error(`
-          Error fetching data from db(phone verification) - [schema/schemas.js] ${error}
+            Error fetching data from db(phone verification) - [schema/schemas.js] ${error}
           `);
         }
       }
@@ -157,13 +189,15 @@ exports.signupSchema = {
     exists: true,
     errorMessage: errMsg("email"),
     normalizeEmail: true,
+    isEmail: true,
     custom: {
       options: async (value) => {
-        if (!value) return Promise.reject(errMsg("email"));
         try {
-          const exists = await User.findOne({ where: { email: value } });
-          if (exists.dataValues.id) return Promise.reject("Email Taken");
-          return Promise.resolve();
+          if (value) {
+            const exists = await User.findOne({ where: { email: value } });
+            if (exists) return Promise.reject("Email Taken");
+            return Promise.resolve();
+          }
         } catch (error) {
           logger.error(`
             Error fetching data from db(users) - [schema/schemas.js] ${error}
@@ -178,7 +212,9 @@ exports.loginSchema = {
   email: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("email")
+    errorMessage: errMsg("email"),
+    isEmail: true,
+    normalizeEmail: true
   },
   password: {
     in: ["body"],
@@ -191,7 +227,9 @@ exports.forgotPasswordSchema = {
   email: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("email")
+    errorMessage: errMsg("email"),
+    isEmail: true,
+    normalizeEmail: true
   },
   type: {
     in: ["body"],
@@ -225,7 +263,8 @@ exports.verifyPinSchema = {
     exists: true,
     trim: true,
     normalizeEmail: true,
-    errorMessage: errMsg("email")
+    errorMessage: errMsg("email"),
+    isEmail: true
   },
   token: {
     in: ["body"],
@@ -258,7 +297,9 @@ exports.resetPasswordSchema = {
   email: {
     in: ["body"],
     exists: true,
-    errorMessage: errMsg("email")
+    errorMessage: errMsg("email"),
+    isEmail: true,
+    normalizeEmail: true
   },
   password_confirm: {
     in: ["body"],

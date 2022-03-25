@@ -30,3 +30,6 @@ user endpoints
 9. view notifications
 10. view wallet details endpoint
 11. view cart details
+
+
+--> get all roles endpoint

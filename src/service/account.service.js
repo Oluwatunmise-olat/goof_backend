@@ -169,7 +169,8 @@ exports.loginwithEmail = async (req) => {
     // generate jwt
     const accessToken = await genAccessToken({
       user_id: userExists.dataValues.id,
-      role_id: userRole.dataValues.id
+      role_id: userRole.dataValues.id,
+      role_name: userRole.dataValues.name
     });
 
     delete userExists.dataValues.password;

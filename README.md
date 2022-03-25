@@ -8,7 +8,7 @@ Goof is a delivery service that handles it's users delivery to their door step b
       - Don't forget to set your environment variables (check example.sh for sample guide).
 
     - For development, mailtrap (fake smtp server) is used to avoid cluttering your email [MailTrap](https://mailtrap.io)
-    - For production, gmail is configured to be used (create an app on google console and generate a password) [Google Account](https://myaccount.google.com/)
+    - For production, not sure yet
 
 
 ### Note: To run test:
