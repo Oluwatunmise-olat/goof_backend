@@ -59,6 +59,17 @@ exports.editStoreSchema = {
     optional: { nullable: true }
   },
   store_phone_no: {
-    optional: { nullable: true }
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value && (value.length < 14 || value.length > 14)) {
+          return Promise.reject("Phone number should have a length of 14");
+        }
+        if (!phoneRegex.test(value))
+          return Promise.reject("Invalid Phone Number Pattern");
+
+        return Promise.resolve();
+      }
+    }
   }
 };

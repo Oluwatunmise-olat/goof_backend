@@ -53,6 +53,14 @@ exports.createStore = async (req) => {
   const { store_name, store_cover, store_avatar, store_phone_no } = req.body;
 
   try {
+    const vendor = await models.Vendor.findOne({
+      where: { owner: req.userID }
+    });
+
+    const {
+      dataValues: { status }
+    } = vendor;
+
     const [store, created] = await models.Store.findOrCreate({
       where: { vendor_id: req.userID },
       defaults: {
@@ -74,7 +82,7 @@ exports.createStore = async (req) => {
     return {
       error: false,
       msg: "Store Created",
-      data: { ...dataValues }
+      data: { ...dataValues, approval_status: status }
     };
   } catch (error) {
     // log error
@@ -94,7 +102,7 @@ exports.editStore = async (req) => {
 
   const data = {};
   if (store_name) data.store_name = store_name;
-  if (store_phone_no) data.store_phone_no = store_phone_no;
+  if (store_phone_no) data.store_phone_no = store_phone_no.split("+")[1];
   if (store_avatar) data.store_avatar = store_avatar;
   if (store_cover) data.store_cover = store_cover;
 
@@ -110,15 +118,23 @@ exports.editStore = async (req) => {
     if (resp.length == 0) {
       return {
         error: true,
-        errorData: [{ msg: "No store Associated with current vendor>" }]
+        errorData: [{ msg: "No store Associated with current vendor" }]
       };
     }
 
     updatedStore = resp[0].dataValues;
 
+    const vendor = await models.Vendor.findOne({
+      where: { owner: req.userID }
+    });
+
+    const {
+      dataValues: { status }
+    } = vendor;
+
     return {
       msg: "Store updated successfully",
-      data: { ...updatedStore }
+      data: { ...updatedStore, approval_status: status }
     };
   } catch (error) {
     // log error

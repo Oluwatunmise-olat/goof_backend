@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_available: {
         type: DataTypes.BOOLEAN,
-        required: true
+        required: true,
+        defaultValue: false
       }
     },
     {
