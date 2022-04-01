@@ -122,4 +122,39 @@ exports.storeLocationSchema = {
     }
   }
 };
-exports.editStoreLocationSchema = {};
+exports.editStoreLocationSchema = {
+  is_landmark: {
+    in: ["body"],
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value) {
+          let valid_resp = [true, false];
+          if (!valid_resp.includes(value)) {
+            return Promise.reject("Invalid Response for field landmark");
+          }
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  landmark: { in: ["body"], optional: { nullable: true } },
+  store_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("store_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number")) {
+            return Promise.reject("Invalid datatype for field store_id");
+          }
+          return Promise.resolve;
+        }
+      }
+    }
+  },
+  place_name: { in: ["body"], optional: { nullable: true } },
+  address: { in: ["body"], optional: { nullable: true } }
+};

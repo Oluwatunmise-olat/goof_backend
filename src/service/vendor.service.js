@@ -133,6 +133,71 @@ exports.editStore = async (req) => {
   }
 };
 
+exports.editStoreLocation = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { is_landmark, landmark, address, place_name, store_id } = req.body;
+
+  const data = {};
+  if (is_landmark) data.landmark = landmark;
+  if (landmark) data.landmark = landmark;
+  if (address) data.address = address;
+  if (place_name) data.place_name = place_name;
+
+  try {
+    const store = await models.Store.findOne({
+      where: { vendor_id: req.userID }
+    });
+
+    if (!store) {
+      return {
+        error: true,
+        statusCode: 404,
+        errorData: [{ msg: "No store exists for user" }]
+      };
+    }
+
+    if (store.id != store_id) {
+      return {
+        error: true,
+        statusCode: 403,
+        errorData: [{ msg: "Unauthorized" }]
+      };
+    }
+
+    const [_, resp] = await models.store_location.update(
+      { ...data },
+      {
+        where: { id: store_id },
+        returning: true
+      }
+    );
+
+    if (resp.length == 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "store location not set" }]
+      };
+    }
+
+    let updatedLocation = resp[0].dataValues;
+
+    return {
+      error: false,
+      msg: "Location updated",
+      data: { ...updatedLocation }
+    };
+  } catch (error) {
+    // log error
+    console.error(error);
+  }
+};
+
 exports.setStoreLocation = async (req) => {
   const { errors } = validationResult(req);
 
@@ -147,15 +212,23 @@ exports.setStoreLocation = async (req) => {
 
   try {
     const store = await models.Store.findOne({
-      where: { vendor_id: req.userID}
+      where: { vendor_id: req.userID }
     });
 
-    if (!store){
-      return {error: true, statusCode: 404, errorData: [{msg: "No store exists for user"}]}
+    if (!store) {
+      return {
+        error: true,
+        statusCode: 404,
+        errorData: [{ msg: "No store exists for user" }]
+      };
     }
 
-    if (store.id != store_id){
-      return {error: true, statusCode: 403, errorData: [{msg: "Unauthorized"}]}
+    if (store.id != store_id) {
+      return {
+        error: true,
+        statusCode: 403,
+        errorData: [{ msg: "Unauthorized" }]
+      };
     }
 
     const storelocation = await models.store_location.create({
@@ -178,10 +251,6 @@ exports.setStoreLocation = async (req) => {
     console.error(error);
   }
 };
-
-exports.editStoreLocation = async (req) => {};
-
-// =========================================
 
 exports.vendorDashboard = async () => {
   // show must bought item in store
