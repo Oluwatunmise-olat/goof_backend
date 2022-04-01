@@ -45,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "vendor_id",
       targetKey: "id"
     });
+
+    // source -> target
+    stores.hasMany(models.store_menus, {
+      foreignKey: "store_id",
+      sourceKey: "id",
+      targetKey: "store_id"
+    })
   };
   return stores;
 };
+
