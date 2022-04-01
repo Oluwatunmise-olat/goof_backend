@@ -33,15 +33,6 @@ exports.aboutVendor = async (req) => {
   }
 };
 
-exports.vendorDashboard = async () => {
-  // show must bought item in store
-  // total number of customers
-  // sales detail
-  // can be filtered
-};
-
-exports.viewStore = async () => {};
-
 exports.createStore = async (req) => {
   const { errors } = validationResult(req);
 
@@ -141,6 +132,67 @@ exports.editStore = async (req) => {
     console.log(error.message);
   }
 };
+
+exports.setStoreLocation = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { is_landmark, landmark, address, place_name, store_id } = req.body;
+
+  // validate the store is for current auth user
+
+  try {
+    const store = await models.Store.findOne({
+      where: { vendor_id: req.userID}
+    });
+
+    if (!store){
+      return {error: true, statusCode: 404, errorData: [{msg: "No store exists for user"}]}
+    }
+
+    if (store.id != store_id){
+      return {error: true, statusCode: 403, errorData: [{msg: "Unauthorized"}]}
+    }
+
+    const storelocation = await models.store_location.create({
+      id: store_id,
+      place_name,
+      landmark,
+      is_landmark,
+      address
+    });
+
+    const { dataValues } = storelocation;
+
+    return {
+      error: false,
+      msg: "Location setup",
+      data: { ...dataValues }
+    };
+  } catch (error) {
+    // log error
+    console.error(error);
+  }
+};
+
+exports.editStoreLocation = async (req) => {};
+
+// =========================================
+
+exports.vendorDashboard = async () => {
+  // show must bought item in store
+  // total number of customers
+  // sales detail
+  // can be filtered
+};
+exports.viewStore = async () => {
+  // location
+  // store approval status
+};
 exports.createStoreMenu = async () => {};
 exports.editStoreMenu = async () => {};
 exports.viewStoreMenu = async () => {};
@@ -156,7 +208,6 @@ exports.getOrderHistory = async () => {
   // actual payout
   // remitted payout
 };
-
 exports.getPaymentHistory = async () => {
   // payment status
   // paymant transaction references
