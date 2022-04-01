@@ -30,4 +30,20 @@ router.patch(
   controller.updateStoreHandler
 );
 
+router.post(
+  "/store/location/set",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.storeLocationSchema),
+  controller.setStoreLocationHandler
+);
+
+router.patch(
+  "/store/location/edit",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.editStoreLocationSchema),
+  controller.updateStoreLocationHandler
+);
+
 module.exports = router;
