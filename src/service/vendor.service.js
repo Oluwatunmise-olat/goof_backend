@@ -106,7 +106,7 @@ exports.editStore = async (req) => {
       }
     );
 
-    if (resp.length == 0) {
+    if (!resp || resp.length == 0) {
       return {
         error: true,
         errorData: [{ msg: "No store Associated with current vendor" }]
@@ -178,7 +178,9 @@ exports.editStoreLocation = async (req) => {
       }
     );
 
-    if (resp.length == 0) {
+
+    if (!resp || resp.length == 0) {
+
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -252,6 +254,127 @@ exports.setStoreLocation = async (req) => {
   }
 };
 
+exports.createStoreMenu = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  // validate store associated with user exists
+  // validate store_id
+  try {
+    const { store_id, deactivate, description, cover_image, menu_name } =
+      req.body;
+
+    const store = await models.Store.findOne({
+      where: { vendor_id: req.userID }
+    });
+
+    if (!store) {
+      return {
+        error: true,
+        statusCode: 404,
+        errorData: [{ msg: "No store exists for user" }]
+      };
+    }
+
+    if (store.id != store_id) {
+      return {
+        error: true,
+        statusCode: 403,
+        errorData: [{ msg: "Unauthorized" }]
+      };
+    }
+
+    // create store menu
+    const store_menu = await models.store_menus.create({
+      store_id,
+      deactivate,
+      description,
+      cover_image,
+      menu_name
+    });
+
+    const { dataValues } = store_menu;
+
+    return { error: false, data: { ...dataValues }, msg: "Store menu created" };
+  } catch (error) {
+    // log error
+    console.log(error);
+  }
+};
+
+exports.editStoreMenu = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { store_id, deactivate, description, cover_image, menu_id, menu_name } =
+    req.body;
+
+  const data = {};
+  if (deactivate) data.deactivate = deactivate;
+  if (cover_image) data.cover_image = cover_image;
+  if (description) data.description = description;
+  if (menu_name) data.menu_name = menu_name;
+
+  try {
+    const store = await models.Store.findOne({
+      where: { vendor_id: req.userID }
+    });
+
+    if (!store) {
+      return {
+        error: true,
+        statusCode: 404,
+        errorData: [{ msg: "No store exists for user" }]
+      };
+    }
+
+    if (store.id != store_id) {
+      return {
+        error: true,
+        statusCode: 403,
+        errorData: [{ msg: "Unauthorized" }]
+      };
+    }
+
+    const [_, resp] = await models.store_menus.update(
+      { ...data },
+      {
+        where: { store_id, id: menu_id },
+        returning: true
+      }
+    );
+
+    if (!resp || resp.length == 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "store menu doesn't exist " }]
+      };
+    }
+
+    let updatedStoreMenu = resp[0].dataValues;
+
+    return {
+      error: false,
+      msg: "store menu updated",
+      data: { ...updatedStoreMenu }
+    };
+  } catch (error) {
+    // log error
+    console.error(error);
+  }
+};
+
+exports.addMenuAvailability = async () => {};
+exports.updateMenuAvailability = async () => {};
+
 exports.vendorDashboard = async () => {
   // show must bought item in store
   // total number of customers
@@ -265,8 +388,21 @@ exports.viewStore = async () => {
 exports.createStoreMenu = async () => {};
 exports.editStoreMenu = async () => {};
 exports.viewStoreMenu = async () => {};
+
 exports.createMenuCategory = async () => {};
 exports.editMenuCategory = async () => {};
+
+exports.vendorDashboard = async () => {
+  // show must bought item in store
+  // total number of customers
+  // sales detail
+  // can be filtered
+};
+exports.viewStore = async () => {
+  // location
+  // store approval status
+};
+exports.viewStoreMenu = async () => {};
 exports.getStoreNotifications = async () => {};
 exports.getOrderHistory = async () => {
   // order id
@@ -284,7 +420,6 @@ exports.getPaymentHistory = async () => {
   // next payout
   // last payout
 };
-
 exports.addBank = async () => {};
 exports.updateBank = async () => {};
 // payment method

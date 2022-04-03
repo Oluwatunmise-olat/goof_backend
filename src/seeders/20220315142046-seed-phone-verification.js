@@ -13,7 +13,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`
-      DELETE FROM "phone_verification' 
+      DELETE FROM "phone_verification" 
       WHERE 
       phone_number='+2349060579834' 
       OR 

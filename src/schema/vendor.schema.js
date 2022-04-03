@@ -83,10 +83,8 @@ exports.storeLocationSchema = {
     custom: {
       options: (value) => {
         if (value) {
-          let valid_resp = [true, false];
-          if (!valid_resp.includes(value)) {
+          if (!(typeof value === "boolean"))
             return Promise.reject("Invalid Response for field landmark");
-          }
           return Promise.resolve();
         }
       }
@@ -158,3 +156,118 @@ exports.editStoreLocationSchema = {
   place_name: { in: ["body"], optional: { nullable: true } },
   address: { in: ["body"], optional: { nullable: true } }
 };
+
+
+exports.createStoreMenuSchema = {
+  store_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("store_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number"))
+            return Promise.reject("Invalid datatype for field store_id");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  deactivate: {
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "boolean"))
+            return Promise.reject("Invalid datatype for field deactivate");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    optional: { nullable: true },
+    trim: true
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true },
+    trim: true
+  },
+  menu_name: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_name"),
+    bail: true,
+    trim: true
+  }
+};
+
+exports.editStoreMenuSchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number"))
+            return Promise.reject("Invalid datatype for field menu_id");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  store_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("store_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number"))
+            return Promise.reject("Invalid datatype for field store_id");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  deactivate: {
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "boolean"))
+            return Promise.reject("Invalid datatype for field deactivate");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    optional: { nullable: true },
+    trim: true
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true },
+    trim: true
+  },
+  menu_name: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    trim: true
+  }
+};
+
+// presentation on diff between nest js and express js
+// possible exploits
+// security loop holes
+// KISS (Keep It Stupidly Simple)
+// google slides
