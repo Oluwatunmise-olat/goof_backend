@@ -1,9 +1,9 @@
-modul.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const store_menus = sequelize.define(
     "store_menus",
     {
       store_id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false
       },
       deactivate: {
@@ -38,6 +38,12 @@ modul.exports = (sequelize, DataTypes) => {
       sourceKey: "store_id",
       targetKey: "id"
     });
+
+    store_menus.belongsToMany(models.week_days, {
+      foreignKey: "menu_id",
+      through: models.menu_availabilities,
+      as: "menu_days"
+    })
   };
 
   return store_menus;

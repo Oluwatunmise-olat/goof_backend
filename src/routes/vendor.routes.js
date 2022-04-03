@@ -46,4 +46,20 @@ router.patch(
   controller.updateStoreLocationHandler
 );
 
+router.post(
+  "/store/menu/create",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createStoreMenuSchema),
+  controller.createStoreMenuHandler
+);
+
+router.patch(
+  "/store/menu/edit",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.editStoreMenuSchema),
+  controller.updateStoreMenuHandler
+);
+
 module.exports = router;
