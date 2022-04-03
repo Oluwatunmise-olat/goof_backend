@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
   const store_menus = sequelize.define(
     "store_menus",
@@ -44,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       through: models.menu_availabilities,
       as: "menu_days"
     })
+
   };
 
   return store_menus;
