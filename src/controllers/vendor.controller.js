@@ -144,6 +144,7 @@ exports.addMenuAvailabilityHandler = async (req, res, next) => {
 exports.removeMenuAvailabilityHandler = async (req, res, next) => {
   try {
     const resp = await services.removeMenuAvailability(req);
+    console.log(resp)
     if (resp.error) {
       const statusCode = resp.code == undefined ? 400 : resp.code;
       return res
