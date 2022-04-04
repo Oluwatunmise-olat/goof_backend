@@ -179,6 +179,7 @@ exports.editStoreLocation = async (req) => {
     );
 
     if (!resp || resp.length == 0) {
+
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -370,6 +371,7 @@ exports.editStoreMenu = async (req) => {
   }
 };
 
+
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -440,6 +442,7 @@ exports.addMenuAvailability = async (req) => {
     console.log(error.name, error.message, "op");
   }
 };
+
 exports.updateMenuAvailability = async () => {};
 
 exports.vendorDashboard = async () => {

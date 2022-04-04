@@ -45,7 +45,6 @@ module.exports = (sequelize, DataTypes) => {
       through: models.menu_availabilities,
       as: "days"
     })
-
   };
 
   return store_menus;

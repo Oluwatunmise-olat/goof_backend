@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       timestamps: true,
       modelName: "week_days",
+
       tableName: "week_days",
       name: {
         plural: "days",
