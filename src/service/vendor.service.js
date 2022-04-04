@@ -179,7 +179,6 @@ exports.editStoreLocation = async (req) => {
     );
 
     if (!resp || resp.length == 0) {
-
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -371,7 +370,6 @@ exports.editStoreMenu = async (req) => {
   }
 };
 
-
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -436,14 +434,79 @@ exports.addMenuAvailability = async (req) => {
   } catch (error) {
     const errorName = error.name;
     if (errorName === "SequelizeForeignKeyConstraintError") {
-      console.log("handled 👍");
-      return;
+      return {
+        erorr: true,
+        errorData: [{ msg: "menu availability already exists" }]
+      };
     }
     console.log(error.name, error.message, "op");
   }
 };
 
-exports.updateMenuAvailability = async () => {};
+exports.removeMenuAvailability = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { menu_id, availability } = req.body;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [models.Store]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }]
+      };
+    }
+
+    const { dataValues: menuData } = menu;
+    const {
+      Store: { dataValues: storeData }
+    } = menuData;
+
+    if (!(storeData.vendor_id == req.userID)) {
+      return { error: true, code: 403, errorData: [{ msg: "Unauthorized" }] };
+    }
+
+    let done = false;
+
+    availability.forEach(({ week_day_id }, index) => {
+      menu.removeDays(week_day_id);
+
+      if (index == availability.length - 1) {
+        done = true;
+      }
+    });
+
+    if (done) {
+      const menu_availabilities = await menu.getDays();
+
+      const data = [];
+
+      menu_availabilities.forEach(({ dataValues }) => {
+        const {
+          menu_availabilities: { dataValues: menuAvailabilitiesValues }
+        } = dataValues;
+
+        data.push({
+          week_day_name: dataValues.name,
+          ...menuAvailabilitiesValues
+        });
+      });
+
+      return { error: false, data: data };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 exports.vendorDashboard = async () => {
   // show must bought item in store

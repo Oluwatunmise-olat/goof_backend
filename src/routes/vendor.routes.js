@@ -70,4 +70,12 @@ router.post(
   controller.addMenuAvailabilityHandler
 );
 
+router.delete(
+  "/store/menu/remove-availability",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.removeMenuAvailabilitySchema),
+  controller.removeMenuAvailabilityHandler
+);
+
 module.exports = router;
