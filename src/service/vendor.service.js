@@ -178,9 +178,7 @@ exports.editStoreLocation = async (req) => {
       }
     );
 
-
     if (!resp || resp.length == 0) {
-
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -404,30 +402,35 @@ exports.addMenuAvailability = async (req) => {
       return { error: true, code: 403, errorData: [{ msg: "Unauthorized" }] };
     }
 
-    availability.forEach(async ({ week_day_id, close_time, open_time }) => {
-      {
-        await menu.addDay(week_day_id, {
-          through: { open_time, close_time }
-        });
+    let done = false;
+
+    availability.forEach(({ week_day_id, close_time, open_time }, index) => {
+      menu.addDay(week_day_id, {
+        through: { open_time, close_time }
+      });
+      if (index == availability.length - 1) {
+        done = true;
       }
     });
 
-    const menu_availabilities = await menu.getDays();
+    if (done) {
+      const menu_availabilities = await menu.getDays();
 
-    const data = [];
+      const data = [];
 
-    menu_availabilities.forEach(({ dataValues }) => {
-      const {
-        menu_availabilities: { dataValues: menuAvailabilitiesValues }
-      } = dataValues;
+      menu_availabilities.forEach(({ dataValues }) => {
+        const {
+          menu_availabilities: { dataValues: menuAvailabilitiesValues }
+        } = dataValues;
 
-      data.push({
-        week_day_name: dataValues.name,
-        ...menuAvailabilitiesValues
+        data.push({
+          week_day_name: dataValues.name,
+          ...menuAvailabilitiesValues
+        });
       });
-    });
 
-    return { error: false, data: data };
+      return { error: false, data: data };
+    }
   } catch (error) {
     const errorName = error.name;
     if (errorName === "SequelizeForeignKeyConstraintError") {
