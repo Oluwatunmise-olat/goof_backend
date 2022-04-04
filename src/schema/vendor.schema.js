@@ -266,6 +266,55 @@ exports.editStoreMenuSchema = {
   }
 };
 
+exports.addMenuAvailabilitySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value == "number"))
+            return Promise.reject("Invalid datatype for field 'menu_id'");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  availability: {
+    // -> objects[] -> [ { week_day_id, close_time, open_time } ]
+
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("availability"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          const validKeys = ["week_day_id", "close_time", "open_time"];
+          let error = false;
+
+          value.forEach((data) => {
+            const dataKeys = Object.keys(data);
+            validKeys.forEach((key) => {
+              if (!dataKeys.includes(key)) {
+                error = true;
+              }
+            });
+          });
+          if (error) {
+            return Promise.reject(
+              "Invalid data schema for field 'availability'"
+            );
+          }
+          return Promise.resolve();
+        }
+      }
+    }
+  }
+};
+
 // presentation on diff between nest js and express js
 // possible exploits
 // security loop holes

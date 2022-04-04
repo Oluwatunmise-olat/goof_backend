@@ -1,6 +1,14 @@
 ### **GOOF API**
 Goof is a delivery service that handles it's users delivery to their door step by acting as a bridge between users and vendors.
 
+ ### DB Schema [Proposed Schema still -> subject to change]:
+ Below you would find the link to the database schema. 
+
+ Note: Some operations are not performed on the database but redis hence, they would not be in the schema
+
+ [DB_SCHEMA](https://dbdiagram.io/d/62148066485e433543f462a8)
+ [DOCS](https://documenter.getpostman.com/view/16498899/UVysyw6U)
+
 ### Services:
  - ## Email
     Note: 
@@ -30,10 +38,3 @@ Assumption is made that all dependencies have been installed
 1. create docker compose file to startup the system (because of redis and all ...)
 2. create a seperate docker compose file & dockerfile for testing purposes
  
- ### DB Schema [Proposed Schema still -> subject to change]:
- Below you would find the link to the database schema. 
-
- Note: Some operations are not performed on the database but redis hence, they would not be in the schema
-
- [DB_SCHEMA](https://dbdiagram.io/d/62148066485e433543f462a8)
-

@@ -62,4 +62,12 @@ router.patch(
   controller.updateStoreMenuHandler
 );
 
+router.post(
+  "/store/menu/add-availability",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.addMenuAvailabilitySchema),
+  controller.addMenuAvailabilityHandler
+);
+
 module.exports = router;

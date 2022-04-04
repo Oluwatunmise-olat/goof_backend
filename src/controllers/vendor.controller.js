@@ -125,3 +125,20 @@ exports.updateStoreMenuHandler = async (req, res, next) => {
     return next(error);
   }
 };
+
+
+exports.addMenuAvailabilityHandler = async (req, res, next) => {
+  try {
+    const resp = await services.addMenuAvailability(req);
+    if (resp.error) {
+      const statusCode = resp.code == undefined ? 400 : resp.code;
+      return res
+        .status(statusCode)
+        .json(response({ status: false, errorData: resp.errorData }));
+    }
+    return res.status(200).json(response({ status: true, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
+
