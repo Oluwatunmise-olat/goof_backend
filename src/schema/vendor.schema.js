@@ -85,7 +85,6 @@ exports.storeLocationSchema = {
         if (value) {
           if (!(typeof value === "boolean"))
             return Promise.reject("Invalid Response for field landmark");
-
           return Promise.resolve();
         }
       }
@@ -157,6 +156,7 @@ exports.editStoreLocationSchema = {
   place_name: { in: ["body"], optional: { nullable: true } },
   address: { in: ["body"], optional: { nullable: true } }
 };
+
 
 exports.createStoreMenuSchema = {
   store_id: {

@@ -178,7 +178,9 @@ exports.editStoreLocation = async (req) => {
       }
     );
 
+
     if (!resp || resp.length == 0) {
+
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -436,6 +438,21 @@ exports.addMenuAvailability = async (req) => {
   }
 };
 exports.updateMenuAvailability = async () => {};
+
+exports.vendorDashboard = async () => {
+  // show must bought item in store
+  // total number of customers
+  // sales detail
+  // can be filtered
+};
+exports.viewStore = async () => {
+  // location
+  // store approval status
+};
+exports.createStoreMenu = async () => {};
+exports.editStoreMenu = async () => {};
+exports.viewStoreMenu = async () => {};
+
 exports.createMenuCategory = async () => {};
 exports.editMenuCategory = async () => {};
 
