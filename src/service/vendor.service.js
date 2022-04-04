@@ -179,7 +179,6 @@ exports.editStoreLocation = async (req) => {
     );
 
     if (!resp || resp.length == 0) {
-
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -371,7 +370,6 @@ exports.editStoreMenu = async (req) => {
   }
 };
 
-
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -479,8 +477,8 @@ exports.removeMenuAvailability = async (req) => {
 
     let done = false;
 
-    availability.forEach(async ({ week_day_id }, index) => {
-      await menu.removeDays(week_day_id);
+    availability.forEach(({ week_day_id }, index) => {
+      menu.removeDays(week_day_id);
 
       if (index == availability.length - 1) {
         done = true;
