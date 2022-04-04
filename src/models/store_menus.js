@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     store_menus.belongsToMany(models.week_days, {
       foreignKey: "menu_id",
       through: models.menu_availabilities,
-      as: "menu_days"
+      as: "days"
     })
   };
 

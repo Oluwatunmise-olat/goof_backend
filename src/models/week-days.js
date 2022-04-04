@@ -20,14 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       timestamps: true,
       modelName: "week_days",
-      tableName: "week_days"
+      tableName: "week_days",
+      name: {
+        plural: "days",
+        singular: "day"
+      }
     }
   );
   week_days.associate = (models) => {
     week_days.belongsToMany(models.store_menus, {
       through: models.menu_availabilities,
       foreignKey: "week_day_id",
-      as: "day_menus"
+      as: "menus"
     });
   };
   return week_days;
