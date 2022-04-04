@@ -179,6 +179,7 @@ exports.editStoreLocation = async (req) => {
     );
 
     if (!resp || resp.length == 0) {
+
       return {
         error: true,
         errorData: [{ msg: "store location not set" }]
@@ -369,6 +370,7 @@ exports.editStoreMenu = async (req) => {
     console.error(error);
   }
 };
+
 
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);

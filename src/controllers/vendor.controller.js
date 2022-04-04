@@ -126,6 +126,7 @@ exports.updateStoreMenuHandler = async (req, res, next) => {
   }
 };
 
+
 exports.addMenuAvailabilityHandler = async (req, res, next) => {
   try {
     const resp = await services.addMenuAvailability(req);
