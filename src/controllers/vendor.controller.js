@@ -58,7 +58,7 @@ exports.updateStoreHandler = async (req, res, next) => {
 };
 
 /**
- * Location Hadlers
+ * Location Handlers
  */
 exports.setStoreLocationHandler = async (req, res, next) => {
   try {
@@ -137,6 +137,7 @@ exports.updateStoreMenuHandler = async (req, res, next) => {
 };
 // todo
 exports.getStoreMenuHandler = async (req, res, next) => {};
+exports.deleteStoreMenuHandler = async (req, res, next) => {};
 
 /**
  * Menu Availablility Handlers

@@ -33,6 +33,9 @@ exports.aboutVendor = async (req) => {
   }
 };
 
+/**
+ * Store
+ */
 exports.createStore = async (req) => {
   const { errors } = validationResult(req);
 
@@ -80,7 +83,11 @@ exports.createStore = async (req) => {
     console.log(error.message);
   }
 };
-
+// todo
+exports.getStore = async (req) => {
+  // location
+  // store approval status
+};
 exports.editStore = async (req) => {
   const { errors } = validationResult(req);
 
@@ -133,6 +140,9 @@ exports.editStore = async (req) => {
   }
 };
 
+/**
+ * Store Location
+ */
 exports.editStoreLocation = async (req) => {
   const { errors } = validationResult(req);
 
@@ -197,7 +207,6 @@ exports.editStoreLocation = async (req) => {
     console.error(error);
   }
 };
-
 exports.setStoreLocation = async (req) => {
   const { errors } = validationResult(req);
 
@@ -251,7 +260,10 @@ exports.setStoreLocation = async (req) => {
     console.error(error);
   }
 };
-
+exports.getStoreLocation = async (req) => {};
+/**
+ * Store Menu
+ */
 exports.createStoreMenu = async (req) => {
   const { errors } = validationResult(req);
 
@@ -303,7 +315,6 @@ exports.createStoreMenu = async (req) => {
     console.log(error);
   }
 };
-
 exports.editStoreMenu = async (req) => {
   const { errors } = validationResult(req);
 
@@ -369,7 +380,11 @@ exports.editStoreMenu = async (req) => {
     console.error(error);
   }
 };
-
+exports.deleteStoreMenu = async (req) => {};
+exports.getStoreMenu = async (req) => {};
+/**
+ * Store Menu Availablility
+ */
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -442,7 +457,6 @@ exports.addMenuAvailability = async (req) => {
     console.log(error.name, error.message, "op");
   }
 };
-
 exports.removeMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -507,6 +521,16 @@ exports.removeMenuAvailability = async (req) => {
     console.log(error);
   }
 };
+exports.getMenuAvailability = async (req) => {};
+
+/**
+ * Store Menu Category
+ */
+
+exports.createCategory = async (req) => {};
+exports.updateCategory = async (req) => {};
+exports.deleteCategory = async (req) => {};
+exports.getCategory = async (req) => {}; // all or one
 
 exports.vendorDashboard = async () => {
   // show must bought item in store
@@ -514,29 +538,15 @@ exports.vendorDashboard = async () => {
   // sales detail
   // can be filtered
 };
-exports.viewStore = async () => {
-  // location
-  // store approval status
-};
-exports.createStoreMenu = async () => {};
-exports.editStoreMenu = async () => {};
-exports.viewStoreMenu = async () => {};
 
-exports.createMenuCategory = async () => {};
-exports.editMenuCategory = async () => {};
-
-exports.vendorDashboard = async () => {
-  // show must bought item in store
-  // total number of customers
-  // sales detail
-  // can be filtered
-};
-exports.viewStore = async () => {
-  // location
-  // store approval status
-};
-exports.viewStoreMenu = async () => {};
+/**
+ * Notification
+ */
 exports.getStoreNotifications = async () => {};
+
+/**
+ * Order
+ */
 exports.getOrderHistory = async () => {
   // order id
   // date
@@ -546,6 +556,10 @@ exports.getOrderHistory = async () => {
   // actual payout
   // remitted payout
 };
+
+/**
+ * Payment
+ */
 exports.getPaymentHistory = async () => {
   // payment status
   // paymant transaction references
@@ -553,8 +567,22 @@ exports.getPaymentHistory = async () => {
   // next payout
   // last payout
 };
-exports.addBank = async () => {};
-exports.updateBank = async () => {};
-// payment method
 
+/**
+ * Bank
+ */
+exports.addBank= async (req) => {}
+exports.updateBank= async (req) => {}
+
+exports.vendorDashboard = async () => {
+  // show must bought item in store
+  // total number of customers
+  // sales detail
+  // can be filtered
+};
+
+/**
+ * Note
+ */
+// payment method
 // endpoint to list all available days
