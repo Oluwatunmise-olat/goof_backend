@@ -17,6 +17,9 @@ exports.aboutVendorHandler = async (req, res, next) => {
   }
 };
 
+/**
+ * Store Handlers
+ */
 exports.createStoreHandler = async (req, res, next) => {
   try {
     const resp = await services.createStore(req);
@@ -34,7 +37,8 @@ exports.createStoreHandler = async (req, res, next) => {
     return next(error);
   }
 };
-
+// todo
+exports.getStoreHandler = async (req, res, next) => {};
 exports.updateStoreHandler = async (req, res, next) => {
   try {
     const resp = await services.editStore(req);
@@ -53,6 +57,9 @@ exports.updateStoreHandler = async (req, res, next) => {
   }
 };
 
+/**
+ * Location Hadlers
+ */
 exports.setStoreLocationHandler = async (req, res, next) => {
   try {
     const resp = await services.setStoreLocation(req);
@@ -70,7 +77,8 @@ exports.setStoreLocationHandler = async (req, res, next) => {
     return next(error);
   }
 };
-
+// todo
+exports.getStoreLocationHandler = async (req, res, next) => {};
 exports.updateStoreLocationHandler = async (req, res, next) => {
   try {
     const resp = await services.editStoreLocation(req);
@@ -89,6 +97,9 @@ exports.updateStoreLocationHandler = async (req, res, next) => {
   }
 };
 
+/**
+ * Store Menu Handlers
+ */
 exports.createStoreMenuHandler = async (req, res, next) => {
   try {
     const resp = await services.createStoreMenu(req);
@@ -107,7 +118,6 @@ exports.createStoreMenuHandler = async (req, res, next) => {
     return next(error);
   }
 };
-
 exports.updateStoreMenuHandler = async (req, res, next) => {
   try {
     const resp = await services.editStoreMenu(req);
@@ -125,8 +135,12 @@ exports.updateStoreMenuHandler = async (req, res, next) => {
     return next(error);
   }
 };
+// todo
+exports.getStoreMenuHandler = async (req, res, next) => {};
 
-
+/**
+ * Menu Availablility Handlers
+ */
 exports.addMenuAvailabilityHandler = async (req, res, next) => {
   try {
     const resp = await services.addMenuAvailability(req);
@@ -141,7 +155,6 @@ exports.addMenuAvailabilityHandler = async (req, res, next) => {
     return next(error);
   }
 };
-
 exports.removeMenuAvailabilityHandler = async (req, res, next) => {
   try {
     const resp = await services.removeMenuAvailability(req);
@@ -156,3 +169,32 @@ exports.removeMenuAvailabilityHandler = async (req, res, next) => {
     return next(error);
   }
 };
+// todo
+exports.getMenuAvailabilityHandler = async (req, res, next) => {};
+
+/**
+ * Menu Category Handlers
+ */
+exports.createMenuCategoryHandler = async (req, res, next) => {};
+exports.updateMenuCategoryHandler = async (req, res, next) => {};
+exports.deleteMenuCategoryHandler = async (req, res, next) => {};
+// todo
+exports.getMenuCategoryHandler = async (req, res, next) => {};
+
+/**
+ * Category Modifier Handlers
+ */
+// todo
+exports.getCategoryModifierHandler = async (req, res, next) => {};
+exports.createCategoryModifierHandler = async (req, res, next) => {};
+exports.updateCategoryModifierHandler = async (req, res, next) => {};
+exports.deleteCategoryModifierHandler = async (req, res, next) => {};
+
+/**
+ * Modifier Option Handlers
+ */
+// todo
+exports.getModifierOptionsHandler = async (req, res, next) => {};
+exports.createModifierOptionsHandler = async (req, res, next) => {};
+exports.updateModifierOptionsHandler = async (req, res, next) => {};
+exports.deleteModifierOptionsHandler = async (req, res, next) => {};
