@@ -571,8 +571,6 @@ exports.createCategory = async (req) => {
       menu_id
     });
 
-    console.log(category);
-
     return {
       error: false,
       msg: "Category Created Successfully",
@@ -583,7 +581,57 @@ exports.createCategory = async (req) => {
   }
 };
 exports.updateCategory = async (req) => {};
-exports.deleteCategory = async (req) => {};
+exports.deleteCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { menu_id, category_id } = req.body;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const resp = await models.menu_categories.destroy({
+      where: { id: category_id }
+    });
+
+    if (!resp) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'category_id'" }],
+        code: 400
+      };
+    }
+
+    return { error: false, msg: "Category Item Deleted Successfully" };
+  } catch (error) {
+    // log error
+  }
+};
 exports.getCategory = async (req) => {}; // all or one
 
 exports.vendorDashboard = async () => {

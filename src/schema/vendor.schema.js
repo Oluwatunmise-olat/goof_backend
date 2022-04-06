@@ -428,6 +428,38 @@ exports.createCategorySchema = {
   }
 };
 
+exports.deleteCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value == "number"))
+            return Promise.reject("Invalid datatype for field 'menu_id'");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  category_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("category_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value == "number"))
+            return Promise.reject("Invalid datatype for field 'category_id'");
+          return Promise.resolve();
+        }
+      }
+    }
+  }
+};
 // presentation on diff between nest js and express js
 // possible exploits
 // security loop holes

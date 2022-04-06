@@ -86,4 +86,12 @@ router.post(
   controller.createMenuCategoryHandler
 );
 
+router.delete(
+  "/store/menu/delete-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.deleteCategorySchema),
+  controller.deleteMenuCategoryHandler
+);
+
 module.exports = router;
