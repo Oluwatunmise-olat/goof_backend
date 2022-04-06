@@ -427,6 +427,66 @@ exports.createCategorySchema = {
     }
   }
 };
+exports.updateCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number"))
+            return Promise.reject("Invalid datatype for field 'menu_id'");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (value.length > 200) {
+            return Promise.reject(
+              "Max length for field 'description' exceeded"
+            );
+          }
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  item_name: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  price: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  deactivate: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value == "boolean"))
+            return Promise.reject("Invald datatype fo field 'deactivate'");
+        }
+        return Promise.resolve();
+      }
+    }
+  }
+};
 
 exports.deleteCategorySchema = {
   menu_id: {

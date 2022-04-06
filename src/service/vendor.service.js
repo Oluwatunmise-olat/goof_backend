@@ -580,7 +580,81 @@ exports.createCategory = async (req) => {
     // log error
   }
 };
-exports.updateCategory = async (req) => {};
+exports.updateCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+  const {
+    item_name,
+    description,
+    price,
+    cover_image,
+    deactivate,
+    menu_id,
+    category_id
+  } = req.body;
+
+  const data = {};
+  if (description) data.description = description;
+  if (price) data.price = price;
+  if (cover_image) data.cover_image = cover_image;
+  if (item_name) data.item_name = item_name;
+  if (deactivate) data.deactivate = deactivate;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const [_, resp] = await models.menu_categories.update(
+      { ...data },
+      {
+        where: { menu_id, id: category_id },
+        returning: true
+      }
+    );
+
+    if (!resp || resp.length == 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'category_id'" }],
+        code: 400
+      };
+    }
+
+    let updatedMenuCategory = resp[0].dataValues;
+
+    return {
+      error: false,
+      msg: "Menu Category Updated",
+      data: { ...updatedMenuCategory }
+    };
+  } catch (error) {
+    // log error
+  }
+};
 exports.deleteCategory = async (req) => {
   const { errors } = validationResult(req);
 

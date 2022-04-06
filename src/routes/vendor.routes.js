@@ -94,4 +94,12 @@ router.delete(
   controller.deleteMenuCategoryHandler
 );
 
+router.patch(
+  "/store/menu/edit-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.updateCategorySchema),
+  controller.updateMenuCategoryHandler
+);
+
 module.exports = router;
