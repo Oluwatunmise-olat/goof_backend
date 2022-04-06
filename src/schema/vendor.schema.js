@@ -363,6 +363,71 @@ exports.removeMenuAvailabilitySchema = {
   }
 };
 
+exports.createCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value === "number"))
+            return Promise.reject("Invalid datatype for field 'menu_id'");
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("description"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (value.length > 200) {
+            return Promise.reject(
+              "Max length for field 'description' exceeded"
+            );
+          }
+          return Promise.resolve();
+        }
+      }
+    }
+  },
+  item_name: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("item_name")
+  },
+  price: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("price")
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  deactivate: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("deactivate"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value) {
+          if (!(typeof value == "boolean"))
+            return Promise.reject("Invald datatype fo field 'deactivate'");
+        }
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
 // presentation on diff between nest js and express js
 // possible exploits
 // security loop holes

@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: "set null",
         onUpdate: "cascade",
-        unique: "unique_availabilty_day_id"
       },
       menu_id: {
         type: DataTypes.INTEGER,
@@ -32,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: "cascade",
         onUpdate: "cascade",
-        unique: "unique_avaialablity_menu_id"
       }
     },
     {

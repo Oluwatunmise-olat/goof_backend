@@ -35,7 +35,6 @@ module.exports = {
         },
         onDelete: "set null",
         onUpdate: "cascade",
-        unique: "unique_availabilty_day_id"
       },
       menu_id: {
         type: Sequelize.INTEGER,
@@ -46,7 +45,6 @@ module.exports = {
         },
         onDelete: "cascade",
         onUpdate: "cascade",
-        unique: "unique_avaialablity_menu_id"
       }
     });
   },

@@ -176,7 +176,22 @@ exports.getMenuAvailabilityHandler = async (req, res, next) => {};
 /**
  * Menu Category Handlers
  */
-exports.createMenuCategoryHandler = async (req, res, next) => {};
+exports.createMenuCategoryHandler = async (req, res, next) => {
+  try {
+    const resp = await services.createCategory(req);
+    if (resp.error) {
+      const statusCode = resp.code === undefined ? 400 : resp.code;
+      return res
+        .status(statusCode)
+        .json(response({ status: false, errorData: resp.errorData }));
+    }
+    return res
+      .status(201)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
 exports.updateMenuCategoryHandler = async (req, res, next) => {};
 exports.deleteMenuCategoryHandler = async (req, res, next) => {};
 // todo

@@ -78,4 +78,12 @@ router.delete(
   controller.removeMenuAvailabilityHandler
 );
 
+router.post(
+  "/store/menu/create-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createCategorySchema),
+  controller.createMenuCategoryHandler
+);
+
 module.exports = router;

@@ -34,18 +34,12 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction((t) => {
       return Promise.all([
-        queryInterface.removeConstraint(
-          "vendors",
-          { name: "fk_owner" },
-          { transaction: t }
-        ),
-        queryInterface.removeConstraint(
-          "vendors",
-          {
-            name: "unique_owner"
-          },
-          { transaction: t }
-        )
+        queryInterface.removeConstraint("vendors", "fk_owner", {
+          transaction: t
+        }),
+        queryInterface.removeConstraint("vendors", "unique_owner", {
+          transaction: t
+        })
       ]);
     });
   }

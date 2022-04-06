@@ -10,8 +10,9 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("email_verifications", {
-      name: "unique_email_veri_user_id"
-    });
+    await queryInterface.removeConstraint(
+      "email_verifications",
+      "unique_email_veri_user_id"
+    );
   }
 };

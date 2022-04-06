@@ -527,7 +527,61 @@ exports.getMenuAvailability = async (req) => {};
  * Store Menu Category
  */
 
-exports.createCategory = async (req) => {};
+exports.createCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { item_name, description, price, cover_image, deactivate, menu_id } =
+    req.body;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const category = await models.menu_categories.create({
+      item_name,
+      description,
+      price,
+      cover_image,
+      deactivate,
+      menu_id
+    });
+
+    console.log(category);
+
+    return {
+      error: false,
+      msg: "Category Created Successfully",
+      data: { ...category.dataValues }
+    };
+  } catch (error) {
+    // log error
+  }
+};
 exports.updateCategory = async (req) => {};
 exports.deleteCategory = async (req) => {};
 exports.getCategory = async (req) => {}; // all or one
@@ -571,8 +625,8 @@ exports.getPaymentHistory = async () => {
 /**
  * Bank
  */
-exports.addBank= async (req) => {}
-exports.updateBank= async (req) => {}
+exports.addBank = async (req) => {};
+exports.updateBank = async (req) => {};
 
 exports.vendorDashboard = async () => {
   // show must bought item in store
