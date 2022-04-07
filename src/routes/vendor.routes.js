@@ -78,4 +78,52 @@ router.delete(
   controller.removeMenuAvailabilityHandler
 );
 
+router.post(
+  "/store/menu/create-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createCategorySchema),
+  controller.createMenuCategoryHandler
+);
+
+router.delete(
+  "/store/menu/delete-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.deleteCategorySchema),
+  controller.deleteMenuCategoryHandler
+);
+
+router.patch(
+  "/store/menu/edit-category",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.updateCategorySchema),
+  controller.updateMenuCategoryHandler
+);
+
+router.post(
+  "/store/menu/create-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createModifierSchema),
+  controller.createCategoryModifierHandler
+);
+
+router.patch(
+  "/store/menu/edit-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.updateModifierSchema),
+  controller.updateCategoryModifierHandler
+);
+
+router.delete(
+  "/store/menu/delete-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.deleteModifierSchema),
+  controller.deleteCategoryModifierHandler
+);
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const models = require("../models/index");
 const { validationResult } = require("express-validator");
-
+const assert = require("assert");
 const { extractMessage } = require("../utils/error");
 const logger = require("../../logger/log");
 
@@ -33,6 +33,9 @@ exports.aboutVendor = async (req) => {
   }
 };
 
+/**
+ * Store
+ */
 exports.createStore = async (req) => {
   const { errors } = validationResult(req);
 
@@ -80,7 +83,11 @@ exports.createStore = async (req) => {
     console.log(error.message);
   }
 };
-
+// todo
+exports.getStore = async (req) => {
+  // location
+  // store approval status
+};
 exports.editStore = async (req) => {
   const { errors } = validationResult(req);
 
@@ -92,10 +99,11 @@ exports.editStore = async (req) => {
   const { store_name, store_cover, store_avatar, store_phone_no } = req.body;
 
   const data = {};
-  if (store_name) data.store_name = store_name;
-  if (store_phone_no) data.store_phone_no = store_phone_no.split("+")[1];
-  if (store_avatar) data.store_avatar = store_avatar;
-  if (store_cover) data.store_cover = store_cover;
+  if (store_name != undefined) data.store_name = store_name;
+  if (store_phone_no != undefined)
+    data.store_phone_no = store_phone_no.split("+")[1];
+  if (store_avatar != undefined) data.store_avatar = store_avatar;
+  if (store_cover != undefined) data.store_cover = store_cover;
 
   try {
     const [_, resp] = await models.Store.update(
@@ -133,6 +141,9 @@ exports.editStore = async (req) => {
   }
 };
 
+/**
+ * Store Location
+ */
 exports.editStoreLocation = async (req) => {
   const { errors } = validationResult(req);
 
@@ -144,10 +155,10 @@ exports.editStoreLocation = async (req) => {
   const { is_landmark, landmark, address, place_name, store_id } = req.body;
 
   const data = {};
-  if (is_landmark) data.landmark = landmark;
-  if (landmark) data.landmark = landmark;
-  if (address) data.address = address;
-  if (place_name) data.place_name = place_name;
+  if (is_landmark != undefined) data.landmark = landmark;
+  if (landmark != undefined) data.landmark = landmark;
+  if (address != undefined) data.address = address;
+  if (place_name != undefined) data.place_name = place_name;
 
   try {
     const store = await models.Store.findOne({
@@ -197,7 +208,6 @@ exports.editStoreLocation = async (req) => {
     console.error(error);
   }
 };
-
 exports.setStoreLocation = async (req) => {
   const { errors } = validationResult(req);
 
@@ -251,7 +261,10 @@ exports.setStoreLocation = async (req) => {
     console.error(error);
   }
 };
-
+exports.getStoreLocation = async (req) => {};
+/**
+ * Store Menu
+ */
 exports.createStoreMenu = async (req) => {
   const { errors } = validationResult(req);
 
@@ -259,9 +272,6 @@ exports.createStoreMenu = async (req) => {
     const errorsArr = extractMessage(errors);
     return { error: true, errorData: errorsArr };
   }
-
-  // validate store associated with user exists
-  // validate store_id
   try {
     const { store_id, deactivate, description, cover_image, menu_name } =
       req.body;
@@ -303,7 +313,6 @@ exports.createStoreMenu = async (req) => {
     console.log(error);
   }
 };
-
 exports.editStoreMenu = async (req) => {
   const { errors } = validationResult(req);
 
@@ -316,10 +325,10 @@ exports.editStoreMenu = async (req) => {
     req.body;
 
   const data = {};
-  if (deactivate) data.deactivate = deactivate;
-  if (cover_image) data.cover_image = cover_image;
-  if (description) data.description = description;
-  if (menu_name) data.menu_name = menu_name;
+  if (deactivate != undefined) data.deactivate = deactivate;
+  if (cover_image != undefined) data.cover_image = cover_image;
+  if (description != undefined) data.description = description;
+  if (menu_name != undefined) data.menu_name = menu_name;
 
   try {
     const store = await models.Store.findOne({
@@ -369,7 +378,11 @@ exports.editStoreMenu = async (req) => {
     console.error(error);
   }
 };
-
+exports.deleteStoreMenu = async (req) => {};
+exports.getStoreMenu = async (req) => {};
+/**
+ * Store Menu Availablility
+ */
 exports.addMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -442,7 +455,6 @@ exports.addMenuAvailability = async (req) => {
     console.log(error.name, error.message, "op");
   }
 };
-
 exports.removeMenuAvailability = async (req) => {
   const { errors } = validationResult(req);
 
@@ -507,6 +519,377 @@ exports.removeMenuAvailability = async (req) => {
     console.log(error);
   }
 };
+exports.getMenuAvailability = async (req) => {};
+
+/**
+ * Store Menu Category
+ */
+
+exports.createCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { item_name, description, price, cover_image, deactivate, menu_id } =
+    req.body;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const category = await models.menu_categories.create({
+      item_name,
+      description,
+      price,
+      cover_image,
+      deactivate,
+      menu_id
+    });
+
+    return {
+      error: false,
+      msg: "Category Created Successfully",
+      data: { ...category.dataValues }
+    };
+  } catch (error) {
+    // log error
+  }
+};
+exports.updateCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+  const {
+    item_name,
+    description,
+    price,
+    cover_image,
+    deactivate,
+    menu_id,
+    category_id
+  } = req.body;
+
+  const data = {};
+  if (description != undefined) data.description = description;
+  if (price != undefined) data.price = price;
+  if (cover_image != undefined) data.cover_image = cover_image;
+  if (item_name != undefined) data.item_name = item_name;
+  if (deactivate != undefined) data.deactivate = deactivate;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const [_, resp] = await models.menu_categories.update(
+      { ...data },
+      {
+        where: { menu_id, id: category_id },
+        returning: true
+      }
+    );
+
+    if (!resp || resp.length == 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'category_id'" }],
+        code: 400
+      };
+    }
+
+    let updatedMenuCategory = resp[0].dataValues;
+
+    return {
+      error: false,
+      msg: "Menu Category Updated",
+      data: { ...updatedMenuCategory }
+    };
+  } catch (error) {
+    // log error
+  }
+};
+exports.deleteCategory = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { menu_id, category_id } = req.body;
+
+  try {
+    const menu = await models.store_menus.findOne({
+      where: { id: menu_id },
+      include: [{ model: models.Store }]
+    });
+
+    if (!menu) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'menu_id'" }],
+        code: 400
+      };
+    }
+
+    const {
+      dataValues: {
+        Store: { dataValues }
+      }
+    } = menu;
+
+    if (!(dataValues.vendor_id == req.userID)) {
+      return { error: true, errorData: [{ msg: "Unauthorized" }], code: 403 };
+    }
+
+    const resp = await models.menu_categories.destroy({
+      where: { id: category_id }
+    });
+
+    if (!resp) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for passed 'category_id'" }],
+        code: 400
+      };
+    }
+
+    return { error: false, msg: "Category Item Deleted Successfully" };
+  } catch (error) {
+    // log error
+  }
+};
+exports.getCategory = async (req) => {}; // all or one
+
+/**
+ * Menu Category Modifiers
+ */
+
+exports.createModifier = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { description, required, min_selection, max_selection, category_id } =
+    req.body;
+
+  try {
+    const modifier = await models.modifiers.create({
+      description,
+      required,
+      min_selection,
+      max_selection,
+      category_id
+    });
+
+    return {
+      error: false,
+      msg: "Modifier Created Successfully",
+      data: { ...modifier.dataValues }
+    };
+  } catch (error) {
+    // log error
+    if (error.name == "SequelizeForeignKeyConstraintError")
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found for field 'category_id'" }]
+      };
+    console.log(error);
+  }
+};
+exports.updateModifier = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { description, required, min_selection, max_selection, modifier_id } =
+    req.body;
+
+  const data = {};
+  if (description != undefined) data.description = description;
+  if (required != undefined) data.required = required;
+  if (min_selection != undefined) data.min_selection = min_selection;
+  if (max_selection != undefined) data.max_selection = max_selection;
+
+  try {
+    // query builder
+    const [store_data, metaData] = await models.sequelize.query(
+      `
+      SELECT store_id
+      FROM
+      menu_categories as menu_cat,
+      store_menus as store_menu,
+      modifiers as mod
+      WHERE
+      menu_cat.menu_id = store_menu.id
+      AND
+      mod.category_id = menu_cat.id
+      AND 
+      mod.id = :modifier_id 
+    `,
+      {
+        replacements: { modifier_id }
+      }
+    );
+
+    if (!store_data.length > 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found passed field 'modifier_id'" }],
+        code: 400
+      };
+    }
+
+    const isAuthorized = await models.Store.findOne({
+      where: { id: store_data[0].store_id },
+      attributes: ["vendor_id"]
+    });
+
+    const {
+      dataValues: { vendor_id }
+    } = isAuthorized;
+
+    let authorized = vendor_id == req.userID;
+    if (!authorized) {
+      return { error: true, code: 403, errorData: [{ msg: "Unauthorized" }] };
+    }
+
+    const [_, modifier] = await models.modifiers.update(
+      { ...data },
+      {
+        where: { id: modifier_id },
+        returning: true
+      }
+    );
+
+    return {
+      error: false,
+      msg: "Modifier Updated Successfully",
+      data: { ...modifier[0].dataValues }
+    };
+  } catch (error) {
+    if (error.name == "SequelizeForeignKeyConstraintError") {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found passed field 'modifier_id'" }],
+        code: 400
+      };
+    }
+    console.log(error);
+  }
+};
+
+exports.deleteModifier = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { modifier_id } = req.body;
+
+  try {
+    const [store_data, metaData] = await models.sequelize.query(
+      `
+      SELECT store_id
+      FROM
+      menu_categories as menu_cat,
+      store_menus as store_menu,
+      modifiers as mod
+      WHERE
+      menu_cat.menu_id = store_menu.id
+      AND
+      mod.category_id = menu_cat.id
+      AND 
+      mod.id = :modifier_id 
+    `,
+      {
+        replacements: { modifier_id }
+      }
+    );
+
+    if (!store_data.length > 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found passed field 'modifier_id'" }],
+        code: 400
+      };
+    }
+
+    const isAuthorized = await models.Store.findOne({
+      where: { id: store_data[0].store_id },
+      attributes: ["vendor_id"]
+    });
+
+    const {
+      dataValues: { vendor_id }
+    } = isAuthorized;
+
+    let authorized = vendor_id == req.userID;
+    if (!authorized) {
+      return { error: true, code: 403, errorData: [{ msg: "Unauthorized" }] };
+    }
+
+    await models.modifiers.destroy({ where: { id: modifier_id } });
+
+    return { error: false, msg: "Resource Deleted Successfully" };
+  } catch (error) {
+    console.log(error)
+  }
+};
+exports.getModifier = async (req) => {};
 
 exports.vendorDashboard = async () => {
   // show must bought item in store
@@ -514,29 +897,15 @@ exports.vendorDashboard = async () => {
   // sales detail
   // can be filtered
 };
-exports.viewStore = async () => {
-  // location
-  // store approval status
-};
-exports.createStoreMenu = async () => {};
-exports.editStoreMenu = async () => {};
-exports.viewStoreMenu = async () => {};
 
-exports.createMenuCategory = async () => {};
-exports.editMenuCategory = async () => {};
-
-exports.vendorDashboard = async () => {
-  // show must bought item in store
-  // total number of customers
-  // sales detail
-  // can be filtered
-};
-exports.viewStore = async () => {
-  // location
-  // store approval status
-};
-exports.viewStoreMenu = async () => {};
+/**
+ * Notification
+ */
 exports.getStoreNotifications = async () => {};
+
+/**
+ * Order
+ */
 exports.getOrderHistory = async () => {
   // order id
   // date
@@ -546,6 +915,10 @@ exports.getOrderHistory = async () => {
   // actual payout
   // remitted payout
 };
+
+/**
+ * Payment
+ */
 exports.getPaymentHistory = async () => {
   // payment status
   // paymant transaction references
@@ -553,8 +926,22 @@ exports.getPaymentHistory = async () => {
   // next payout
   // last payout
 };
-exports.addBank = async () => {};
-exports.updateBank = async () => {};
-// payment method
 
+/**
+ * Bank
+ */
+exports.addBank = async (req) => {};
+exports.updateBank = async (req) => {};
+
+exports.vendorDashboard = async () => {
+  // show must bought item in store
+  // total number of customers
+  // sales detail
+  // can be filtered
+};
+
+/**
+ * Note
+ */
+// payment method
 // endpoint to list all available days

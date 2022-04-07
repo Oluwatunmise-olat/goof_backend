@@ -48,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
 
   menu_category.associate = (models) => {
     menu_category.hasMany(models.modifiers, {
-      foreignKey: "catgeory_id",
-      targetKey: "catgeory_id",
+      foreignKey: "category_id",
+      targetKey: "category_id",
       sourceKey: "id",
       as: "menu_categories"
     });

@@ -33,16 +33,12 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction((t) => {
       return Promise.all([
-        queryInterface.removeConstraint(
-          "stores_location",
-          { name: "fk_store" },
-          { transaction: t }
-        ),
-        queryInterface.removeConstraint(
-          "stores_location",
-          { name: "unique_stores" },
-          { transaction: t }
-        )
+        queryInterface.removeConstraint("stores_location", "fk_store", {
+          transaction: t
+        }),
+        queryInterface.removeConstraint("stores_location", "unique_stores", {
+          transaction: t
+        })
       ]);
     });
   }

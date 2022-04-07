@@ -10,8 +10,9 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("locations", {
-      name: "unique_location_user_id"
-    });
+    await queryInterface.removeConstraint(
+      "locations",
+      "unique_location_user_id"
+    );
   }
 };

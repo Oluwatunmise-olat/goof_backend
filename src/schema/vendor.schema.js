@@ -3,6 +3,8 @@ const logger = require("../../logger/log");
 const { errMsg } = require("../utils/error");
 const { phoneRegex } = require("../utils/patterns");
 
+// Note all schema files can e refactored to reduce length 😶‍🌫️ (didn't consider it earlier)
+
 exports.aboutVendorSchema = {
   docs: {
     in: ["body"],
@@ -82,11 +84,9 @@ exports.storeLocationSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "boolean"))
-            return Promise.reject("Invalid Response for field landmark");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "boolean"))
+          return Promise.reject("Invalid Response for field landmark");
+        return Promise.resolve();
       }
     }
   },
@@ -110,12 +110,10 @@ exports.storeLocationSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "number")) {
-            return Promise.reject("Invalid datatype for field store_id");
-          }
-          return Promise.resolve;
+        if (value && !(typeof value === "number")) {
+          return Promise.reject("Invalid datatype for field store_id");
         }
+        return Promise.resolve;
       }
     }
   }
@@ -126,13 +124,10 @@ exports.editStoreLocationSchema = {
     optional: { nullable: true },
     custom: {
       options: (value) => {
-        if (value) {
-          let valid_resp = [true, false];
-          if (!valid_resp.includes(value)) {
-            return Promise.reject("Invalid Response for field landmark");
-          }
-          return Promise.resolve();
+        if (value && !(typeof value == "boolean")) {
+          return Promise.reject("Invalid Response for field landmark");
         }
+        return Promise.resolve();
       }
     }
   },
@@ -144,12 +139,10 @@ exports.editStoreLocationSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "number")) {
-            return Promise.reject("Invalid datatype for field store_id");
-          }
-          return Promise.resolve;
+        if (value && !(typeof value === "number")) {
+          return Promise.reject("Invalid datatype for field store_id");
         }
+        return Promise.resolve;
       }
     }
   },
@@ -165,11 +158,9 @@ exports.createStoreMenuSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "number"))
-            return Promise.reject("Invalid datatype for field store_id");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "number"))
+          return Promise.reject("Invalid datatype for field store_id");
+        return Promise.resolve();
       }
     }
   },
@@ -177,11 +168,9 @@ exports.createStoreMenuSchema = {
     optional: { nullable: true },
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "boolean"))
-            return Promise.reject("Invalid datatype for field deactivate");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "boolean"))
+          return Promise.reject("Invalid datatype for field deactivate");
+        return Promise.resolve();
       }
     }
   },
@@ -212,11 +201,9 @@ exports.editStoreMenuSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "number"))
-            return Promise.reject("Invalid datatype for field menu_id");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "number"))
+          return Promise.reject("Invalid datatype for field menu_id");
+        return Promise.resolve();
       }
     }
   },
@@ -227,11 +214,9 @@ exports.editStoreMenuSchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "number"))
-            return Promise.reject("Invalid datatype for field store_id");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "number"))
+          return Promise.reject("Invalid datatype for field store_id");
+        return Promise.resolve();
       }
     }
   },
@@ -239,11 +224,9 @@ exports.editStoreMenuSchema = {
     optional: { nullable: true },
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value === "boolean"))
-            return Promise.reject("Invalid datatype for field deactivate");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value === "boolean"))
+          return Promise.reject("Invalid datatype for field deactivate");
+        return Promise.resolve();
       }
     }
   },
@@ -273,11 +256,9 @@ exports.addMenuAvailabilitySchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value == "number"))
-            return Promise.reject("Invalid datatype for field 'menu_id'");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'menu_id'");
+        return Promise.resolve();
       }
     }
   },
@@ -322,11 +303,9 @@ exports.removeMenuAvailabilitySchema = {
     bail: true,
     custom: {
       options: (value) => {
-        if (value) {
-          if (!(typeof value == "number"))
-            return Promise.reject("Invalid datatype for field 'menu_id'");
-          return Promise.resolve();
-        }
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'menu_id'");
+        return Promise.resolve();
       }
     }
   },
@@ -363,6 +342,285 @@ exports.removeMenuAvailabilitySchema = {
   }
 };
 
+exports.createCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value === "number"))
+          return Promise.reject("Invalid datatype for field 'menu_id'");
+        return Promise.resolve();
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("description"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && value.length > 200) {
+          return Promise.reject("Max length for field 'description' exceeded");
+        }
+        return Promise.resolve();
+      }
+    }
+  },
+  item_name: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("item_name")
+  },
+  price: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("price")
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  deactivate: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("deactivate"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "boolean"))
+          return Promise.reject("Invald datatype fo field 'deactivate'");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+exports.updateCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value === "number"))
+          return Promise.reject("Invalid datatype for field 'menu_id'");
+        return Promise.resolve();
+      }
+    }
+  },
+  description: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && value.length > 200) {
+          return Promise.reject("Max length for field 'description' exceeded");
+        }
+        return Promise.resolve();
+      }
+    }
+  },
+  item_name: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  price: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  cover_image: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  deactivate: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "boolean"))
+          return Promise.reject("Invald datatype fo field 'deactivate'");
+
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.deleteCategorySchema = {
+  menu_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("menu_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'menu_id'");
+        return Promise.resolve();
+      }
+    }
+  },
+  category_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("category_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'category_id'");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.createModifierSchema = {
+  description: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("description"),
+    bail: true
+  },
+  required: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("required"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "boolean"))
+          return Promise.reject("Invalid datatype for field 'required'");
+        return Promise.resolve();
+      }
+    }
+  },
+  min_selection: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("min_selection"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'min_selection");
+        if (value < 0)
+          return Promise.reject(
+            "Field 'min_selection' must be positive integer"
+          );
+
+        return Promise.resolve();
+      }
+    }
+  },
+  max_selection: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("max_selection"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'max_selection");
+        return Promise.resolve();
+      }
+    }
+  },
+  category_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("category_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'category_id'");
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.updateModifierSchema = {
+  description: {
+    in: ["body"],
+    optional: { nullable: true }
+  },
+  modifier_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("modifier_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'modifier_id'");
+        return Promise.resolve();
+      }
+    }
+  },
+  required: {
+    in: ["body"],
+    optional: { nullable: true },
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "boolean"))
+          return Promise.reject("Invalid datatype for field 'required'");
+        return Promise.resolve();
+      }
+    }
+  },
+  min_selection: {
+    in: ["body"],
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'min_selection");
+        if (value < 0)
+          return Promise.reject(
+            "Field 'min_selection' must be positive integer"
+          );
+        return Promise.resolve();
+      }
+    }
+  },
+  max_selection: {
+    in: ["body"],
+    optional: { nullable: true },
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'max_selection");
+
+        return Promise.resolve();
+      }
+    }
+  }
+};
+
+exports.deleteModifierSchema = {
+  modifier_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("modifier_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'modifier_id'");
+        return Promise.resolve();
+      }
+    }
+  }
+};
 // presentation on diff between nest js and express js
 // possible exploits
 // security loop holes

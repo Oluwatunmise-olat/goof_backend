@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true,
         allowNull: false
       },
-      catgeory_id: {
+      category_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -43,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
 
   modifiers.associate = (models) => {
     modifiers.belongsTo(models.menu_categories, {
-      foreignKey: "catgeory_id",
-      sourceKey: "catgeory_id",
+      foreignKey: "category_id",
+      sourceKey: "category_id",
       targetKey: "id",
       as: "modifiers"
     });
