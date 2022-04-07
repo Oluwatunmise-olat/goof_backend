@@ -230,8 +230,39 @@ exports.getMenuCategoryHandler = async (req, res, next) => {};
  */
 // todo
 exports.getCategoryModifierHandler = async (req, res, next) => {};
-exports.createCategoryModifierHandler = async (req, res, next) => {};
-exports.updateCategoryModifierHandler = async (req, res, next) => {};
+exports.createCategoryModifierHandler = async (req, res, next) => {
+  try {
+    const resp = await services.createModifier(req);
+    if (resp.error) {
+      const statusCode = resp.code == undefined ? 400 : resp.code;
+      return res
+        .status(statusCode)
+        .json(response({ status: false, errorData: resp.errorData }));
+    }
+
+    return res
+      .status(201)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
+exports.updateCategoryModifierHandler = async (req, res, next) => {
+  try {
+    const resp = await services.updateModifier(req);
+    if (resp.error) {
+      const statusCode = resp.code == undefined ? 400 : resp.code;
+      return res
+        .status(statusCode)
+        .json(response({ status: false, errorData: resp.errorData }));
+    }
+    return res
+      .status(200)
+      .json(response({ status: true, msg: resp.msg, data: resp.data }));
+  } catch (error) {
+    return next(error);
+  }
+};
 exports.deleteCategoryModifierHandler = async (req, res, next) => {};
 
 /**
@@ -242,3 +273,12 @@ exports.getModifierOptionsHandler = async (req, res, next) => {};
 exports.createModifierOptionsHandler = async (req, res, next) => {};
 exports.updateModifierOptionsHandler = async (req, res, next) => {};
 exports.deleteModifierOptionsHandler = async (req, res, next) => {};
+
+// user cart stuff
+// user order stuff
+// user order history stuff
+// vendor get order Notification
+// order accepeted, rider_picked order
+// payment for users (fund wallet, pay with wallet, pay with card)
+
+// vendorz payment logic ....

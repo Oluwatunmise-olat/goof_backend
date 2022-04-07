@@ -102,4 +102,20 @@ router.patch(
   controller.updateMenuCategoryHandler
 );
 
+router.post(
+  "/store/menu/create-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.createModifierSchema),
+  controller.createCategoryModifierHandler
+);
+
+router.patch(
+  "/store/menu/edit-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.updateModifierSchema),
+  controller.updateCategoryModifierHandler
+);
+
 module.exports = router;
