@@ -118,4 +118,12 @@ router.patch(
   controller.updateCategoryModifierHandler
 );
 
+router.delete(
+  "/store/menu/delete-modifier",
+  IsAuth,
+  IsVendorOrAdmin,
+  checkSchema(schemas.deleteModifierSchema),
+  controller.deleteCategoryModifierHandler
+);
+
 module.exports = router;

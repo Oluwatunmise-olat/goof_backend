@@ -830,7 +830,65 @@ exports.updateModifier = async (req) => {
   }
 };
 
-exports.deleteModifier = async (req) => {};
+exports.deleteModifier = async (req) => {
+  const { errors } = validationResult(req);
+
+  if (errors.length > 0) {
+    const errorsArr = extractMessage(errors);
+    return { error: true, errorData: errorsArr };
+  }
+
+  const { modifier_id } = req.body;
+
+  try {
+    const [store_data, metaData] = await models.sequelize.query(
+      `
+      SELECT store_id
+      FROM
+      menu_categories as menu_cat,
+      store_menus as store_menu,
+      modifiers as mod
+      WHERE
+      menu_cat.menu_id = store_menu.id
+      AND
+      mod.category_id = menu_cat.id
+      AND 
+      mod.id = :modifier_id 
+    `,
+      {
+        replacements: { modifier_id }
+      }
+    );
+
+    if (!store_data.length > 0) {
+      return {
+        error: true,
+        errorData: [{ msg: "Resource not found passed field 'modifier_id'" }],
+        code: 400
+      };
+    }
+
+    const isAuthorized = await models.Store.findOne({
+      where: { id: store_data[0].store_id },
+      attributes: ["vendor_id"]
+    });
+
+    const {
+      dataValues: { vendor_id }
+    } = isAuthorized;
+
+    let authorized = vendor_id == req.userID;
+    if (!authorized) {
+      return { error: true, code: 403, errorData: [{ msg: "Unauthorized" }] };
+    }
+
+    await models.modifiers.destroy({ where: { id: modifier_id } });
+
+    return { error: false, msg: "Resource Deleted Successfully" };
+  } catch (error) {
+    console.log(error)
+  }
+};
 exports.getModifier = async (req) => {};
 
 exports.vendorDashboard = async () => {

@@ -605,6 +605,22 @@ exports.updateModifierSchema = {
     }
   }
 };
+
+exports.deleteModifierSchema = {
+  modifier_id: {
+    in: ["body"],
+    exists: true,
+    errorMessage: errMsg("modifier_id"),
+    bail: true,
+    custom: {
+      options: (value) => {
+        if (value && !(typeof value == "number"))
+          return Promise.reject("Invalid datatype for field 'modifier_id'");
+        return Promise.resolve();
+      }
+    }
+  }
+};
 // presentation on diff between nest js and express js
 // possible exploits
 // security loop holes
