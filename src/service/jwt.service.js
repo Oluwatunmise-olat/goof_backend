@@ -58,3 +58,8 @@ exports.blacklistToken = async (token) => {
     // log error
   }
 };
+
+class JwtService {
+  geenrateAccessToken() {}
+  validateAccessToken() {}
+}

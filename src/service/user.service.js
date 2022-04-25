@@ -1,17 +1,9 @@
 const models = require("../models/index");
-const { validationResult } = require("express-validator");
 
-const { extractMessage } = require("../utils/error");
 const logger = require("../../logger/log");
 
 exports.setLocation = async (req) => {
-  const { errors } = validationResult(req);
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   const { longitude, latitude } = req.body;
 
@@ -101,25 +93,20 @@ exports.updateUserProfile = async (req) => {
   } catch (error) {}
 };
 
-exports.getCart = async (req) => {};
+exports.createStoreRating = async (req) => {};
 
-// group by date
-exports.getNotifications = (req) => {};
+class UserService {
+  getNotification() {}
+  updateNotification() {}
+  getOrderHistory() {}
+  getOrder() {}
+  createOrder() {}
+  updateOrder() {}
+  getCart() {}
+  addToCart() {}
+  getProfile() {}
+  updateProfile() {}
+  setLocation() {}
+}
 
-exports.updateNotification = async (req) => {};
-
-exports.getNotification = async (req) => {};
-
-exports.getOrderHistory = async (req) => {};
-
-exports.getOrder = async (req) => {};
-
-exports.createOrder = async (req) => {};
-
-exports.updateOrder = async (req) => {};
-
-exports.rateStore = async (req) => {};
-
-exports.addToCart = async (req) => {};
-
-// issues db design for days of the week
+module.exports = new UserService();

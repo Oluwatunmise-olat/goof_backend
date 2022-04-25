@@ -3,6 +3,8 @@ const models = require("../models/index");
 // fund wallet
 // wallet history (debit and credit)
 
-exports.getWallet = async (req) => {};
+class Wallet {
+  getWallet() {}
+  fundWallet() {}
+}
 
-exports.fundWallet = async (req) => {};
