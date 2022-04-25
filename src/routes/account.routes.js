@@ -4,7 +4,9 @@ const { checkSchema, check } = require("express-validator");
 const controller = require("../controllers/account.controller.js");
 const schemas = require("../schema/schemas");
 const IsAuth = require("../middleware/auth.middleware");
+
 const BodyFieldErrorMiddleware = require("../middleware/bodyFieldErrors.middleware");
+
 
 router
   .route("/verify/phone")
