@@ -1,4 +1,7 @@
-### **GOOF API**
+### **GOOF API** 
+
+Project is suspended for now would continue when free and fix major code smells 😕. Refactoring is needed !!! 😐
+
 Goof is a delivery service that handles it's users delivery to their door step by acting as a bridge between users and vendors.
 
  ### DB Schema [Proposed Schema still -> subject to change]:
