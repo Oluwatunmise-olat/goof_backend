@@ -520,7 +520,6 @@ exports.removeMenuAvailability = async (req) => {
   }
 };
 exports.getMenuAvailability = async (req) => {};
-
 /**
  * Store Menu Category
  */
@@ -829,7 +828,6 @@ exports.updateModifier = async (req) => {
     console.log(error);
   }
 };
-
 exports.deleteModifier = async (req) => {
   const { errors } = validationResult(req);
 
@@ -886,7 +884,7 @@ exports.deleteModifier = async (req) => {
 
     return { error: false, msg: "Resource Deleted Successfully" };
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 exports.getModifier = async (req) => {};
@@ -897,6 +895,14 @@ exports.vendorDashboard = async () => {
   // sales detail
   // can be filtered
 };
+
+/**
+ * Modifier Options
+ */
+exports.createModifierOption = async () => {};
+exports.updateModifierOption = async () => {};
+exports.deleteModifierOption = async () => {};
+exports.getModifierOption = async () => {}; // get or all
 
 /**
  * Notification
@@ -932,13 +938,6 @@ exports.getPaymentHistory = async () => {
  */
 exports.addBank = async (req) => {};
 exports.updateBank = async (req) => {};
-
-exports.vendorDashboard = async () => {
-  // show must bought item in store
-  // total number of customers
-  // sales detail
-  // can be filtered
-};
 
 /**
  * Note

@@ -1,6 +1,3 @@
-const { validationResult } = require("express-validator");
-
-const { extractMessage } = require("../utils/error");
 const { sendCode, verifyCode } = require("../utils/twillo");
 const { getGoogleAuthUrl, getTokens } = require("../utils/oauth");
 const { reset_code } = require("../utils/generate_code");
@@ -13,16 +10,9 @@ const { extractAuth: extractAuthToken } = require("../utils/headers");
 const moment = require("moment");
 
 exports.sendphoneCode = async (req) => {
-  const { errors } = validationResult(req);
   const { phone_number } = req.body;
   const resp = { error: false };
 
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
-  // send verification code and save in db
   let [status, data] = await sendCode(phone_number);
   if (!status) {
     logger.error(`Twilio send verification error: ${data}`);
@@ -41,14 +31,8 @@ exports.sendphoneCode = async (req) => {
 };
 
 exports.verifyphoneCode = async (req) => {
-  const { errors } = validationResult(req);
   const { phone_number, code } = req.body;
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   let [status, data] = await verifyCode(phone_number, code);
   if (!status) {
@@ -70,18 +54,11 @@ exports.verifyphoneCode = async (req) => {
 };
 
 exports.signupwithEmail = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   let { firstname, lastname, role_id, email, password, phone_number, avatar } =
     req.body;
 
   phone_number = phone_number.split("+")[1];
-  // encrypt password
+
   const password_hash = await models.User.makePassword(password);
   try {
     return await models.sequelize.transaction(async (t) => {
@@ -99,13 +76,11 @@ exports.signupwithEmail = async (req) => {
         { transaction: t }
       );
 
-      // create user wallet
       await user.afterCreate(
         models.Wallet,
         { user_id: user.dataValues.id },
         { transaction: t }
       );
-      // create cart
       await user.afterCreate(
         models.Cart,
         { user_id: user.dataValues.id },
@@ -134,20 +109,10 @@ exports.signupwithEmail = async (req) => {
 };
 
 exports.loginwithEmail = async (req) => {
-  // verify email and password
-  // generate jwt
-  // return user data
-  const { errors } = validationResult(req);
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   const { email, password } = req.body;
 
-  // check user exists
   try {
     const userExists = await models.User.findOne({ where: { email } });
 
@@ -166,7 +131,6 @@ exports.loginwithEmail = async (req) => {
       where: { id: userExists.dataValues.role_id }
     });
 
-    // generate jwt
     const accessToken = await genAccessToken({
       user_id: userExists.dataValues.id,
       role_id: userRole.dataValues.id,
@@ -192,15 +156,7 @@ exports.loginwithEmail = async (req) => {
 };
 
 exports.forgotPassword = async (req) => {
-  // email should exist in db
-  // create a token that expires
-  const { errors } = validationResult(req);
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   const { email, type, resend } = req.body;
 
@@ -211,10 +167,6 @@ exports.forgotPassword = async (req) => {
         ...resp,
         msg: "A six digit pin has been sent to this email"
       };
-
-    // check if a token has been generated for email with type (account | wallet)
-    // else generate token for user
-    // send token
 
     const sentToken = await models.Reset_Token.findOne({
       where: { email, type }
@@ -230,7 +182,6 @@ exports.forgotPassword = async (req) => {
       await sentToken.destroy();
     }
 
-    // generate token
     const token = reset_code();
 
     await models.Reset_Token.create({
@@ -238,8 +189,6 @@ exports.forgotPassword = async (req) => {
       email,
       token
     });
-
-    // send email with type
 
     const subject =
       type == "account" ? "Goof Account Reset Pin" : "Goof Wallet reset Pin";
@@ -258,48 +207,29 @@ exports.forgotPassword = async (req) => {
 };
 
 exports.verifyPinCode = async (req) => {
-  // once token is used once, delete it from db
-  const { errors } = validationResult(req);
   const resp = { error: false };
 
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { email, token, type } = req.body;
-  // get user with email and type from reset token
-  // if valid delete token and send a success message
-  // else send a invalid message
   const tokenResetInst = await models.Reset_Token.findOne({
     where: { email, type }
   });
+
   if (!tokenResetInst)
     return { ...resp, error: true, errorData: [{ msg: "Invalid" }] };
-  // if token isn't correct
+
   if (!tokenResetInst.token == token)
     return { ...resp, error: true, errorData: [{ msg: "Invalid Token" }] };
-  // verify the token has not expired
 
-  // check [error with comparison]
   if (tokenResetInst.expires_in < moment().format("hh:mm:ss")) {
-    // case of expiry
     return { ...resp, error: true, errorData: [{ msg: "Token Expired" }] };
   }
 
-  // delete token and return success
   await tokenResetInst.destroy();
   return { ...resp, msg: "success" };
 };
 
 exports.resetPassword = async (req) => {
-  const { errors } = validationResult(req);
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   const { password, email } = req.body;
 
@@ -322,18 +252,11 @@ exports.resetPassword = async (req) => {
 };
 
 exports.changePassword = async (req) => {
-  const { errors } = validationResult(req);
   const resp = { error: false };
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
 
   const { previous_password, new_password } = req.body;
 
   try {
-    // compare the previous_password with the current auth password
     const user = await models.User.findOne({ where: { id: req.userID } });
     const isValid = await user.checkPassword(user, previous_password);
     if (!isValid)
@@ -345,9 +268,7 @@ exports.changePassword = async (req) => {
     user.password = await models.User.makePassword(new_password);
     await user.save();
 
-    // extract token
-    const [status, authToken] = extractAuthToken(req.headers);
-    // blacklist token
+    const [_, authToken] = extractAuthToken(req.headers);
     await blacklistToken(authToken[1]);
 
     return { ...resp, msg: "Password update successfull" };
@@ -355,10 +276,9 @@ exports.changePassword = async (req) => {
 };
 
 exports.logout = async (req) => {
-  // blacklist jwt
   const resp = { error: false };
 
-  const [status, authToken] = extractAuthToken(req.headers);
+  const [_, authToken] = extractAuthToken(req.headers);
 
   await blacklistToken(authToken[1]);
   return { ...resp, msg: "Successfully Logged out" };
