@@ -1,18 +1,8 @@
 const models = require("../models/index");
-const { validationResult } = require("express-validator");
 const assert = require("assert");
-const { extractMessage } = require("../utils/error");
 const logger = require("../../logger/log");
 
 exports.aboutVendor = async (req) => {
-  // would create a vendor user
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { docs, about } = req.body;
 
   try {
@@ -37,13 +27,6 @@ exports.aboutVendor = async (req) => {
  * Store
  */
 exports.createStore = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { store_name, store_cover, store_avatar, store_phone_no } = req.body;
 
   try {
@@ -89,13 +72,6 @@ exports.getStore = async (req) => {
   // store approval status
 };
 exports.editStore = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { store_name, store_cover, store_avatar, store_phone_no } = req.body;
 
   const data = {};
@@ -145,13 +121,6 @@ exports.editStore = async (req) => {
  * Store Location
  */
 exports.editStoreLocation = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { is_landmark, landmark, address, place_name, store_id } = req.body;
 
   const data = {};
@@ -209,16 +178,7 @@ exports.editStoreLocation = async (req) => {
   }
 };
 exports.setStoreLocation = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { is_landmark, landmark, address, place_name, store_id } = req.body;
-
-  // validate the store is for current auth user
 
   try {
     const store = await models.Store.findOne({
@@ -241,7 +201,7 @@ exports.setStoreLocation = async (req) => {
       };
     }
 
-    const storelocation = await models.store_location.create({
+    const storeLocation = await models.store_location.create({
       id: store_id,
       place_name,
       landmark,
@@ -249,7 +209,7 @@ exports.setStoreLocation = async (req) => {
       address
     });
 
-    const { dataValues } = storelocation;
+    const { dataValues } = storeLocation;
 
     return {
       error: false,
@@ -266,12 +226,6 @@ exports.getStoreLocation = async (req) => {};
  * Store Menu
  */
 exports.createStoreMenu = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
   try {
     const { store_id, deactivate, description, cover_image, menu_name } =
       req.body;
@@ -296,7 +250,6 @@ exports.createStoreMenu = async (req) => {
       };
     }
 
-    // create store menu
     const store_menu = await models.store_menus.create({
       store_id,
       deactivate,
@@ -314,13 +267,6 @@ exports.createStoreMenu = async (req) => {
   }
 };
 exports.editStoreMenu = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { store_id, deactivate, description, cover_image, menu_id, menu_name } =
     req.body;
 
@@ -384,13 +330,6 @@ exports.getStoreMenu = async (req) => {};
  * Store Menu Availablility
  */
 exports.addMenuAvailability = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { menu_id, availability } = req.body;
 
   try {
@@ -456,13 +395,6 @@ exports.addMenuAvailability = async (req) => {
   }
 };
 exports.removeMenuAvailability = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { menu_id, availability } = req.body;
 
   try {
@@ -525,13 +457,6 @@ exports.getMenuAvailability = async (req) => {};
  */
 
 exports.createCategory = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { item_name, description, price, cover_image, deactivate, menu_id } =
     req.body;
 
@@ -578,12 +503,6 @@ exports.createCategory = async (req) => {
   }
 };
 exports.updateCategory = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
   const {
     item_name,
     description,
@@ -653,13 +572,6 @@ exports.updateCategory = async (req) => {
   }
 };
 exports.deleteCategory = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { menu_id, category_id } = req.body;
 
   try {
@@ -710,13 +622,6 @@ exports.getCategory = async (req) => {}; // all or one
  */
 
 exports.createModifier = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { description, required, min_selection, max_selection, category_id } =
     req.body;
 
@@ -745,13 +650,6 @@ exports.createModifier = async (req) => {
   }
 };
 exports.updateModifier = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { description, required, min_selection, max_selection, modifier_id } =
     req.body;
 
@@ -762,7 +660,6 @@ exports.updateModifier = async (req) => {
   if (max_selection != undefined) data.max_selection = max_selection;
 
   try {
-    // query builder
     const [store_data, metaData] = await models.sequelize.query(
       `
       SELECT store_id
@@ -829,13 +726,6 @@ exports.updateModifier = async (req) => {
   }
 };
 exports.deleteModifier = async (req) => {
-  const { errors } = validationResult(req);
-
-  if (errors.length > 0) {
-    const errorsArr = extractMessage(errors);
-    return { error: true, errorData: errorsArr };
-  }
-
   const { modifier_id } = req.body;
 
   try {
