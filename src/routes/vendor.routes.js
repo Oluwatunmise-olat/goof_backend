@@ -5,12 +5,15 @@ const controller = require("../controllers/vendor.controller.js");
 const schemas = require("../schema/vendor.schema");
 const IsAuth = require("../middleware/auth.middleware");
 const { IsVendorOrAdmin } = require("../middleware/permission.middleware");
+const BodyFieldErrorMiddleware = require("../middleware/bodyFieldErrors");
+
 
 router.post(
   "/about",
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.aboutVendorSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.aboutVendorHandler
 );
 
@@ -19,6 +22,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.createStoreSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.createStoreHandler
 );
 
@@ -27,6 +31,7 @@ router.patch(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.editStoreSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.updateStoreHandler
 );
 
@@ -35,6 +40,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.storeLocationSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.setStoreLocationHandler
 );
 
@@ -43,6 +49,7 @@ router.patch(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.editStoreLocationSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.updateStoreLocationHandler
 );
 
@@ -51,6 +58,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.createStoreMenuSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.createStoreMenuHandler
 );
 
@@ -59,6 +67,7 @@ router.patch(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.editStoreMenuSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.updateStoreMenuHandler
 );
 
@@ -67,6 +76,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.addMenuAvailabilitySchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.addMenuAvailabilityHandler
 );
 
@@ -75,6 +85,7 @@ router.delete(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.removeMenuAvailabilitySchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.removeMenuAvailabilityHandler
 );
 
@@ -83,6 +94,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.createCategorySchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.createMenuCategoryHandler
 );
 
@@ -91,6 +103,7 @@ router.delete(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.deleteCategorySchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.deleteMenuCategoryHandler
 );
 
@@ -99,6 +112,7 @@ router.patch(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.updateCategorySchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.updateMenuCategoryHandler
 );
 
@@ -107,6 +121,7 @@ router.post(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.createModifierSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.createCategoryModifierHandler
 );
 
@@ -115,6 +130,7 @@ router.patch(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.updateModifierSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.updateCategoryModifierHandler
 );
 
@@ -123,6 +139,7 @@ router.delete(
   IsAuth,
   IsVendorOrAdmin,
   checkSchema(schemas.deleteModifierSchema),
+  BodyFieldErrorMiddleware.getFieldErrors,
   controller.deleteCategoryModifierHandler
 );
 
