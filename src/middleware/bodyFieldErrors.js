@@ -8,6 +8,7 @@ class BodyFieldErrorMiddleware {
       const errorsArr = extractMessage(errors);
       return { error: true, errorData: errorsArr };
     }
+    return next()
   }
 }
 
