@@ -5,7 +5,7 @@ const controller = require("../controllers/vendor.controller.js");
 const schemas = require("../schema/vendor.schema");
 const IsAuth = require("../middleware/auth.middleware");
 const { IsVendorOrAdmin } = require("../middleware/permission.middleware");
-const BodyFieldErrorMiddleware = require("../middleware/bodyFieldErrors");
+const BodyFieldErrorMiddleware = require("../middleware/bodyFieldErrors.middleware");
 
 
 router.post(
