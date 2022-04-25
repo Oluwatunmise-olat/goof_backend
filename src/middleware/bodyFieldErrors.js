@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const { extractMessage } = require("../utils/error");
 
 class BodyFieldErrorMiddleware {
   getFieldErrors(request, response, next) {
@@ -8,7 +9,7 @@ class BodyFieldErrorMiddleware {
       const errorsArr = extractMessage(errors);
       return { error: true, errorData: errorsArr };
     }
-    return next()
+    return next();
   }
 }
 
