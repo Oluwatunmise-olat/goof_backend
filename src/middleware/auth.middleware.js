@@ -14,7 +14,6 @@ module.exports = async (req, res, next) => {
       })
     );
 
-  // check if it's has a label of bearer token
   if (!resp[0] == "Bearer")
     return res.status(401).json(
       response({
@@ -27,14 +26,12 @@ module.exports = async (req, res, next) => {
   const token = resp[1];
 
   try {
-    // verify the token hasn't expired and handles case of expired or tamperred token
     const [status, value] = await verifyAccessToken(token);
     if (!status)
       return res
         .status(401)
         .json(response({ status: false, errorData: [{ msg: value }] }));
 
-    // verify the token is not blacklisted
     const isBlacklisted = await checkToken(token);
     if (isBlacklisted)
       return res
@@ -42,7 +39,7 @@ module.exports = async (req, res, next) => {
         .json(
           response({ status: false, errorData: [{ msg: "Invalid Token" }] })
         );
-    // extract user from token
+
     const { user_id, role_id, role_name } = value;
     req.userID = user_id;
     req.roleID = role_id;
